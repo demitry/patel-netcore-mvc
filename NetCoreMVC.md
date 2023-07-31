@@ -416,14 +416,92 @@ Controller have action methods
 
 Action methods define endpoints of the controller
 
+### Routing Overview [18]
+
+Default route
+
 ```cs
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 ```
 
-### Routing Overview [18]
+Domain name = localhost + port name
+
+https://localhost:5555/Category/Index/3
+
+https://localhost:5555/{controller}/{action}/{id?}
+
 ### Routing in Action [19]
+
+Rules defined:
+
+**Controllers** folder
+  - Home**Controller** class, filename
+
+**Views** folder
+  - **Home** folder
+
+Models not all always needed
+
+https://localhost:7209/
+
+https://localhost:7209/Home/Index
+
+the result is the same pade (default route, if no controller and action defined)
+
+```cs
+using BulkyWeb.Models;
+using Microsoft.AspNetCore.Mvc;
+using System.Diagnostics;
+
+namespace BulkyWeb.Controllers
+{
+    public class HomeController : Controller
+    {
+        private readonly ILogger<HomeController> _logger;
+
+        public HomeController(ILogger<HomeController> logger)
+        {
+            _logger = logger;
+        }
+
+        public IActionResult Index()
+        {
+            return View();
+        }
+
+        public IActionResult Privacy()
+        {
+            return View();
+        }
+
+        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+        public IActionResult Error()
+        {
+            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+    }
+}
+```
+
+```cs
+        public IActionResult Index()
+        {
+            return View();
+        }
+// What view will Action return?
+// if the view name is not defined - the same as action name
+// Home controller - Index.cshtml
+
+return View("Privacy"); // can override will retrun Privacy view
+```
+
+What view will Action return?
+if the view name is not defined - the same as action name
+Home controller - Index.cshtml
+
+
 ### Default Views [20]
 ### Go Easy on Yourself! [21]
 ## Section 2: Category CRUD Operations
