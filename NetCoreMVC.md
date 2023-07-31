@@ -1011,6 +1011,40 @@ Done.
 ```
 
 ### Get all Categories [32]
+
+Remember, the AppDbContext was added as a service in Program.cs:
+
+```cs
+builder.Services.AddDbContext<AppDbContext>(options => 
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+```
+
+so:
+
+```cs
+using Microsoft.AspNetCore.Mvc;
+using BulkyWeb.Data;
+using Microsoft.AspNetCore.Mvc;
+
+namespace BulkyWeb.Controllers
+{
+    public class CategoryController : Controller
+    {
+        private readonly AppDbContext _db;
+
+        public CategoryController(AppDbContext db)
+        {
+            _db = db;    
+        }
+
+        public IActionResult Index()
+        {
+            var categoryList = _db.Categories.ToList();
+            return View();
+        }
+    }
+```
+
 ### Hot Reload [33]
 ### Display all Categories [34]
 ### Bootswatch Theme and Bootstrap Icons [35]
