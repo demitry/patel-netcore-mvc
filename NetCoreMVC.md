@@ -26,6 +26,9 @@
         - [Setup ApplicationDbContext [26]](#setup-applicationdbcontext-26)
         - [Create Database - Update-Database [27]](#create-database---update-database-27)
         - [Create Category Table [28]](#create-category-table-28)
+            - [Add DbSet to AppDbContext:](#add-dbset-to-appdbcontext)
+            - [Add-Migration](#add-migration)
+            - [Update-Database](#update-database)
         - [Add Category Controller [29]](#add-category-controller-29)
         - [Add Category Link in Header [30]](#add-category-link-in-header-30)
         - [Seed Category Table [31]](#seed-category-table-31)
@@ -754,7 +757,116 @@ Done.
 ```
 
 ### Create Category Table [28]
+
+#### Add DbSet to AppDbContext:
+
+```cs
+public DbSet<Category> Categories { get; set; }
+```
+
+#### Add-Migration
+
+**Add-Migration AddCategoryTableToDb**
+
+```
+Build started...
+Build succeeded.
+To undo this action, use Remove-Migration.
+```
+
+- Migrations folder was created
+  - 20230731201532_AddCategoryTableToDb.cs
+
+```cs
+using Microsoft.EntityFrameworkCore.Migrations;
+
+#nullable disable
+
+namespace BulkyWeb.Migrations
+{
+    /// <inheritdoc />
+    public partial class AddCategoryTableToDb : Migration
+    {
+        /// <inheritdoc />
+        protected override void Up(MigrationBuilder migrationBuilder)
+        {
+            migrationBuilder.CreateTable(
+                name: "Categories",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    DisplayOrder = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Categories", x => x.Id);
+                });
+        }
+
+        /// <inheritdoc />
+        protected override void Down(MigrationBuilder migrationBuilder)
+        {
+            migrationBuilder.DropTable(
+                name: "Categories");
+        }
+    }
+}
+```
+#### Update-Database
+
+```
+PM> Update-Database
+Build started...
+Build succeeded.
+Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (20ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT 1
+Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (13ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT OBJECT_ID(N'[__EFMigrationsHistory]');
+Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (1ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT 1
+Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT OBJECT_ID(N'[__EFMigrationsHistory]');
+Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (2ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT [MigrationId], [ProductVersion]
+      FROM [__EFMigrationsHistory]
+      ORDER BY [MigrationId];
+Microsoft.EntityFrameworkCore.Migrations[20402]
+      Applying migration '20230731201532_AddCategoryTableToDb'.
+Applying migration '20230731201532_AddCategoryTableToDb'.
+Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (13ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      CREATE TABLE [Categories] (
+          [Id] int NOT NULL IDENTITY,
+          [Name] nvarchar(max) NOT NULL,
+          [DisplayOrder] int NOT NULL,
+          CONSTRAINT [PK_Categories] PRIMARY KEY ([Id])
+      );
+Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (3ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      INSERT INTO [__EFMigrationsHistory] ([MigrationId], [ProductVersion])
+      VALUES (N'20230731201532_AddCategoryTableToDb', N'7.0.9');
+Done.
+```
+
+```sql
+SELECT TOP (1000) [MigrationId]
+      ,[ProductVersion]
+  FROM [Bulky].[dbo].[__EFMigrationsHistory]
+-- MigrationId	ProductVersion
+--20230731201532_AddCategoryTableToDb	7.0.9
+```
+
 ### Add Category Controller [29]
+
+
+
 ### Add Category Link in Header [30]
 ### Seed Category Table [31]
 ### Get all Categories [32]
