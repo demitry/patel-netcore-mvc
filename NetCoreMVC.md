@@ -357,6 +357,50 @@ and settings from the appsettings.Production.json will be used
 ```
 
 ### Program File [16]
+
+In the older versions we used to have 2 files
+
+- Program.cs
+- Startup.cs
+
+Today they are combined into 1 file Program.cs
+
+```cs
+var builder = WebApplication.CreateBuilder(args);
+
+// 1. Add services to the container.
+builder.Services.AddControllersWithViews();
+var app = builder.Build();
+// DIs will be here...
+
+// 2. Configure the HTTP request pipeline.
+// 
+if (!app.Environment.IsDevelopment()) // check setting in Json, app.Environment.IsEnvironment() could be used
+{
+    app.UseExceptionHandler("/Home/Error");
+    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+    app.UseHsts();
+}
+
+// if dev - see ex
+// if not - page 
+
+app.UseHttpsRedirection(); 
+app.UseStaticFiles();      //configure wwwroot path
+
+app.UseRouting();
+
+app.UseAuthorization();
+
+// How the routing should work ?
+app.MapControllerRoute(
+    name: "default",
+    pattern: "{controller=Home}/{action=Index}/{id?}"); // id can be defined or null
+
+app.Run();
+```
+
+
 ### MVC Architecture [17]
 ### Routing Overview [18]
 ### Routing in Action [19]
