@@ -501,9 +501,129 @@ What view will Action return?
 if the view name is not defined - the same as action name
 Home controller - Index.cshtml
 
-
 ### Default Views [20]
+
+- _Layout.cshtml
+  - css, js, hlml
+  - @RenderBody() - building helper, here is the View from the Controller
+- _ValidationScriptsPartial.cshtml
+- _ Underscore = this view will be used throught our app.
+- Partial View = Cannot be displayed by itsself - i will be used as part of main view
+- Error.cshtml
+
+**- How do the app knows that _Layout is the master page?**
+  
+  - **Defined in _ViewStart.cshtml**:
+
+```
+  @{
+    Layout = "_Layout";
+  }
+```
+
+_ViewImports.cshtml (global import file for Views (not for models))
+
+```
+@using BulkyWeb
+@using BulkyWeb.Models
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+```
+
 ### Go Easy on Yourself! [21]
+
+```cs
+public IActionResult Index()
+{
+    return View();
+}
+```
+
+In .NET Core, an IActionResult is an interface that represents the result of an action method in an MVC or Web API application. It allows you to return different types of results from your action methods to control the HTTP response sent back to the client. Here are some common types that can be returned as IActionResult:
+
+**ViewResult**: Represents an HTML view to be rendered and returned to the client in an MVC application. For example:
+
+```cs
+public IActionResult Index()
+{
+    return View();
+}
+```
+**PartialViewResult**: Represents a partial HTML view to be rendered and returned to the client in an MVC application. For example:
+```cs
+public IActionResult PartialView()
+{
+    return PartialView();
+}
+```
+
+**JsonResult**: Represents a JSON object that will be serialized and returned to the client in a Web API application. For example:
+
+```cs
+public IActionResult GetJsonData()
+{
+    var data = new { Name = "John", Age = 30 };
+    return Json(data);
+}
+```
+
+**ContentResult**: Represents a plain text or HTML content that will be returned to the client. For example:
+
+```cs
+public IActionResult GetText()
+{
+    return Content("This is some plain text.");
+}
+```
+
+**FileResult**: Represents a file to be downloaded by the client. For example:
+
+```cs
+public IActionResult DownloadFile()
+{
+    byte[] fileBytes = ... // Load file bytes here
+    return File(fileBytes, "application/octet-stream", "example.txt");
+}
+```
+
+**RedirectResult**: Represents a redirection response to another URL. For example:
+
+```cs
+public IActionResult RedirectToHome()
+{
+    return Redirect("/home/index");
+}
+```
+
+**NotFoundResult**: Represents a 404 Not Found response.
+
+```cs
+public IActionResult NotFoundExample()
+{
+    return NotFound();
+}
+```
+
+**BadRequestResult**: Represents a 400 Bad Request response.
+```cs
+public IActionResult BadRequestExample()
+{
+    return BadRequest();
+}
+```
+
+**StatusCodeResult**: Represents a custom status code response. For example:
+
+```cs
+public IActionResult CustomStatusCode()
+{
+    return StatusCode(403); // Returns a 403 Forbidden status code
+}
+```
+
+These are just some of the common types that can be returned as IActionResult. There are additional result types and custom implementations you can create to handle specific use cases.
+
+
+
 ## Section 2: Category CRUD Operations
 ### Create Category Model [22]
 ### Data Annotations [23]
