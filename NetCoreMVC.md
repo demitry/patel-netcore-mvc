@@ -24,7 +24,7 @@
         - [Connection String [24]](#connection-string-24)
         - [Nuget Packages for Entity Framework Core [25]](#nuget-packages-for-entity-framework-core-25)
         - [Setup ApplicationDbContext [26]](#setup-applicationdbcontext-26)
-        - [Create Database [27]](#create-database-27)
+        - [Create Database - Update-Database [27]](#create-database---update-database-27)
         - [Create Category Table [28]](#create-category-table-28)
         - [Add Category Controller [29]](#add-category-controller-29)
         - [Add Category Link in Header [30]](#add-category-link-in-header-30)
@@ -696,7 +696,63 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 ```
 
-### Create Database [27]
+### Create Database - Update-Database [27]
+
+Package Manager Console
+
+**update-database**
+
+An error occurred while accessing the Microsoft.Extensions.Hosting services. Continuing without the application service provider. Error: Failed to load configuration from file
+
+update-database -verbose
+
+appsettings.json - Properties - Copy Always
+
+```
+[FIXED] I also had the issue "An error occurred while accessing the Microsoft.Extensions.Hosting services. Continuing without the application service provider. Error: Failed to load configuration from file ... appsettings.json"
+ I fixed it: Downgraded from Latest 8.0.0-preview.6.23329.4 to latest stable 7.0.9, rebuilt solution => and update-database started working.
+```
+
+```
+PM> update-database
+Build started...
+Build succeeded.
+Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (270ms) [Parameters=[], CommandType='Text', CommandTimeout='60']
+      CREATE DATABASE [Bulky];
+Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (134ms) [Parameters=[], CommandType='Text', CommandTimeout='60']
+      IF SERVERPROPERTY('EngineEdition') <> 5
+      BEGIN
+          ALTER DATABASE [Bulky] SET READ_COMMITTED_SNAPSHOT ON;
+      END;
+Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (7ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT 1
+Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (7ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      CREATE TABLE [__EFMigrationsHistory] (
+          [MigrationId] nvarchar(150) NOT NULL,
+          [ProductVersion] nvarchar(32) NOT NULL,
+          CONSTRAINT [PK___EFMigrationsHistory] PRIMARY KEY ([MigrationId])
+      );
+Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT 1
+Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (13ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT OBJECT_ID(N'[__EFMigrationsHistory]');
+Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (16ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT [MigrationId], [ProductVersion]
+      FROM [__EFMigrationsHistory]
+      ORDER BY [MigrationId];
+Microsoft.EntityFrameworkCore.Migrations[20405]
+      No migrations were applied. The database is already up to date.
+No migrations were applied. The database is already up to date.
+Done.
+```
+
 ### Create Category Table [28]
 ### Add Category Controller [29]
 ### Add Category Link in Header [30]
