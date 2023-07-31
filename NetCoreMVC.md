@@ -245,7 +245,68 @@
 
 ### Create Project [12]
 ### Project File [13]
+
+Project - right click - edit project file
+
+nugets will be here
+
+```xml
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+</Project>
+```
+
 ### Launch Settings [14]
+
+launchSettings.json
+
+```json
+{
+  "$schema": "http://json.schemastore.org/launchsettings.json",
+  "iisSettings": {
+    "windowsAuthentication": false,
+    "anonymousAuthentication": true,
+    "iisExpress": {
+      "applicationUrl": "http://localhost:1990",
+      "sslPort": 44367
+    }
+  },
+  "profiles": {   // build profiles
+    "http": {
+      "commandName": "Project",
+      "dotnetRunMessages": true,
+      "launchBrowser": true,
+      "applicationUrl": "http://localhost:5279",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development" // env vars, for example credit card could be different for dev and for prod
+      }
+    },
+    "https": {
+      "commandName": "Project",
+      "dotnetRunMessages": true,
+      "launchBrowser": true,
+      "applicationUrl": "https://localhost:7209;http://localhost:5279",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      }
+    },
+    "IIS Express": {
+      "commandName": "IISExpress",
+      "launchBrowser": true,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      }
+    }
+  }
+}
+```
+
 ### wwwroot and appsettings [15]
 ### Program File [16]
 ### MVC Architecture [17]
