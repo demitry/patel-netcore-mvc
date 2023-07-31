@@ -622,12 +622,47 @@ public IActionResult CustomStatusCode()
 
 These are just some of the common types that can be returned as IActionResult. There are additional result types and custom implementations you can create to handle specific use cases.
 
-
-
 ## Section 2: Category CRUD Operations
 ### Create Category Model [22]
 ### Data Annotations [23]
+
+```cs
+using System.ComponentModel.DataAnnotations;
+
+namespace BulkyWeb.Models
+{
+    public class Category
+    {
+        [Key]
+        public int Id { get; set; }
+
+        [Required]
+        public string Name { get; set; }
+        
+        public int DisplayOrder { get; set; }
+    }
+}
+
+```
 ### Connection String [24]
+
+In appsettings.json:
+
+```json
+{
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "Microsoft.AspNetCore": "Warning"
+    }
+  },
+  "AllowedHosts": "*",
+  "ConnectionStrings": {
+    "DefaultConnection": "Server:.;Database=Bulky;Trusted_Connection=True;TrustServerCertificate=True"
+  }
+}
+```
+
 ### Nuget Packages for Entity Framework Core [25]
 ### Setup ApplicationDbContext [26]
 ### Create Database [27]
