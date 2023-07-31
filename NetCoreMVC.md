@@ -865,7 +865,33 @@ SELECT TOP (1000) [MigrationId]
 
 ### Add Category Controller [29]
 
+```cs
+using Microsoft.AspNetCore.Mvc;
 
+namespace BulkyWeb.Controllers
+{
+    public class CategoryController : Controller
+    {
+        public IActionResult Index()
+        {
+            return View();
+        }
+    }
+}
+
+```
+
+https://localhost:7209/Category
+
+https://localhost:7209/Category/Index
+
+InvalidOperationException: The view 'Index' was not found. The following locations were searched: /Views/Category/Index.cshtml /Views/Shared/Index.cshtml
+
+Search:
+  - Category Folder, Index.cshtml
+  - Shared folder
+
+Add Views\Category\Index.cshtml
 
 ### Add Category Link in Header [30]
 ### Seed Category Table [31]
