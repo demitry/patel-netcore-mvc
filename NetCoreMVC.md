@@ -664,6 +664,13 @@ In appsettings.json:
 ```
 
 ### Nuget Packages for Entity Framework Core [25]
+
+[x] Include prerelease
+
+- Microsoft.EntityFrameworkCore
+- Microsoft.EntityFrameworkCore.SqlServer
+- Microsoft.EntityFrameworkCore.Tools (for migrations)
+
 ### Setup ApplicationDbContext [26]
 ### Create Database [27]
 ### Create Category Table [28]
