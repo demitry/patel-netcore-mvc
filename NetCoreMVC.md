@@ -894,6 +894,15 @@ Search:
 Add Views\Category\Index.cshtml
 
 ### Add Category Link in Header [30]
+
+_Layout.cshtml
+
+```html
+<li class="nav-item">
+    <a class="nav-link text-dark" asp-controller="Category" asp-action="Index">Category</a>
+</li>
+```
+
 ### Seed Category Table [31]
 ### Get all Categories [32]
 ### Hot Reload [33]
