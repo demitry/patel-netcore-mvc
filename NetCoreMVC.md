@@ -1046,6 +1046,11 @@ namespace BulkyWeb.Controllers
 ```
 
 ### Hot Reload [33]
+
+VS - Run project - fire button - Hot Reload on File Save option
+
+So it is possible to modify the page and observe changes on the fly.
+
 ### Display all Categories [34]
 ### Bootswatch Theme and Bootstrap Icons [35]
 ### Design Category List Page [36]
