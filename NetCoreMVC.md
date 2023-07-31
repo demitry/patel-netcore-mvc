@@ -225,7 +225,24 @@
 <!-- /TOC -->
 
 ## Section 1: Welcome & Getting Started
+
 ### Course Overview [11]
+
+- N-Tier Arch
+- Repository Pattern and UoW
+- TempData/ViewBag/ViewData in .NET Core - When should use each of them?
+- Api Conreollers, Razor Pages
+- SweetAlerts, Rich Text Editor, Data Tables
+- Scaffold Identity (Razor Class Library)
+- Roles and Auth in .NET Core
+- Stripe Payment/ Refund with .NET Core
+- Sessions
+- Emails with SendGrid
+- User Management
+- Social Login using Facebook
+- Seed Db with DbInitializer
+- Deploy to Azure
+
 ### Create Project [12]
 ### Project File [13]
 ### Launch Settings [14]
