@@ -9,6 +9,9 @@
         - [Project File [13]](#project-file-13)
         - [Launch Settings [14]](#launch-settings-14)
         - [wwwroot and appsettings [15]](#wwwroot-and-appsettings-15)
+            - [wwwroot - static content css, js, 3rd party libs, nuget packages, images, files, pdfs, powerpoints, etc.](#wwwroot---static-content-css-js-3rd-party-libs-nuget-packages-images-files-pdfs-powerpoints-etc)
+            - [appsettings.json - Connection Strings, Secrets, Keys, DB connections, Azure DB, storage etc.](#appsettingsjson---connection-strings-secrets-keys-db-connections-azure-db-storage-etc)
+            - [Swith to prod](#swith-to-prod)
         - [Program File [16]](#program-file-16)
         - [MVC Architecture [17]](#mvc-architecture-17)
         - [Routing Overview [18]](#routing-overview-18)
@@ -266,6 +269,8 @@ nugets will be here
 
 launchSettings.json
 
+build profiles - check VS Build button
+
 ```json
 {
   "$schema": "http://json.schemastore.org/launchsettings.json",
@@ -308,6 +313,49 @@ launchSettings.json
 ```
 
 ### wwwroot and appsettings [15]
+
+#### wwwroot - static content (css, js, 3rd party libs, nuget packages, images, files, pdfs, powerpoints, etc.)
+
+All statics goes here
+
+- site.css
+- site.js
+- lib
+  - bootstrap
+  - jquery
+  - jquery-validations
+  - jquery-validations...
+
+#### appsettings.json - Connection Strings, Secrets, Keys, DB connections, Azure DB, storage etc.
+
+appsettings.Development.json
+
+```json
+{
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "Microsoft.AspNetCore": "Warning"
+    }
+  },
+  "AllowedHosts": "*"
+}
+```
+
+#### Swith to prod
+
+Project -> Add new item - json AppSetting File
+
+appsettings.Production.json
+
+```txt
+launchSettings.json - change
+"ASPNETCORE_ENVIRONMENT": "Development"
+to
+"ASPNETCORE_ENVIRONMENT": "Production"
+and settings from the appsettings.Production.json will be used
+```
+
 ### Program File [16]
 ### MVC Architecture [17]
 ### Routing Overview [18]
