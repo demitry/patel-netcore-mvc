@@ -672,6 +672,30 @@ In appsettings.json:
 - Microsoft.EntityFrameworkCore.Tools (for migrations)
 
 ### Setup ApplicationDbContext [26]
+
+AppDbContext.cs
+
+```cs
+using Microsoft.EntityFrameworkCore;
+
+namespace BulkyWeb.Data
+{
+    public class AppDbContext : DbContext
+    {
+        public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
+        {
+        }
+    }
+}
+```
+
+Program.cs
+
+```cs
+builder.Services.AddDbContext<AppDbContext>(options => 
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+```
+
 ### Create Database [27]
 ### Create Category Table [28]
 ### Add Category Controller [29]
