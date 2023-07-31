@@ -32,6 +32,9 @@
         - [Add Category Controller [29]](#add-category-controller-29)
         - [Add Category Link in Header [30]](#add-category-link-in-header-30)
         - [Seed Category Table [31]](#seed-category-table-31)
+            - [Add OnModelCreating in  AppDbContext](#add-onmodelcreating-in--appdbcontext)
+            - [Add-Migration SeedCategoryTable](#add-migration-seedcategorytable)
+            - [Update-Database](#update-database)
         - [Get all Categories [32]](#get-all-categories-32)
         - [Hot Reload [33]](#hot-reload-33)
         - [Display all Categories [34]](#display-all-categories-34)
@@ -904,6 +907,109 @@ _Layout.cshtml
 ```
 
 ### Seed Category Table [31]
+
+#### Add OnModelCreating in  AppDbContext 
+
+```cs
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Category>().HasData(
+                    new Category { Id = 1, Name = "Action", DisplayOrder = 1 },
+                    new Category { Id = 2, Name = "SciFi", DisplayOrder = 2 },
+                    new Category { Id = 3, Name = "History", DisplayOrder = 3 }
+                );
+
+            base.OnModelCreating(modelBuilder);
+        }
+```
+
+#### Add-Migration SeedCategoryTable
+
+```cs
+namespace BulkyWeb.Migrations
+{
+    /// <inheritdoc />
+    public partial class SeedCategoryTable : Migration
+    {
+        /// <inheritdoc />
+        protected override void Up(MigrationBuilder migrationBuilder)
+        {
+            migrationBuilder.InsertData(
+                table: "Categories",
+                columns: new[] { "Id", "DisplayOrder", "Name" },
+                values: new object[,]
+                {
+                    { 1, 1, "Action" },
+                    { 2, 2, "SciFi" },
+                    { 3, 3, "History" }
+                });
+        }
+
+        /// <inheritdoc />
+        protected override void Down(MigrationBuilder migrationBuilder)
+        {
+            migrationBuilder.DeleteData(
+                table: "Categories",
+                keyColumn: "Id",
+                keyValue: 1);
+
+            migrationBuilder.DeleteData(
+                table: "Categories",
+                keyColumn: "Id",
+                keyValue: 2);
+
+            migrationBuilder.DeleteData(
+                table: "Categories",
+                keyColumn: "Id",
+                keyValue: 3);
+        }
+    }
+}
+```
+
+#### Update-Database
+
+```
+PM> Update-Database
+Build started...
+Build succeeded.
+Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (19ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT 1
+Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (14ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT OBJECT_ID(N'[__EFMigrationsHistory]');
+Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (1ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT 1
+Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (1ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT OBJECT_ID(N'[__EFMigrationsHistory]');
+Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (8ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT [MigrationId], [ProductVersion]
+      FROM [__EFMigrationsHistory]
+      ORDER BY [MigrationId];
+Microsoft.EntityFrameworkCore.Migrations[20402]
+      Applying migration '20230731214118_SeedCategoryTable'.
+Applying migration '20230731214118_SeedCategoryTable'.
+Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (38ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      IF EXISTS (SELECT * FROM [sys].[identity_columns] WHERE [name] IN (N'Id', N'DisplayOrder', N'Name') AND [object_id] = OBJECT_ID(N'[Categories]'))
+          SET IDENTITY_INSERT [Categories] ON;
+      INSERT INTO [Categories] ([Id], [DisplayOrder], [Name])
+      VALUES (1, 1, N'Action'),
+      (2, 2, N'SciFi'),
+      (3, 3, N'History');
+      IF EXISTS (SELECT * FROM [sys].[identity_columns] WHERE [name] IN (N'Id', N'DisplayOrder', N'Name') AND [object_id] = OBJECT_ID(N'[Categories]'))
+          SET IDENTITY_INSERT [Categories] OFF;
+Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (1ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      INSERT INTO [__EFMigrationsHistory] ([MigrationId], [ProductVersion])
+      VALUES (N'20230731214118_SeedCategoryTable', N'7.0.9');
+Done.
+```
+
 ### Get all Categories [32]
 ### Hot Reload [33]
 ### Display all Categories [34]
