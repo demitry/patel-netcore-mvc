@@ -400,8 +400,28 @@ app.MapControllerRoute(
 app.Run();
 ```
 
-
 ### MVC Architecture [17]
+
+MVC
+
+- Model - shape of the data
+- View - UI, forms, charts, html controls
+- Controller - fetch from data from the DB, handles the user request, acts as an interface between the Model and the View  
+
+1. Request
+2. Getdata from DB
+3. Get Presentation
+
+Controller have action methods
+
+Action methods define endpoints of the controller
+
+```cs
+app.MapControllerRoute(
+    name: "default",
+    pattern: "{controller=Home}/{action=Index}/{id?}");
+```
+
 ### Routing Overview [18]
 ### Routing in Action [19]
 ### Default Views [20]
