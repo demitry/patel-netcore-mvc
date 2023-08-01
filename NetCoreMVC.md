@@ -1052,6 +1052,42 @@ VS - Run project - fire button - Hot Reload on File Save option
 So it is possible to modify the page and observe changes on the fly.
 
 ### Display all Categories [34]
+
+Pass the model to the View:
+
+```cs
+var categoryList = _db.Categories.ToList();
+return View(categoryList);
+```
+
+```html
+@model List<Category>
+<h1>Category List</h1>
+<table class="table table-bordered table-striped">
+    
+    <thead>
+    <tr>
+        <th>
+            Category Name
+        </th>
+        <th>
+            Category Order
+        </th>
+    </tr>
+    </thead>
+
+    <tbody>
+        @foreach(var obj in Model.OrderBy(u => u.DisplayOrder))
+        {
+        <tr>
+            <td> @obj.Name </td>
+            <td> @obj.DisplayOrder </td>
+        </tr>
+        }
+    </tbody>
+</table>
+```
+
 ### Bootswatch Theme and Bootstrap Icons [35]
 ### Design Category List Page [36]
 ### Create Category UI [37]
