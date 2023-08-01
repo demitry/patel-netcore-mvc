@@ -1089,6 +1089,28 @@ return View(categoryList);
 ```
 
 ### Bootswatch Theme and Bootstrap Icons [35]
+
+https://bootswatch.com/
+
+https://icons.getbootstrap.com/
+
+```
+CDN
+Include the icon fonts stylesheet—in your website <head> or via @import in CSS—from jsDelivr and get started in seconds. See icon font docs for examples.
+```
+
+copy CDN
+
+```html
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+```
+to _Layout.cshtml
+
+Search heart-fill icon
+
+https://icons.getbootstrap.com/icons/heart-fill/
+
+
 ### Design Category List Page [36]
 ### Create Category UI [37]
 ### Input Tag Helpers [38]
