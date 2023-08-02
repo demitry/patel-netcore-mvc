@@ -1112,6 +1112,49 @@ https://icons.getbootstrap.com/icons/heart-fill/
 
 
 ### Design Category List Page [36]
+
+```html
+@model List<Category>
+
+    <div class="container">
+        <div class="row pt-4 pb-3"> @* In Bootstrap Row is divided into 12 columns *@
+            <div class="col-6">
+                <h2 class="text-primary">Category List</h2>
+            </div>
+
+            <div class="col-6 text-end">
+                <a asp-controller="" asp-action="" class="btn btn-primary">
+                <i class="bi bi-plus-circle"></i> Create New Category
+                </a>
+            </div>
+    </div>
+
+        <table class="table table-bordered table-striped">
+    
+            <thead>
+            <tr>
+                <th>
+                    Category Name
+                </th>
+                <th>
+                    Category Order
+                </th>
+            </tr>
+            </thead>
+
+            <tbody>
+                @foreach(var obj in Model.OrderBy(u => u.DisplayOrder))
+                {
+                <tr>
+                    <td> @obj.Name </td>
+                    <td> @obj.DisplayOrder </td>
+                </tr>
+                }
+            </tbody>
+        </table>
+</div>
+```
+
 ### Create Category UI [37]
 ### Input Tag Helpers [38]
 ### Create Category [39]
