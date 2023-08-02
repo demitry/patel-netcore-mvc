@@ -43,7 +43,7 @@
         - [Create Category UI [37]](#create-category-ui-37)
         - [Input Tag Helpers [38]](#input-tag-helpers-38)
         - [Create Category [39]](#create-category-39)
-        - [Server Side Validations [40]](#server-side-validations-40)
+        - [Built-In Server Side Validations [40]](#built-in-server-side-validations-40)
         - [Custom Validations [41]](#custom-validations-41)
         - [Asp Validation Summary [42]](#asp-validation-summary-42)
         - [Client Side Validation [43]](#client-side-validation-43)
@@ -1232,7 +1232,7 @@ public IActionResult Create(Category obj)
 }
 ```
 
-### Server Side Validations [40]
+### Built-In Server Side Validations [40]
 
 ```cs
         public IActionResult Create(Category obj)
@@ -1257,6 +1257,23 @@ public IActionResult Create(Category obj)
 ```
 
 ### Custom Validations [41]
+
+```cs
+        public IActionResult Create(Category obj)
+        {
+            if (obj.Name.Equals(obj.DisplayOrder.ToString()))
+            {
+                ModelState.AddModelError("name", "The DisplayOrder cannot exactly match the Name");
+            }
+
+            if (ModelState.IsValid)
+            //...
+```
+
+```html
+<div asp-validation-summary="All"></div>
+```
+
 ### Asp Validation Summary [42]
 ### Client Side Validation [43]
 ### Edit and Delete Buttons [44]
