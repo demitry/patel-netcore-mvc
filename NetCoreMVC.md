@@ -1156,6 +1156,47 @@ https://icons.getbootstrap.com/icons/heart-fill/
 ```
 
 ### Create Category UI [37]
+
+```
+return View();//in controller
+@model Category//in cshtml view
+You can pass View(new Category());
+But by default it creates new Model i.e. new Category 
+```
+
+```html
+@model Category
+
+<form method="post">
+    <div class="border p-3 mt-4">
+        <div class="row pb-2">
+            <h2 class="text-primary">Create Category</h2>
+            <hr/>
+        </div>
+        <div class="mb-3 row p-1">
+            <label class="p-0">Name</label>
+            <input type="text" class="form-control" />
+        </div>
+        <div class="mb-3 row p-1">
+            <label class="p-0">Display Order</label>
+            <input type="text" class="form-control" />
+        </div>
+
+        <div class="row">
+            <div class="col-6 col-md-3">
+                <button type="submit" class="btn btn-primary form-control" style="width:200px">Create</button>
+            </div>
+            <div class="col-6 col-md-3">
+                <a asp-controller="Category" asp-action="Index" class="btn btn-outline-secondary form-control" style="width:200px">
+                    Back to List
+                </a>
+            </div>
+        </div>
+    </div>
+</form>
+```
+
+
 ### Input Tag Helpers [38]
 ### Create Category [39]
 ### Server Side Validations [40]

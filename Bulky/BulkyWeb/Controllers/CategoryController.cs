@@ -9,13 +9,18 @@ namespace BulkyWeb.Controllers
 
         public CategoryController(AppDbContext db)
         {
-            _db = db;    
+            _db = db;
         }
 
         public IActionResult Index()
         {
             var categoryList = _db.Categories.ToList();
             return View(categoryList);
+        }
+
+        public IActionResult Create()
+        {
+            return View();
         }
     }
 }
