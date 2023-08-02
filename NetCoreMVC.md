@@ -1220,8 +1220,18 @@ for the label - int can take a display name from the models annotation
         </div>
 ```
 
-
 ### Create Category [39]
+
+```cs
+        [HttpPost]
+        public IActionResult Create(Category obj)
+        {
+            _db.Categories.Add(obj);
+            _db.SaveChanges();
+            return RedirectToAction("Index");
+        }
+```
+
 ### Server Side Validations [40]
 ### Custom Validations [41]
 ### Asp Validation Summary [42]
