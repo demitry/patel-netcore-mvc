@@ -1198,6 +1198,29 @@ But by default it creates new Model i.e. new Category
 
 
 ### Input Tag Helpers [38]
+
+asp-for tag helper
+
+for the label - int can take a display name from the models annotation
+
+```cs
+        [Required]
+        [DisplayName("Category Name")]
+        public string Name { get; set; } = string.Empty;
+```
+
+```html
+        <div class="mb-3 row p-1">
+            <label asp-for="Name" class="p-0"></label>
+            <input asp-for="Name" type="text" class="form-control" />
+        </div>
+        <div class="mb-3 row p-1">
+            <label asp-for="DisplayOrder" class="p-0"></label>
+            <input asp-for="DisplayOrder" type="text" class="form-control" />
+        </div>
+```
+
+
 ### Create Category [39]
 ### Server Side Validations [40]
 ### Custom Validations [41]
