@@ -1325,8 +1325,21 @@ Shared folder is default for partial views
 - More dynamic
 - But "Create" button will hit server.
 
-
 ### Edit and Delete Buttons [44]
+
+```html
+<td>
+    <div class="w-75 btn-group" role="group">
+        <a asp-controller="Category" asp-action="Edit" class="btn btn-primary mx-2">
+            <i class="bi bi-pencil-square"></i> Edit
+        </a>
+        <a asp-controller="Category" asp-action="Delete" class="btn btn-outline-danger mx-2">
+            <i class="bi bi-trash3-fill"></i> Delete
+        </a>
+    </div>
+</td>
+```
+
 ### Get Category Details to Edit [45]
 ### Update Category [46]
 ### Update Category in Action [47]
