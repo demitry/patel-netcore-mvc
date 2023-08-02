@@ -1204,35 +1204,58 @@ asp-for tag helper
 for the label - int can take a display name from the models annotation
 
 ```cs
-        [Required]
-        [DisplayName("Category Name")]
-        public string Name { get; set; } = string.Empty;
+[Required]
+[DisplayName("Category Name")]
+public string Name { get; set; } = string.Empty;
 ```
 
 ```html
-        <div class="mb-3 row p-1">
-            <label asp-for="Name" class="p-0"></label>
-            <input asp-for="Name" type="text" class="form-control" />
-        </div>
-        <div class="mb-3 row p-1">
-            <label asp-for="DisplayOrder" class="p-0"></label>
-            <input asp-for="DisplayOrder" type="text" class="form-control" />
-        </div>
+<div class="mb-3 row p-1">
+    <label asp-for="Name" class="p-0"></label>
+    <input asp-for="Name" type="text" class="form-control" />
+</div>
+<div class="mb-3 row p-1">
+    <label asp-for="DisplayOrder" class="p-0"></label>
+    <input asp-for="DisplayOrder" type="text" class="form-control" />
+</div>
 ```
 
 ### Create Category [39]
 
 ```cs
-        [HttpPost]
-        public IActionResult Create(Category obj)
-        {
-            _db.Categories.Add(obj);
-            _db.SaveChanges();
-            return RedirectToAction("Index");
-        }
+[HttpPost]
+public IActionResult Create(Category obj)
+{
+    _db.Categories.Add(obj);
+    _db.SaveChanges();
+    return RedirectToAction("Index");
+}
 ```
 
 ### Server Side Validations [40]
+
+```cs
+        public IActionResult Create(Category obj)
+        {
+            if (ModelState.IsValid)
+            {
+                _db.Categories.Add(obj);
+                _db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+
+            return View();
+        }
+        //...
+        [DisplayName("Display Order")]
+        [Range(1,100, ErrorMessage = "The field Display Order must be between 1 - 100 (my custom message)")]
+        public int DisplayOrder { get; set; }
+```
+
+```html
+<span asp-validation-for="Name" class="text-danger"></span>
+```
+
 ### Custom Validations [41]
 ### Asp Validation Summary [42]
 ### Client Side Validation [43]
