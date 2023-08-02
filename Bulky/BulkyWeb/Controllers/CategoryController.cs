@@ -27,10 +27,15 @@ namespace BulkyWeb.Controllers
         [HttpPost]
         public IActionResult Create(Category obj)
         {
-            if (obj.Name.Equals(obj.DisplayOrder.ToString()))
-            {
-                ModelState.AddModelError("name", "The DisplayOrder cannot exactly match the Name");
-            }
+            //if (obj.Name == obj.DisplayOrder.ToString())
+            //{
+            //    ModelState.AddModelError("name", "The DisplayOrder cannot exactly match the Name");
+            //}
+
+            //if (obj.Name != null && obj.Name.ToLower() == "test")
+            //{
+            //    ModelState.AddModelError("", $"{obj.Name} is an invalid value"); //the key is not specified, so this message will be available in asp-sammary
+            //}
 
             if (ModelState.IsValid)
             {
