@@ -1448,6 +1448,12 @@ the button should contain `asp-route-id="@obj.Id"`
 ```
 
 ### TempData [50]
+
+- Only for 1 request, than is goes away
+- Refresh the page - it will be dismissed
+
+https://learn.microsoft.com/en-us/aspnet/core/fundamentals/app-state?view=aspnetcore-7.0#tempdata
+
 ### Partial Views [51]
 ### Toastr Notification [52]
 ## Section 3: Razor Project
