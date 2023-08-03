@@ -1484,6 +1484,49 @@ use it:
 ```
 
 ### Toastr Notification [52]
+
+https://codeseven.github.io/toastr/
+
+https://codeseven.github.io/toastr/demo.html
+
+copy CDN
+
+//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.css
+
+a it to styling
+``` 
+remove <h2>@TempData["error"]</h2>
+```
+as follows
+
+```html
+@if (TempData["success"] != null)
+{
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+    @* <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.js"></script> *@ @* Debug version *@
+
+    @* <h2>@TempData["success"]</h2> *@
+    <script type="text/javascript">
+        toastr.success('@TempData["success"]');   @* Note: '' is important =) *@
+    </script>
+    
+}
+
+@if (TempData["error"] != null)
+{
+    @* <h2>@TempData["error"]</h2> *@
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+    <script type="text/javascript">
+        toastr.error('@TempData["error"]');
+    </script>
+}
+
+```
+
+Note: '   ' are important =)
+
 ## Section 3: Razor Project
 ### Create Razor Project [53]
 ### What's Different in Razor Project? [54]
