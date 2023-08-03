@@ -1454,7 +1454,35 @@ the button should contain `asp-route-id="@obj.Id"`
 
 https://learn.microsoft.com/en-us/aspnet/core/fundamentals/app-state?view=aspnetcore-7.0#tempdata
 
+```cs
+_db.Categories.Update(obj);
+_db.SaveChanges();
+TempData["success"] = "Category updated successfully";
+```
+
+```cs
+@if (TempData["success"] != null)
+{
+    <h2>@TempData["success"]</h2>
+}
+```
+
+We used tempdata to share the notification
+
 ### Partial Views [51]
+
+But what if we need it for Orders, user info etc?
+
+- Use Partial View
+
+Shared\_Notification.cshtml
+
+use it:
+
+```html
+<partial name="_Notification" />
+```
+
 ### Toastr Notification [52]
 ## Section 3: Razor Project
 ### Create Razor Project [53]
