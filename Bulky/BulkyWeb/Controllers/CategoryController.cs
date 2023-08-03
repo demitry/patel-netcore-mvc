@@ -77,5 +77,39 @@ namespace BulkyWeb.Controllers
 
             return View();
         }
+
+        public IActionResult Delete(int? id)
+        {
+            if (id == null || id == 0)
+            {
+                return NotFound();
+            }
+
+            var category = _db.Categories.FirstOrDefault(c => c.Id == id);
+            
+            if (category == null)
+            {
+                return NotFound();
+            }
+
+            return View(category);
+        }
+
+        // used the id as a parameter, not the obj,
+        // so the POST method name should be different,
+        // and so - declared the Action Name [HttpPost, ActionName("Delete")] 
+        [HttpPost, ActionName("Delete")] 
+        public IActionResult DeletePost(int? id)
+        {
+            Category? obj = _db.Categories.Find(id);
+            if (obj == null) 
+            {
+                return NotFound();
+            }
+
+            _db.Categories.Remove(obj);
+            _db.SaveChanges();
+            return RedirectToAction("Index");
+        }
     }
 }
