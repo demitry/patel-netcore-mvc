@@ -8,6 +8,7 @@
 @model Category
 
 <form method="post">
+    <input asp-for="Id" hidden /> @* it is not required for the "Id" but it is required for another name *@
     <div class="border p-3 mt-4">
         <div class="row pb-2">
             <h2 class="text-primary">Edit Category</h2>

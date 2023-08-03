@@ -1386,6 +1386,17 @@ Scaffolding...
 Similar to Create, (but with no server validation)
 
 ### Update Category in Action [47]
+
+**Make sure that the Id is populated!**
+
+In our case Id = Id
+
+But if the Id has another name, it should be specified!
+
+```html
+<input asp-for="Id" hidden /> @* it is not required for the "Id" but it is required for another name *@
+```
+
 ### Get and Post Action for Delete Category [48]
 ### Delete Category in Action [49]
 ### TempData [50]
