@@ -1,11 +1,14 @@
 # Complete guide to ASP.NET Core MVC (.NET 8) [E-Commerce App]
 
+- ... - 52 - MVC project
+- 53 - ... - Razor Pages
+
 <!-- TOC -->
 
 - [Complete guide to ASP.NET Core MVC .NET 8 [E-Commerce App]](#complete-guide-to-aspnet-core-mvc-net-8-e-commerce-app)
     - [Section 1: Welcome & Getting Started](#section-1-welcome--getting-started)
         - [Course Overview [11]](#course-overview-11)
-        - [Create Project [12]](#create-project-12)
+        - [Create MVC Project [12]](#create-mvc-project-12)
         - [Project File [13]](#project-file-13)
         - [Launch Settings [14]](#launch-settings-14)
         - [wwwroot and appsettings [15]](#wwwroot-and-appsettings-15)
@@ -241,7 +244,7 @@
 - N-Tier Arch
 - Repository Pattern and UoW
 - TempData/ViewBag/ViewData in .NET Core - When should use each of them?
-- Api Conreollers, Razor Pages
+- Api Controllers, Razor Pages
 - SweetAlerts, Rich Text Editor, Data Tables
 - Scaffold Identity (Razor Class Library)
 - Roles and Auth in .NET Core
@@ -253,7 +256,7 @@
 - Seed Db with DbInitializer
 - Deploy to Azure
 
-### Create Project [12]
+### Create MVC Project [12]
 ### Project File [13]
 
 Project - right click - edit project file
@@ -1540,6 +1543,9 @@ Move from Index Page to _Layout, before the @RenderBody()
 ```
 
 ## Section 3: Razor Project
+
+
+
 ### Create Razor Project [53]
 ### What's Different in Razor Project? [54]
 ### Setup EF Core [55]
