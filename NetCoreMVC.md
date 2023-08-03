@@ -56,6 +56,7 @@
         - [TempData [50]](#tempdata-50)
         - [Partial Views [51]](#partial-views-51)
         - [Toastr Notification [52]](#toastr-notification-52)
+        - [Share Toastr Notification across the project [52]](#share-toastr-notification-across-the-project-52)
     - [Section 3: Razor Project](#section-3-razor-project)
         - [Create Razor Project [53]](#create-razor-project-53)
         - [What's Different in Razor Project? [54]](#whats-different-in-razor-project-54)
@@ -1526,6 +1527,17 @@ as follows
 ```
 
 Note: '   ' are important =)
+ 
+### Share Toastr Notification across the project [52]
+
+Share toastr functionality for all views:
+
+Move from Index Page to _Layout, before the @RenderBody()
+
+```html
+            <partial name="_Notification" />
+            @RenderBody()
+```
 
 ## Section 3: Razor Project
 ### Create Razor Project [53]
