@@ -1436,6 +1436,17 @@ But if the Id has another name, it should be specified!
 ```
 
 ### Delete Category in Action [49]
+
+Delete View - same as Edit bu without any validation
+
+To pass the required id,
+
+the button should contain `asp-route-id="@obj.Id"`
+
+```html
+<a asp-controller="Category" asp-action="Delete" asp-route-id="@obj.Id" class="btn btn-outline-danger mx-2">
+```
+
 ### TempData [50]
 ### Partial Views [51]
 ### Toastr Notification [52]

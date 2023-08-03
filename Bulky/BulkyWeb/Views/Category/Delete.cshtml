@@ -1,29 +1,25 @@
-﻿<h1>Edit</h1>
-
-@model Category
+﻿@model Category
 
 <form method="post">
     <input asp-for="Id" hidden /> @* it is not required for the "Id" but it is required for another name *@
     <div class="border p-3 mt-4">
         <div class="row pb-2">
-            <h2 class="text-primary">Edit Category</h2>
+            <h2 class="text-primary">Delete Category</h2>
             <hr />
         </div>
-        @* <div asp-validation-summary="All"></div> *@
+
         <div class="mb-3 row p-1">
             <label asp-for="Name" class="p-0"></label>
-            <input asp-for="Name" type="text" class="form-control" />
-            <span asp-validation-for="Name" class="text-danger"></span>
+            <input asp-for="Name" type="text" class="form-control" disabled/>
         </div>
         <div class="mb-3 row p-1">
             <label asp-for="DisplayOrder" class="p-0"></label>
-            <input asp-for="DisplayOrder" type="text" class="form-control" />
-            <span asp-validation-for="DisplayOrder" class="text-danger"></span>
+            <input asp-for="DisplayOrder" type="text" class="form-control" disabled/>
         </div>
 
         <div class="row">
             <div class="col-6 col-md-3">
-                <button type="submit" class="btn btn-primary form-control" style="width:150px">Update</button>
+                <button type="submit" class="btn btn-danger form-control" style="width:150px">Delete</button>
             </div>
             <div class="col-6 col-md-3">
                 <a asp-controller="Category" asp-action="Index" class="btn btn-outline-secondary form-control" style="width:150px">
@@ -33,9 +29,3 @@
         </div>
     </div>
 </form>
-
-@section Scripts{
-    @{
-        <partial name="_ValidationScriptsPartial" />
-    }
-}
