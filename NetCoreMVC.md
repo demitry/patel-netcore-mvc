@@ -1341,7 +1341,50 @@ Shared folder is default for partial views
 ```
 
 ### Get Category Details to Edit [45]
+```
+Add
+asp-route-id="@obj.Id"
+```
+```html
+<a asp-controller="Category" asp-action="Edit" asp-route-id="@obj.Id" class="btn btn-primary mx-2">
+    <i class="bi bi-pencil-square"></i> Edit
+</a>
+```
+
+```cs
+        public IActionResult Edit(int? id)
+        {
+            if(id == null || id == 0)
+            {
+                return NotFound();
+            }
+
+            //var category = _db.Categories.Find(id); // id is primary key
+            var category = _db.Categories.FirstOrDefault(c => c.Id == id); // works even is id is not primary
+            //var category = _db.Categories.Where(category => category.Id == id).FirstOrDefault();
+            if (category == null)
+            {
+                return NotFound();
+            }
+            
+            return View(category);
+        }
+```
+
 ### Update Category [46]
+
+Add Razor View (it is different)
+
+- View name
+- Template
+- ...
+- [] Create as partial view
+- [x] Use a layout page
+
+Scaffolding...
+
+Similar to Create, (but with no server validation)
+
 ### Update Category in Action [47]
 ### Get and Post Action for Delete Category [48]
 ### Delete Category in Action [49]
