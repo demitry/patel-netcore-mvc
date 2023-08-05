@@ -1544,10 +1544,49 @@ Move from Index Page to _Layout, before the @RenderBody()
 
 ## Section 3: Razor Project
 
-
-
 ### Create Razor Project [53]
 ### What's Different in Razor Project? [54]
+
+```cs
+//1
+builder.Services.AddRazorPages();
+//vs.
+builder.Services.AddControllersWithViews();
+
+//2
+app.MapRazorPages(); //(exact routing Index = Index, Privacy=Privacy)
+//vs.
+app.MapControllerRoute(
+    name: "default",
+    pattern: "{controller=Category}/{action=Index}/{id?}");
+//pattern: "{controller=Home}/{action=Index}/{id?}");
+
+// 3. No folders Models Views Controllers
+// 4. @page directive in view
+// 5. Index.cshtml, Index.cshtml.cs = page model
+
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
+
+namespace BulkyWebRazor_Temp.Pages
+{
+    public class IndexModel : PageModel
+    {
+        private readonly ILogger<IndexModel> _logger;
+
+        public IndexModel(ILogger<IndexModel> logger)
+        {
+            _logger = logger;
+        }
+
+        public void OnGet() // "On" is required
+        {
+
+        }
+    }
+}
+```
+
 ### Setup EF Core [55]
 ### Create first Razor Page [56]
 ### Dis all Categories [57]
