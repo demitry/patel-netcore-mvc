@@ -65,7 +65,7 @@
         - [What's Different in Razor Project? [54]](#whats-different-in-razor-project-54)
         - [Setup EF Core [55]](#setup-ef-core-55)
         - [Create first Razor Page [56]](#create-first-razor-page-56)
-        - [Dis all Categories [57]](#dis-all-categories-57)
+        - [Display all Categories [57]](#display-all-categories-57)
         - [Create Category UI [58]](#create-category-ui-58)
         - [Create Category Post Handler [59]](#create-category-post-handler-59)
         - [Edit and Delete Category [60]](#edit-and-delete-category-60)
@@ -1588,8 +1588,13 @@ namespace BulkyWebRazor_Temp.Pages
 ```
 
 ### Setup EF Core [55]
+
+- Do not add reference to BulkyWeb, it is separate project
+- Copy AppDbContext and cn strings, and the rest same setup from BulkyWeb 
+- namespace - BulkyWebRazor_Temp.Models, not BulkyWeb
+
 ### Create first Razor Page [56]
-### Dis all Categories [57]
+### Display all Categories [57]
 ### Create Category UI [58]
 ### Create Category Post Handler [59]
 ### Edit and Delete Category [60]
