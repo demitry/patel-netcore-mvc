@@ -1593,6 +1593,9 @@ Package Manager Console - Select current project!
 
 Add-Migration addCategoryToDb
 
+Update-Database
+
+And we have our new DB
 
 ### Setup EF Core [55]
 
@@ -1601,6 +1604,20 @@ Add-Migration addCategoryToDb
 - namespace - BulkyWebRazor_Temp.Models, not BulkyWeb
 
 ### Create first Razor Page [56]
+
+- We don't have views, we have Razor pages
+- With razor pages we don't have complex routing with controllers, actions, route params etc.
+- Add Empty Razor page - Pages\Categories\Index.cshtml
+
+```html
+@page
+@model BulkyWebRazor_Temp.Categories.IndexModel
+@{
+}
+```
+
+https://localhost:7138/categories/index
+
 ### Display all Categories [57]
 ### Create Category UI [58]
 ### Create Category Post Handler [59]
