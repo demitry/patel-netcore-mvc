@@ -1619,6 +1619,20 @@ And we have our new DB
 https://localhost:7138/categories/index
 
 ### Display all Categories [57]
+
+- **no** asp-action
+- **no** asp-controller
+- asp-route-id **is still valid**
+
+MVC view:
+```html
+<a asp-controller="Category" asp-action="Delete" asp-route-id="@obj.Id" class="btn btn-outline-danger mx-2">
+```
+Razor page:
+```html
+<a asp-controller="Category" asp-action="Delete" asp-route-id="@obj.Id" class="btn btn-outline-danger mx-2">
+```
+
 ### Create Category UI [58]
 ### Create Category Post Handler [59]
 ### Edit and Delete Category [60]
