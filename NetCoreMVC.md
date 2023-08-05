@@ -1587,6 +1587,13 @@ namespace BulkyWebRazor_Temp.Pages
 }
 ```
 
+NB! 
+
+Package Manager Console - Select current project!
+
+Add-Migration addCategoryToDb
+
+
 ### Setup EF Core [55]
 
 - Do not add reference to BulkyWeb, it is separate project
