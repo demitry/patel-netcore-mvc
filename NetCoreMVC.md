@@ -66,6 +66,7 @@
         - [Setup EF Core [55]](#setup-ef-core-55)
         - [Create first Razor Page [56]](#create-first-razor-page-56)
         - [Display all Categories [57]](#display-all-categories-57)
+            - [MVC View vs. Razor Page [57]](#mvc-view-vs-razor-page-57)
         - [Create Category UI [58]](#create-category-ui-58)
         - [Create Category Post Handler [59]](#create-category-post-handler-59)
         - [Edit and Delete Category [60]](#edit-and-delete-category-60)
@@ -1620,6 +1621,9 @@ https://localhost:7138/categories/index
 
 ### Display all Categories [57]
 
+#### MVC View vs. Razor Page [57]
+
+- Model.**CategoryList**.OrderBy - page model
 - **no** asp-action
 - **no** asp-controller
 - asp-route-id **is still valid**
@@ -1630,7 +1634,9 @@ MVC view:
 ```
 Razor page:
 ```html
-<a asp-controller="Category" asp-action="Delete" asp-route-id="@obj.Id" class="btn btn-outline-danger mx-2">
+<a asp-page="Category/delete" asp-route-id="@obj.Id" class="btn btn-outline-danger mx-2">
+    <i class="bi bi-trash3-fill"></i> Delete
+</a>
 ```
 
 ### Create Category UI [58]
