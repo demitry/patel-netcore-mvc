@@ -1640,6 +1640,20 @@ Razor page:
 ```
 
 ### Create Category UI [58]
+
+If there is no View
+
+- With the MVC app - you will see Page not found page
+- But with the Razor pages - it will not even redirect
+
+```html
+<a asp-page="/categories/create" class="btn btn-primary">
+```
+
+/categories/create
+
+need '/' before categories/create
+
 ### Create Category Post Handler [59]
 ### Edit and Delete Category [60]
 ### Toastr Notifications and Partial Views [61]
