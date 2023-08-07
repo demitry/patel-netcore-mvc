@@ -69,6 +69,8 @@
             - [MVC View vs. Razor Page [57]](#mvc-view-vs-razor-page-57)
         - [Create Category UI [58]](#create-category-ui-58)
         - [Create Category Post Handler [59]](#create-category-post-handler-59)
+            - [[BindProperty], [BindProperties]](#bindproperty-bindproperties)
+            - [RedirectToPage](#redirecttopage)
         - [Edit and Delete Category [60]](#edit-and-delete-category-60)
         - [Toastr Notifications and Partial Views [61]](#toastr-notifications-and-partial-views-61)
     - [Section 4: N-Tier Architecture](#section-4-n-tier-architecture)
@@ -1655,6 +1657,44 @@ If there is no View
 need '/' before categories/create
 
 ### Create Category Post Handler [59]
+
+#### [BindProperty], [BindProperties]
+
+Our Category was null
+
+Because in Razor pages we need [BindProperty]
+
+**We have explicitly bind properties that we want to access after POST of the form.**
+
+```cs
+        [BindProperty]
+        public Category Category { get; set; }
+```
+
+Bind all props in a page model:
+
+```cs
+    [BindProperties]
+    public class CreateModel : PageModel
+    {...
+```
+
+#### RedirectToPage
+
+so we don't need an obj parameter in our OnPost():
+
+```cs
+        public IActionResult OnPost()
+        {
+            _db.Categories.Add(Category);
+            _db.SaveChanges();
+            return RedirectToPage("Index");
+        }
+```
+
+- in MVC we have RedirectToAction()
+- in Razor pages we have **RedirectToPage()**
+
 ### Edit and Delete Category [60]
 ### Toastr Notifications and Partial Views [61]
 ## Section 4: N-Tier Architecture
