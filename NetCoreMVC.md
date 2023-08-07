@@ -1708,8 +1708,11 @@ remove _Notification.cshtml.cs, we don't need it
 **DotNet Identity is built on top of Razor Pages**
 
 ## Section 4: N-Tier Architecture
+
 ### Create More Projects [62]
+
 ### Modify Styling Refresh [63]
+
 ### Modify Styling [64]
 ### Modify UI of Category Pages [65]
 ### N-Tier Architecture [66]
