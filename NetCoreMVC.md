@@ -1696,6 +1696,9 @@ so we don't need an obj parameter in our OnPost():
 - in Razor pages we have **RedirectToPage()**
 
 ### Edit and Delete Category [60]
+
+Be sure to check if(ModelState.IsValid) 
+
 ### Toastr Notifications and Partial Views [61]
 ## Section 4: N-Tier Architecture
 ### Create More Projects [62]
