@@ -1700,6 +1700,13 @@ so we don't need an obj parameter in our OnPost():
 Be sure to check if(ModelState.IsValid) 
 
 ### Toastr Notifications and Partial Views [61]
+
+Add _Notification page into the Shared folder,
+
+remove _Notification.cshtml.cs, we don't need it
+
+**DotNet Identity is built on top of Razor Pages**
+
 ## Section 4: N-Tier Architecture
 ### Create More Projects [62]
 ### Modify Styling Refresh [63]
