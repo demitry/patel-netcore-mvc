@@ -3,6 +3,9 @@
 - ... - 52 - MVC project
 - 53 - ... - Razor Pages
 
+GitHub Code: https://github.com/bhrugen/Bulky_MVC
+
+
 <!-- TOC -->
 
 - [Complete guide to ASP.NET Core MVC .NET 8 [E-Commerce App]](#complete-guide-to-aspnet-core-mvc-net-8-e-commerce-app)
@@ -1713,7 +1716,18 @@ remove _Notification.cshtml.cs, we don't need it
 
 ### Modify Styling Refresh [63]
 
+In the next video we will be modifying the style. 
+
+If the changes do not reflect in the browser make sure to hard refresh by pressing **Ctrl+ F5**.
+
 ### Modify Styling [64]
+
+https://bootswatch.com/
+
+https://bootswatch.com/sandstone/
+
+https://github.com/bhrugen/Bulky_MVC
+
 ### Modify UI of Category Pages [65]
 ### N-Tier Architecture [66]
 ### How to Reset Database [67]
