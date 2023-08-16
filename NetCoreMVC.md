@@ -1730,9 +1730,8 @@ https://github.com/bhrugen/Bulky_MVC
 
 ### Modify UI of Category Pages [65]
 
-
-
 ### N-Tier Architecture [66]
+
 ### How to Reset Database [67]
 ### Bonus - Dependency Injection Service Lifetimes [68]
 ## Section 5: Repository Pattern
