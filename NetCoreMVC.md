@@ -1962,6 +1962,9 @@ namespace Bulky.DataAccess.Repository
 ```
 
 ### Replace DbContext with Category Repository [73]
+
+Do not use DbContext directly (in Controller), use repository instead.
+
 ### How Easy is it to move to a Different Database? [74]
 ### Renaming Project and Solving Issues [75]
 ### UnitOfWork Implementation [76]
