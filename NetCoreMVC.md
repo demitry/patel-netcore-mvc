@@ -1733,6 +1733,84 @@ https://github.com/bhrugen/Bulky_MVC
 ### N-Tier Architecture [66]
 
 ### How to Reset Database [67]
+
+- You can rollback migration, add new model, etc.
+
+- Delete the Bulky DB in SSMS
+- Delete Migrations
+- Package Manager Console 
+  - **Set target project Bulky.DataAccess!**
+  - add-migration AddCategoryToDbAndSeedTable
+  - Update-Database
+
+```sql
+SELECT *  FROM [Bulky].[dbo].[__EFMigrationsHistory]
+-- MigrationId	ProductVersion 
+-- 20230820110305_AddCategoryToDbAndSeedTable	7.0.9
+```
+
+```
+PM> Update-Database
+Build started...
+Build succeeded.
+Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (247ms) [Parameters=[], CommandType='Text', CommandTimeout='60']
+      CREATE DATABASE [Bulky];
+Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (58ms) [Parameters=[], CommandType='Text', CommandTimeout='60']
+      IF SERVERPROPERTY('EngineEdition') <> 5
+      BEGIN
+          ALTER DATABASE [Bulky] SET READ_COMMITTED_SNAPSHOT ON;
+      END;
+Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (11ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT 1
+Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (18ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      CREATE TABLE [__EFMigrationsHistory] (
+          [MigrationId] nvarchar(150) NOT NULL,
+          [ProductVersion] nvarchar(32) NOT NULL,
+          CONSTRAINT [PK___EFMigrationsHistory] PRIMARY KEY ([MigrationId])
+      );
+Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (1ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT 1
+Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (16ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT OBJECT_ID(N'[__EFMigrationsHistory]');
+Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (22ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT [MigrationId], [ProductVersion]
+      FROM [__EFMigrationsHistory]
+      ORDER BY [MigrationId];
+Microsoft.EntityFrameworkCore.Migrations[20402]
+      Applying migration '20230820110305_AddCategoryToDbAndSeedTable'.
+Applying migration '20230820110305_AddCategoryToDbAndSeedTable'.
+Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (4ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      CREATE TABLE [Categories] (
+          [Id] int NOT NULL IDENTITY,
+          [Name] nvarchar(300) NOT NULL,
+          [DisplayOrder] int NOT NULL,
+          CONSTRAINT [PK_Categories] PRIMARY KEY ([Id])
+      );
+Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (41ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      IF EXISTS (SELECT * FROM [sys].[identity_columns] WHERE [name] IN (N'Id', N'DisplayOrder', N'Name') AND [object_id] = OBJECT_ID(N'[Categories]'))
+          SET IDENTITY_INSERT [Categories] ON;
+      INSERT INTO [Categories] ([Id], [DisplayOrder], [Name])
+      VALUES (1, 1, N'Action'),
+      (2, 2, N'SciFi'),
+      (3, 3, N'History');
+      IF EXISTS (SELECT * FROM [sys].[identity_columns] WHERE [name] IN (N'Id', N'DisplayOrder', N'Name') AND [object_id] = OBJECT_ID(N'[Categories]'))
+          SET IDENTITY_INSERT [Categories] OFF;
+Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (2ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      INSERT INTO [__EFMigrationsHistory] ([MigrationId], [ProductVersion])
+      VALUES (N'20230820110305_AddCategoryToDbAndSeedTable', N'7.0.9');
+Done.
+```
+
 ### Bonus - Dependency Injection Service Lifetimes [68]
 ## Section 5: Repository Pattern
 ### IRepository Interface [69]
