@@ -90,6 +90,8 @@ GitHub Code: https://github.com/bhrugen/Bulky_MVC
         - [ICategoryRepository [71]](#icategoryrepository-71)
         - [Implement Category Repository [72]](#implement-category-repository-72)
         - [Replace DbContext with Category Repository [73]](#replace-dbcontext-with-category-repository-73)
+            - [Do not use DbContext directly in Controller, use repository instead.](#do-not-use-dbcontext-directly-in-controller-use-repository-instead)
+            - [Do not forget to register our repo](#do-not-forget-to-register-our-repo)
         - [How Easy is it to move to a Different Database? [74]](#how-easy-is-it-to-move-to-a-different-database-74)
         - [Renaming Project and Solving Issues [75]](#renaming-project-and-solving-issues-75)
         - [UnitOfWork Implementation [76]](#unitofwork-implementation-76)
@@ -1963,7 +1965,20 @@ namespace Bulky.DataAccess.Repository
 
 ### Replace DbContext with Category Repository [73]
 
-Do not use DbContext directly (in Controller), use repository instead.
+#### Do not use DbContext directly (in Controller), use repository instead.
+
+```
+An unhandled exception occurred while processing the request.
+InvalidOperationException: Unable to resolve service for type 'Bulky.DataAccess.Repository.IRepository.ICategoryRepository' while attempting to activate 'BulkyWeb.Controllers.CategoryController'.
+```
+
+Right!
+
+#### Do not forget to register our repo
+
+```cs
+builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+```
 
 ### How Easy is it to move to a Different Database? [74]
 ### Renaming Project and Solving Issues [75]
