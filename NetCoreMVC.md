@@ -1928,6 +1928,39 @@ It also contains methods from IRepository + our Update() and Save() methods
 ```
 
 ### Implement Category Repository [72]
+
+```cs
+using Bulky.DataAccess.Data;
+using Bulky.DataAccess.Repository.IRepository;
+using Bulky.Models;
+
+namespace Bulky.DataAccess.Repository
+{
+    // Basic functionality - from Repository<Category>, and Update could differ
+    // And have to inject app db context for it (Repository<Category>)
+    public class CategoryRepository : Repository<Category>, ICategoryRepository
+    {
+        private AppDbContext _db;
+
+        public CategoryRepository(AppDbContext db) : base(db) // and pass to base (Repository<Category>)
+        {
+            _db = db;
+        }
+
+        public void Save()
+        {
+            _db.SaveChanges();
+        }
+
+        public void Update(Category obj)
+        {
+            _db.Update(obj);
+        }
+    }
+}
+
+```
+
 ### Replace DbContext with Category Repository [73]
 ### How Easy is it to move to a Different Database? [74]
 ### Renaming Project and Solving Issues [75]
