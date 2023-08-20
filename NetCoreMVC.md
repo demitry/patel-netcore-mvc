@@ -87,7 +87,7 @@ GitHub Code: https://github.com/bhrugen/Bulky_MVC
     - [Section 5: Repository Pattern](#section-5-repository-pattern)
         - [IRepository Interface [69]](#irepository-interface-69)
         - [Implement Repository Interface [70]](#implement-repository-interface-70)
-        - [Implement ICategoryRepository [71]](#implement-icategoryrepository-71)
+        - [ICategoryRepository [71]](#icategoryrepository-71)
         - [Implement Category Repository [72]](#implement-category-repository-72)
         - [Replace DbContext with Category Repository [73]](#replace-dbcontext-with-category-repository-73)
         - [How Easy is it to move to a Different Database? [74]](#how-easy-is-it-to-move-to-a-different-database-74)
@@ -1914,7 +1914,19 @@ namespace Bulky.DataAccess.Repository
 
 ```
 
-### Implement ICategoryRepository [71]
+### ICategoryRepository [71]
+
+It also contains methods from IRepository + our Update() and Save() methods
+
+```cs
+    public interface ICategoryRepository : IRepository<Category>
+    {
+        void Update(Category obj);
+        
+        void Save();
+    }
+```
+
 ### Implement Category Repository [72]
 ### Replace DbContext with Category Repository [73]
 ### How Easy is it to move to a Different Database? [74]
