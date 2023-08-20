@@ -1812,6 +1812,14 @@ Done.
 ```
 
 ### Bonus - Dependency Injection Service Lifetimes [68]
+
+DI Services Lifetime:
+
+- **Transient** - whenever we want object - create a new object, do nor reuse this object
+- **Scoped** - 1 per HTTP request, same object is reused for this HTTP request, for the next HTTP request - new instance will be created.
+  - Recommended
+- **Singleton** - 1 instance for the app instance, once per application lifetime
+
 ## Section 5: Repository Pattern
 ### IRepository Interface [69]
 ### Implement Repository Interface [70]
