@@ -2,8 +2,9 @@
 using BulkyBook.Models;
 using Microsoft.AspNetCore.Mvc;
 
-namespace BulkyBookWeb.Controllers
+namespace BulkyBookWeb.Areas.Admin.Controllers
 {
+    [Area("Admin")]
     public class CategoryController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
@@ -50,7 +51,7 @@ namespace BulkyBookWeb.Controllers
 
         public IActionResult Edit(int? id)
         {
-            if(id == null || id == 0)
+            if (id == null || id == 0)
             {
                 return NotFound();
             }
@@ -62,7 +63,7 @@ namespace BulkyBookWeb.Controllers
             {
                 return NotFound();
             }
-            
+
             return View(category);
         }
 
@@ -88,7 +89,7 @@ namespace BulkyBookWeb.Controllers
             }
 
             var category = _unitOfWork.Category.Get(c => c.Id == id);
-            
+
             if (category == null)
             {
                 return NotFound();
@@ -100,11 +101,11 @@ namespace BulkyBookWeb.Controllers
         // used the id as a parameter, not the obj,
         // so the POST method name should be different,
         // and so - declared the Action Name [HttpPost, ActionName("Delete")] 
-        [HttpPost, ActionName("Delete")] 
+        [HttpPost, ActionName("Delete")]
         public IActionResult DeletePost(int? id)
         {
             Category? obj = _unitOfWork.Category.Get(c => c.Id == id);
-            if (obj == null) 
+            if (obj == null)
             {
                 return NotFound();
             }

@@ -98,6 +98,7 @@ GitHub Code: https://github.com/bhrugen/Bulky_MVC
         - [UnitOfWork in Action [77]](#unitofwork-in-action-77)
             - [Pros and Cons](#pros-and-cons)
         - [Areas in .NET [78]](#areas-in-net-78)
+            - [Customer vs Admin Page](#customer-vs-admin-page)
         - [Dropdown in NavBar [79]](#dropdown-in-navbar-79)
     - [Section 6: Product CRUD](#section-6-product-crud)
         - [Create Product Model [80]](#create-product-model-80)
@@ -2018,6 +2019,91 @@ UnitOfWork instead of using repo directly
 - Disadvantage: If we need the access only to Category? We will have the access to all repos registered in UoW 
 
 ### Areas in .NET [78]
+
+One more hierarchy level
+
+#### Customer vs Admin Page
+
+BulkyBookWeb - Add - New Scaffolded Item - MVC Area - Admin
+- Admin
+- Customer
+
+Routing is changed
+
+Scaffolding has generated all the files and added the required dependencies.
+
+However the Application's Startup code may require additional changes for things to work end to end.
+Add the following code to the Configure method in your Application's Startup class if not already done:
+```cs
+        app.UseEndpoints(endpoints =>
+        {
+          endpoints.MapControllerRoute(
+            name : "areas",
+            pattern : "{area=Customer}/{controller=Home}/{action=Index}/{id?}"
+            //pattern : "{area = Admin}/{controller=Home}/{action=Index}/{id?}" // Use =
+          );
+        });
+```
+
+So
+
+```cs
+app.MapControllerRoute(
+    name: "default",
+    pattern: "{area=Customer}/{controller=Category}/{action=Index}/{id?}");
+```
+
+- Admin (area)
+  - Controllers
+  - Data
+  - Models
+  - Views
+
+Remove Data and Models (they are in different projects)
+
+The same - for the Customer
+
+Move 
+- Controllers and Views (Category and Home folders)
+- CategoryController -> Admin
+- HomeController -> Customer
+- Views (Category and Home folders)
+- _ViewImports.cshtml
+- _ViewStart.cshtml
+
+Q: How to tell a controller that it belongs to a specific area ?
+
+A: 
+
+```cs
+[Area("Customer")]
+```
+
+Issue:
+
+System.TypeInitializationException: 'The type initializer for 'Microsoft.Extensions.DependencyInjection.DependencyInjectionEventSource' threw an exception.'
+
+```
+System.TypeInitializationException
+  HResult=0x80131534
+  Message=The type initializer for 'Microsoft.Extensions.DependencyInjection.DependencyInjectionEventSource' threw an exception.
+  Source=Microsoft.Extensions.DependencyInjection
+  StackTrace:
+   at Microsoft.Extensions.DependencyInjection.ServiceProvider..ctor(ICollection`1 serviceDescriptors, ServiceProviderOptions options)
+   at Microsoft.Extensions.DependencyInjection.ServiceCollectionContainerBuilderExtensions.BuildServiceProvider(IServiceCollection services, ServiceProviderOptions options)
+   at Microsoft.Extensions.Hosting.HostApplicationBuilder.Build()
+   at Microsoft.AspNetCore.Builder.WebApplicationBuilder.Build()
+   at Program.<Main>$(String[] args) in F:\bla\git\patel-netcore-mvc\Bulky\BulkyWeb\Program.cs:line 17
+
+  This exception was originally thrown at this call stack:
+    [External Code]
+
+Inner Exception 1:
+TypeLoadException: Could not load type 'System.Runtime.CompilerServices.NullableContextAttribute' from assembly 'System.Runtime, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a'.
+```
+
+Solution: Cleaned project files
+
 ### Dropdown in NavBar [79]
 ## Section 6: Product CRUD
 ### Create Product Model [80]
