@@ -96,6 +96,7 @@ GitHub Code: https://github.com/bhrugen/Bulky_MVC
         - [Renaming Project and Solving Issues [75]](#renaming-project-and-solving-issues-75)
         - [UnitOfWork Implementation [76]](#unitofwork-implementation-76)
         - [UnitOfWork in Action [77]](#unitofwork-in-action-77)
+            - [Pros and Cons](#pros-and-cons)
         - [Areas in .NET [78]](#areas-in-net-78)
         - [Dropdown in NavBar [79]](#dropdown-in-navbar-79)
     - [Section 6: Product CRUD](#section-6-product-crud)
@@ -2006,7 +2007,16 @@ Change Connection string (get server name from SSMS)
 ```
 
 ### UnitOfWork Implementation [76]
+
 ### UnitOfWork in Action [77]
+
+UnitOfWork instead of using repo directly
+
+#### Pros and Cons
+
+- Advantage: Access to all repositories
+- Disadvantage: If we need the access only to Category? We will have the access to all repos registered in UoW 
+
 ### Areas in .NET [78]
 ### Dropdown in NavBar [79]
 ## Section 6: Product CRUD
