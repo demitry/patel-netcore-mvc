@@ -1981,7 +1981,30 @@ builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 ```
 
 ### How Easy is it to move to a Different Database? [74]
+
+Change Connection string (get server name from SSMS)
+
 ### Renaming Project and Solving Issues [75]
+
+- Clean \Bulky\.vs\
+- Delete BulkyWeb.csproj.user 
+- Restart VS
+- Rename Projects
+- Replace All Bulky -> BulkyBook
+- But leave the Connection String in appsettings.json: "DefaultConnection": "Server=.;Database=Bulky;Trusted_Connection=True;TrustServerCertificate=True"
+- Restart VS
+- Update project refs if there is a need 
+
+- Issue: System.InvalidOperationException: 'An exception has been raised that is likely due to a transient failure. Consider enabling transient error resiliency by adding 'EnableRetryOnFailure' to the 'UseSqlServer' call.'
+- Solution: Update connection string
+
+- Issue: Broken footer
+- Solution: Rebuild to bind all css in _Layout
+
+```xml
+    <link rel="stylesheet" href="~/BulkyBookWeb.styles.css" asp-append-version="true" />
+```
+
 ### UnitOfWork Implementation [76]
 ### UnitOfWork in Action [77]
 ### Areas in .NET [78]
