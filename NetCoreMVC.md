@@ -2105,6 +2105,11 @@ TypeLoadException: Could not load type 'System.Runtime.CompilerServices.Nullable
 Solution: Cleaned project files
 
 ### Dropdown in NavBar [79]
+
+<https://getbootstrap.com/>
+
+<https://getbootstrap.com/docs/5.3/components/navbar/#how-it-works>
+
 ## Section 6: Product CRUD
 ### Create Product Model [80]
 ### Seed Product and Assignment 1 [81]
