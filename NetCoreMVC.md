@@ -2286,6 +2286,25 @@ Update-Database
 ### Add Image Url Column [86]
 
 ### Projections in EF Core [87]
+
+We need to Retrieve and Pass a list of Categories from controller to the view
+
+```cs
+//IEnumerable<SelectListItem> categoryList = 
+//    _unitOfWork.Category.GetAll().ToList(); ... 
+```
+- Q: How to convert?
+- A: Projections in .NET Core
+
+```cs
+IEnumerable<SelectListItem> categoryList =
+    _unitOfWork.Category.GetAll().Select(u => new SelectListItem()
+    {
+        Text = u.Name,
+        Value = u.Id.ToString()
+    });
+```
+
 ### Viewbag in Action [88]
 ### ViewData in Action [89]
 ### View Models in Action [90]
