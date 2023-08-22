@@ -2306,6 +2306,41 @@ IEnumerable<SelectListItem> categoryList =
 ```
 
 ### Viewbag in Action [88]
+
+- Q: And how to pass it?
+- A: ViewBag transfers data from controller to View and NOT vise-versa
+  - ViewBag is dynamic property, C# 4.0
+  - Any number of properties can be assigned to ViewBag
+  - The ViewBag's life only lasts during the current http request.
+  - ViewBag values will be null if the redirection occurs.
+  - ViewBag is wrapper around the ViewData
+
+```cs
+        public IActionResult Create()
+        {
+            IEnumerable<SelectListItem> categoryList =
+                _unitOfWork.Category.GetAll().Select(u => new SelectListItem()
+                {
+                    Text = u.Name,
+                    Value = u.Id.ToString()
+                });
+
+            ViewBag.CategoryList = categoryList;
+
+            return View();
+        }
+```
+
+```cs
+    <div class="form-floating py-2 col-12">
+        <select asp-for="CategoryId" asp-items="ViewBag.CategoryList" type="text" class="form-select border-0 shadow">
+            <option disabled selected>--Select Category--</option>
+        </select>
+        <label asp-for="CategoryId" class="ms-2"></label>
+        <span asp-validation-for="CategoryId" class="text-danger"></span>
+    </div>
+```
+
 ### ViewData in Action [89]
 ### View Models in Action [90]
 ### File Upload Input [91]

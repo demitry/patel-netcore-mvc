@@ -1,6 +1,7 @@
 ﻿using BulkyBook.DataAccess.Repository.IRepository;
 using BulkyBook.Models.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace BulkyBookWeb.Areas.Admin.Controllers
 {
@@ -17,11 +18,40 @@ namespace BulkyBookWeb.Areas.Admin.Controllers
         public IActionResult Index()
         {
             var productList = _unitOfWork.Product.GetAll().ToList();
+
+            //IEnumerable<SelectListItem> categoryList = 
+            //    _unitOfWork.Category.GetAll().ToList(); ... 
+            //Q: How to convert?
+            //A: Projections in .NET Core
+
+            //IEnumerable<SelectListItem> categoryList =
+            //    _unitOfWork.Category.GetAll().Select(u => new SelectListItem()
+            //    {
+            //        Text = u.Name,
+            //        Value = u.Id.ToString()
+            //    });
+
+            //Q: And how to pass it?
+            //A: ViewBag transfers data from controller to View and NOT vise-versa
+            // ViewBag is dynamic property, C# 4.0
+            // Any number of properties can be assigned to ViewBag
+            // The ViewBag's life only lasts during the current http request.
+            // ViewBag values will be null if redirections occurs.
+            // ViewBag is wrapper around the ViewData
             return View(productList);
         }
 
         public IActionResult Create()
         {
+            IEnumerable<SelectListItem> categoryList =
+                _unitOfWork.Category.GetAll().Select(u => new SelectListItem()
+                {
+                    Text = u.Name,
+                    Value = u.Id.ToString()
+                });
+
+            ViewBag.CategoryList = categoryList;
+
             return View();
         }
 
