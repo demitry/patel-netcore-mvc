@@ -2284,6 +2284,7 @@ Update-Database
 
 
 ### Add Image Url Column [86]
+
 ### Projections in EF Core [87]
 ### Viewbag in Action [88]
 ### ViewData in Action [89]
