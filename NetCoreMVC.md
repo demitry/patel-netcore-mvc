@@ -108,6 +108,9 @@ GitHub Code: https://github.com/bhrugen/Bulky_MVC
             - [Implement Product Repo](#implement-product-repo)
             - [Config Product Repo in UoW](#config-product-repo-in-uow)
         - [Assignment 2 - Product CRUD Operations [83]](#assignment-2---product-crud-operations-83)
+            - [Create Product Controller and Action methods Create/Edit/Delete/Index](#create-product-controller-and-action-methods-createeditdeleteindex)
+            - [Create Views for Create/Edit/Delete/Index](#create-views-for-createeditdeleteindex)
+            - [Add Client-Side and Server-Side Validation](#add-client-side-and-server-side-validation)
         - [Assignment 2 Solution - Product CRUD Operations [84]](#assignment-2-solution---product-crud-operations-84)
         - [Add Foreign Key in EF Core [85]](#add-foreign-key-in-ef-core-85)
         - [Add Image Url Column [86]](#add-image-url-column-86)
@@ -2244,6 +2247,13 @@ namespace BulkyBook.DataAccess.Repository
 ```
 
 ### Assignment 2 - Product CRUD Operations [83]
+
+#### Create Product Controller and Action methods (Create/Edit/Delete/Index)
+
+#### Create Views for (Create/Edit/Delete/Index)
+
+#### Add Client-Side and Server-Side Validation
+
 ### Assignment 2 Solution - Product CRUD Operations [84]
 ### Add Foreign Key in EF Core [85]
 ### Add Image Url Column [86]
