@@ -2372,6 +2372,66 @@ So, **the key of ViewData and property of ViewBag MUST NOT MATCH**
   - Validation messages
 
 ### View Models in Action [90]
+
+But what if we have 10 ViewData and 20 ViewBags ?
+
+Alternatively, tie the view with the object that you want.
+
+ViewModel is a model specifically for View
+
+Why?
+```
+System.NullReferenceException: 'Object reference not set to an instance of an object.'
+```
+Because ValidationState.IsValid = false
+
+Because everything is validated, including ProductViewModel in VM,
+
+So Skip validation using 
+```
+[ValidateNever]
+```
+
+**Strongly typed View**
+
+https://learn.microsoft.com/en-us/aspnet/mvc/overview/views/dynamic-v-strongly-typed-views
+
+
+```cs
+        [HttpPost]
+        public IActionResult Create(ProductViewModel productViewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                _unitOfWork.Product.Add(productViewModel.Product);
+                _unitOfWork.Save();
+                TempData["success"] = "Product created successfully";
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                productViewModel.CategoryList = 
+                    _unitOfWork.Category.GetAll().Select(u => new SelectListItem()
+                    {
+                        Text = u.Name,
+                        Value = u.Id.ToString()
+                    });
+
+                // In case of validation error - return the same page, do not forget the CategoryList
+                return View(productViewModel);
+            }
+        }
+```
+
+```cs
+<div class="form-floating py-2 col-12">
+    <select asp-for="@Model.Product.CategoryId" asp-items="@Model.CategoryList" type="text" class="form-select border-0 shadow">
+        <option disabled selected>--Select Category--</option>
+    </select>
+    <label asp-for="Product.CategoryId" class="ms-2"></label>
+    <span asp-validation-for="Product.CategoryId" class="text-danger"></span>
+</div>
+```
 ### File Upload Input [91]
 ### Combine, Create, and Edit Pages [92]
 ### Rich Text Editor [93]

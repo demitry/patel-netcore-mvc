@@ -1,5 +1,6 @@
 ﻿using BulkyBook.DataAccess.Repository.IRepository;
 using BulkyBook.Models.Models;
+using BulkyBook.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
@@ -43,36 +44,41 @@ namespace BulkyBookWeb.Areas.Admin.Controllers
 
         public IActionResult Create()
         {
-            IEnumerable<SelectListItem> categoryList =
-                _unitOfWork.Category.GetAll().Select(u => new SelectListItem()
+            ProductViewModel productViewModel = new()
+            {
+                Product = new Product(),
+                CategoryList = _unitOfWork.Category.GetAll().Select(u => new SelectListItem()
                 {
                     Text = u.Name,
                     Value = u.Id.ToString()
-                });
+                })
+            };
 
-            //ViewBag.CategoryList = categoryList;
-            ViewData["CategoryList"] = categoryList;
-
-            return View();
+            return View(productViewModel);
         }
 
         [HttpPost]
-        public IActionResult Create(Product obj)
+        public IActionResult Create(ProductViewModel productViewModel)
         {
-            //if (obj.Name == obj.DisplayOrder.ToString())
-            //{
-            //    ModelState.AddModelError("name", "The DisplayOrder cannot exactly match the Name");
-            //}
-
             if (ModelState.IsValid)
             {
-                _unitOfWork.Product.Add(obj);
+                _unitOfWork.Product.Add(productViewModel.Product);
                 _unitOfWork.Save();
                 TempData["success"] = "Product created successfully";
                 return RedirectToAction("Index");
             }
+            else
+            {
+                productViewModel.CategoryList = 
+                    _unitOfWork.Category.GetAll().Select(u => new SelectListItem()
+                    {
+                        Text = u.Name,
+                        Value = u.Id.ToString()
+                    });
 
-            return View();
+                // In case of validation error - return the same page, do not forget the CategoryList
+                return View(productViewModel);
+            }
         }
 
         public IActionResult Edit(int? id)
