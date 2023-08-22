@@ -117,6 +117,7 @@ GitHub Code: https://github.com/bhrugen/Bulky_MVC
         - [Projections in EF Core [87]](#projections-in-ef-core-87)
         - [Viewbag in Action [88]](#viewbag-in-action-88)
         - [ViewData in Action [89]](#viewdata-in-action-89)
+        - [Remember TempData [89]](#remember-tempdata-89)
         - [View Models in Action [90]](#view-models-in-action-90)
         - [File Upload Input [91]](#file-upload-input-91)
         - [Combine, Create, and Edit Pages [92]](#combine-create-and-edit-pages-92)
@@ -2358,6 +2359,17 @@ NB!
 **ViewBag internally inserts data into ViewData dictionary.**
 
 So, **the key of ViewData and property of ViewBag MUST NOT MATCH**
+
+### Remember TempData [89]
+
+- Used to Store data between 2 consecutive requests
+- Internally use Session to store the data.
+  - So think of it as a short lived session
+- Values must be type cast before use
+  - Check for null before use to avoid runtime errors
+- TempData can be used to store only one time messages like 
+  - Error messages 
+  - Validation messages
 
 ### View Models in Action [90]
 ### File Upload Input [91]
