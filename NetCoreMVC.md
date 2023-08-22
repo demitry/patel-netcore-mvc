@@ -2433,6 +2433,19 @@ https://learn.microsoft.com/en-us/aspnet/mvc/overview/views/dynamic-v-strongly-t
 </div>
 ```
 ### File Upload Input [91]
+
+NB!
+
+enctype="multipart/form-data"
+
+```cs
+        <form method="post" class="row" enctype="multipart/form-data">
+                <div class="form-floating py-2 col-12">
+                    <input type="file" class="form-control border-0 shadow" />
+                    <label asp-for="Product.ImageUrl" class="ms-2"></label>
+                </div>
+```
+
 ### Combine, Create, and Edit Pages [92]
 ### Rich Text Editor [93]
 ### Create Product [94]
