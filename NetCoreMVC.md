@@ -104,6 +104,9 @@ GitHub Code: https://github.com/bhrugen/Bulky_MVC
         - [Create Product Model [80]](#create-product-model-80)
         - [Seed Product and Assignment 1 [81]](#seed-product-and-assignment-1-81)
         - [Assignment 1 Solution - Product Repository and UnitOfWork [82]](#assignment-1-solution---product-repository-and-unitofwork-82)
+            - [Push Products to the DB](#push-products-to-the-db)
+            - [Implement Product Repo](#implement-product-repo)
+            - [Config Product Repo in UoW](#config-product-repo-in-uow)
         - [Assignment 2 - Product CRUD Operations [83]](#assignment-2---product-crud-operations-83)
         - [Assignment 2 Solution - Product CRUD Operations [84]](#assignment-2-solution---product-crud-operations-84)
         - [Add Foreign Key in EF Core [85]](#add-foreign-key-in-ef-core-85)
@@ -2162,6 +2165,15 @@ namespace BulkyBook.Models.Models
 
 ### Seed Product and Assignment 1 [81]
 ### Assignment 1 Solution - Product Repository and UnitOfWork [82]
+
+#### Push Products to the DB
+
+- Add-Migration AddProductTableToDb
+- Update-Database
+
+#### Implement Product Repo
+#### Config Product Repo in UoW
+
 ### Assignment 2 - Product CRUD Operations [83]
 ### Assignment 2 Solution - Product CRUD Operations [84]
 ### Add Foreign Key in EF Core [85]
