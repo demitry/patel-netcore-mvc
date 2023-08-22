@@ -2172,6 +2172,43 @@ namespace BulkyBook.Models.Models
 - Update-Database
 
 #### Implement Product Repo
+
+```cs
+using BulkyBook.Models.Models;
+
+namespace BulkyBook.DataAccess.Repository.IRepository
+{
+    public interface IProductRepository : IRepository<Product>
+    {
+        void Update(Product obj);
+    }
+}
+```
+
+```cs
+using BulkyBook.DataAccess.Data;
+using BulkyBook.DataAccess.Repository.IRepository;
+using BulkyBook.Models.Models;
+
+namespace BulkyBook.DataAccess.Repository
+{
+    public class ProductRepository : Repository<Product>, IProductRepository
+    {
+        private AppDbContext _db;
+
+        public ProductRepository(AppDbContext db) : base(db)
+        {
+            _db = db;
+        }
+
+        public void Update(Product obj)
+        {
+            _db.Products.Update(obj);
+        }
+    }
+}
+```
+
 #### Config Product Repo in UoW
 
 ### Assignment 2 - Product CRUD Operations [83]
