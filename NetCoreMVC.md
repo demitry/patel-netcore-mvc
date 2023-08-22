@@ -2308,7 +2308,9 @@ IEnumerable<SelectListItem> categoryList =
 ### Viewbag in Action [88]
 
 - Q: And how to pass it?
-- A: ViewBag transfers data from controller to View and NOT vise-versa
+- A: via ViewBag 
+  - ViewBag transfers data from controller to View and NOT vise-versa
+  - Ideal for situations in which the temp data is not in a model
   - ViewBag is dynamic property, C# 4.0
   - Any number of properties can be assigned to ViewBag
   - The ViewBag's life only lasts during the current http request.
@@ -2342,6 +2344,21 @@ IEnumerable<SelectListItem> categoryList =
 ```
 
 ### ViewData in Action [89]
+
+ViewData
+- Transfers data from controller to View and NOT vise-versa (same as ViewBag)
+- Ideal for situations in which the temp data is not in a model (same as ViewBag)
+- ViewData is derived from ViewDataDictionary which is a dictionary type
+- ViewData MUST be type cast before use
+- ViewBag values will be null if the redirection occurs. (same as ViewBag)
+- ViewBag is wrapper around the ViewData (same as ViewBag)
+
+NB!
+
+**ViewBag internally inserts data into ViewData dictionary.**
+
+So, **the key of ViewData and property of ViewBag MUST NOT MATCH**
+
 ### View Models in Action [90]
 ### File Upload Input [91]
 ### Combine, Create, and Edit Pages [92]
