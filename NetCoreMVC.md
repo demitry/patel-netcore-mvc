@@ -2447,6 +2447,73 @@ enctype="multipart/form-data"
 ```
 
 ### Combine, Create, and Edit Pages [92]
+
+Combine Update and Insert = UpdateInsert = **Upsert()**
+
+```cs
+        public IActionResult Upsert(int? id)
+        {
+            ProductViewModel productViewModel = new()
+            {
+                Product = new Product(),
+                CategoryList = _unitOfWork.Category.GetAll().Select(u => new SelectListItem()
+                {
+                    Text = u.Name,
+                    Value = u.Id.ToString()
+                })
+            };
+            if(id == null || id == 0)
+            {
+                //create
+                return View(productViewModel);
+            }
+            else
+            {
+                //update
+                productViewModel.Product = _unitOfWork.Product.Get(u => u.Id == id);
+                return View(productViewModel);
+            }
+            
+        }
+
+        [HttpPost]
+        public IActionResult Upsert(ProductViewModel productViewModel, IFormFile? file) // remember enctype="multipart/form-data" ?
+        {
+            if (ModelState.IsValid)
+            {
+                _unitOfWork.Product.Add(productViewModel.Product);
+                _unitOfWork.Save();
+                TempData["success"] = "Product created successfully";
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                productViewModel.CategoryList = 
+                    _unitOfWork.Category.GetAll().Select(u => new SelectListItem()
+                    {
+                        Text = u.Name,
+                        Value = u.Id.ToString()
+                    });
+
+                // In case of validation error - return the same page, do not forget the CategoryList
+                return View(productViewModel);
+            }
+        }
+
+```
+we need
+```
+<input asp-for="Product.Id" hidden />
+```
+Update Issue:
+```
+
+-		$exception	{"An error occurred while saving the entity changes. See the inner exception for details."}	Microsoft.EntityFrameworkCore.DbUpdateException
+
+		Message	"Cannot insert explicit value for identity column in table 'Products' when IDENTITY_INSERT is set to OFF."	string
+-		InnerException	{"Cannot insert explicit value for identity column in table 'Products' when IDENTITY_INSERT is set to OFF."}	System.Exception {Microsoft.Data.SqlClient.SqlException}
+```
+
 ### Rich Text Editor [93]
 ### Create Product [94]
 ### Dis Image on Update [95]

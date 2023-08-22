@@ -19,30 +19,10 @@ namespace BulkyBookWeb.Areas.Admin.Controllers
         public IActionResult Index()
         {
             var productList = _unitOfWork.Product.GetAll().ToList();
-
-            //IEnumerable<SelectListItem> categoryList = 
-            //    _unitOfWork.Category.GetAll().ToList(); ... 
-            //Q: How to convert?
-            //A: Projections in .NET Core
-
-            //IEnumerable<SelectListItem> categoryList =
-            //    _unitOfWork.Category.GetAll().Select(u => new SelectListItem()
-            //    {
-            //        Text = u.Name,
-            //        Value = u.Id.ToString()
-            //    });
-
-            //Q: And how to pass it?
-            //A: ViewBag transfers data from controller to View and NOT vise-versa
-            // ViewBag is dynamic property, C# 4.0
-            // Any number of properties can be assigned to ViewBag
-            // The ViewBag's life only lasts during the current http request.
-            // ViewBag values will be null if redirections occurs.
-            // ViewBag is wrapper around the ViewData
             return View(productList);
         }
 
-        public IActionResult Create()
+        public IActionResult Upsert(int? id)
         {
             ProductViewModel productViewModel = new()
             {
@@ -53,12 +33,22 @@ namespace BulkyBookWeb.Areas.Admin.Controllers
                     Value = u.Id.ToString()
                 })
             };
-
-            return View(productViewModel);
+            if(id == null || id == 0)
+            {
+                //create
+                return View(productViewModel);
+            }
+            else
+            {
+                //update
+                productViewModel.Product = _unitOfWork.Product.Get(u => u.Id == id);
+                return View(productViewModel);
+            }
+            
         }
 
         [HttpPost]
-        public IActionResult Create(ProductViewModel productViewModel)
+        public IActionResult Upsert(ProductViewModel productViewModel, IFormFile? file) // remember enctype="multipart/form-data" ?
         {
             if (ModelState.IsValid)
             {
@@ -79,37 +69,6 @@ namespace BulkyBookWeb.Areas.Admin.Controllers
                 // In case of validation error - return the same page, do not forget the CategoryList
                 return View(productViewModel);
             }
-        }
-
-        public IActionResult Edit(int? id)
-        {
-            if (id == null || id == 0)
-            {
-                return NotFound();
-            }
-
-            var product = _unitOfWork.Product.Get(p => p.Id == id);
-
-            if (product == null)
-            {
-                return NotFound();
-            }
-
-            return View(product);
-        }
-
-        [HttpPost]
-        public IActionResult Edit(Product obj)
-        {
-            if (ModelState.IsValid)
-            {
-                _unitOfWork.Product.Update(obj);
-                _unitOfWork.Save();
-                TempData["success"] = "Product updated successfully";
-                return RedirectToAction("Index");
-            }
-
-            return View();
         }
 
         public IActionResult Delete(int? id)
