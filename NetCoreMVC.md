@@ -2256,6 +2256,33 @@ namespace BulkyBook.DataAccess.Repository
 
 ### Assignment 2 Solution - Product CRUD Operations [84]
 ### Add Foreign Key in EF Core [85]
+
+Add to the Product model:  
+
+We need a navigation Property to Category
+
+```cs
+        public int CategoryId { get; set; }
+        [ForeignKey("CategoryId")]
+        public Category Category { get; set; } //We need a navigation Property to Category
+```
+
+Add-Migration addForeignKeyForCategoryProductRelation
+
+```
+Build started...
+Build succeeded.
+An operation was scaffolded that may result in the loss of data. Please review the migration for accuracy.
+To undo this action, use Remove-Migration.
+
+Remove-Migration
+
+Add-Migration addForeignKeyForCategoryProductRelation
+...
+```
+Update-Database
+
+
 ### Add Image Url Column [86]
 ### Projections in EF Core [87]
 ### Viewbag in Action [88]
