@@ -2111,7 +2111,55 @@ Solution: Cleaned project files
 <https://getbootstrap.com/docs/5.3/components/navbar/#how-it-works>
 
 ## Section 6: Product CRUD
+
 ### Create Product Model [80]
+
+```cs
+using System.ComponentModel.DataAnnotations;
+
+namespace BulkyBook.Models.Models
+{
+    public class Product
+    {
+        [Key]
+        public int Id { get; set; }
+        
+        [Required]
+        public string Title { get; set; }
+        
+        public string Description { get; set; }
+        
+        [Required]
+        public string ISBN { get; set; }
+        
+        [Required]
+        public string Author { get; set; }
+        
+        [Required]
+        [Display(Name = "List Price")]
+        [Range(1, 1000)]
+        public double ListPrice { get; set; }
+
+        [Required]
+        [Display(Name = "Price for 1-50")]
+        [Range(1, 1000)]
+        public double Price { get; set; }
+
+        [Required]
+        [Display(Name = "Price for 50+")]
+        [Range(1, 1000)]
+        public double Price50 { get; set; }
+
+        [Required]
+        [Display(Name = "Price for 100+")]
+        [Range(1, 1000)]
+        public double Price100 { get; set; }
+
+        //TODO: Category and image 
+    }
+}
+```
+
 ### Seed Product and Assignment 1 [81]
 ### Assignment 1 Solution - Product Repository and UnitOfWork [82]
 ### Assignment 2 - Product CRUD Operations [83]
