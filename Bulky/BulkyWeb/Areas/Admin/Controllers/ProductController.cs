@@ -65,7 +65,7 @@ namespace BulkyBookWeb.Areas.Admin.Controllers
                     file.CopyTo(fileStream);
                 }
 
-                productViewModel.Product.ImageUrl = ProductImagePath + fileName;
+                productViewModel.Product.ImageUrl = "\\" + ProductImagePath + "\\" + fileName;
             }
         }
 

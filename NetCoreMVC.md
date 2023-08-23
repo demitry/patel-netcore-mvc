@@ -123,7 +123,7 @@ GitHub Code: https://github.com/bhrugen/Bulky_MVC
         - [Combine, Create, and Edit Pages [92]](#combine-create-and-edit-pages-92)
         - [Rich Text Editor [93]](#rich-text-editor-93)
         - [Create Product [94]](#create-product-94)
-        - [Dis Image on Update [95]](#dis-image-on-update-95)
+        - [Display Image on Update [95]](#display-image-on-update-95)
         - [Handle Image on Update [96]](#handle-image-on-update-96)
         - [Update Product Custom Code [97]](#update-product-custom-code-97)
         - [Loading Navigation Properties [98]](#loading-navigation-properties-98)
@@ -2562,6 +2562,13 @@ public IActionResult Upsert(ProductViewModel productViewModel, IFormFile? file) 
 ```
 
 ### Display Image on Update [95]
+
+```cs
+<div class="col-2">
+    <img src = "@Model.Product.ImageUrl" width="100%"
+    style="border-radius:5px; border: 1px solid #bbb9b9"/>
+</div>
+```
 
 ### Handle Image on Update [96]
 ### Update Product Custom Code [97]
