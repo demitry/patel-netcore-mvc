@@ -125,7 +125,7 @@ GitHub Code: https://github.com/bhrugen/Bulky_MVC
         - [Create Product [94]](#create-product-94)
         - [Display Image on Update [95]](#display-image-on-update-95)
         - [Handle Image on Update [96]](#handle-image-on-update-96)
-        - [Update Product Custom Code [97]](#update-product-custom-code-97)
+        - [Custom Product Update [97]](#custom-product-update-97)
         - [Loading Navigation Properties [98]](#loading-navigation-properties-98)
         - [DataTables API [99]](#datatables-api-99)
         - [Load DataTables [100]](#load-datatables-100)
@@ -2587,7 +2587,48 @@ public IActionResult Upsert(ProductViewModel productViewModel, IFormFile? file) 
 ...
 ```
 
-### Update Product Custom Code [97]
+### Custom Product Update [97]
+
+```cs
+        <form method="post" class="row" enctype="multipart/form-data">
+            <input asp-for="Product.Id" hidden />
+            <input asp-for="Product.ImageUrl" hidden /> 
+            !!!
+```
+Product repo:
+```cs
+        public void Update(Product obj)
+        {
+            //_db.Products.Update(obj);
+
+            // We can be explicit
+            var objFromDb = _db.Products.FirstOrDefault(u => u.Id == obj.Id);
+
+            if(objFromDb != null)
+            {
+                objFromDb.Title = obj.Title;
+                objFromDb.ISBN = obj.ISBN;
+                objFromDb.Price = obj.Price;
+                objFromDb.Price50 = obj.Price50;
+                objFromDb.ListPrice = obj.ListPrice;
+                objFromDb.Price100 = obj.Price100;
+                objFromDb.Description = obj.Description;
+                objFromDb.CategoryId = obj.CategoryId;
+                objFromDb.Author = obj.Author;
+                if (obj.ImageUrl != null)
+                {
+                    objFromDb.ImageUrl = obj.ImageUrl;
+                }
+            }
+        }
+```
+
+Cleanup
+
+```sql
+update [Bulky].[dbo].[Products] set ImageUrl = '' where ImageUrl != ''
+```
+
 ### Loading Navigation Properties [98]
 ### DataTables API [99]
 ### Load DataTables [100]

@@ -288,4 +288,4 @@ __pycache__/
 *.xsd.cs
 
 .vscode/
-Bulky/BulkyWeb/wwwroot/images/product/
+# Bulky/BulkyWeb/wwwroot/images/product/
