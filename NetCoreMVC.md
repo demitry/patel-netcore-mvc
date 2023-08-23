@@ -2521,7 +2521,48 @@ https://www.tiny.cloud/
 https://www.tiny.cloud/my-account/dashboard/
 
 ### Create Product [94]
-### Dis Image on Update [95]
+
+```cs
+        [HttpPost]
+        public IActionResult Upsert(ProductViewModel productViewModel, IFormFile? file) // remember enctype="multipart/form-data" ?
+```
+
+Save IFormFile? file in wwwroot Images\product
+
+Inject web host environment (built in functionality, no need to register)
+
+(name="file") - bind with (IFormFile? file) :
+
+```cs
+    <div class="form-floating py-2 col-12">
+        <input type="file" name="file" class="form-control border-0 shadow" />
+        <label asp-for="Product.ImageUrl" class="ms-2"></label>
+    </div>
+```
+
+```cs
+[HttpPost]
+public IActionResult Upsert(ProductViewModel productViewModel, IFormFile? file) // remember enctype="multipart/form-data" ?
+{
+    if (ModelState.IsValid)
+    {
+        string wwwRootPath = _webHostEnvironment.WebRootPath; // wwwroot
+        if(file != null)
+        {
+            string fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
+            string productPath = Path.Combine(wwwRootPath, @"images\product");
+            string fullFilePath = Path.Combine(productPath, fileName);
+            using (var fileStream = new FileStream(fullFilePath, FileMode.Create))
+            {
+                file.CopyTo(fileStream);
+            }
+            productViewModel.Product.ImageUrl = @"images\product" + fileName;
+        }
+    ...
+```
+
+### Display Image on Update [95]
+
 ### Handle Image on Update [96]
 ### Update Product Custom Code [97]
 ### Loading Navigation Properties [98]

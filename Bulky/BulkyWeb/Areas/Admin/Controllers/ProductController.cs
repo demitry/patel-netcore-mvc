@@ -11,9 +11,12 @@ namespace BulkyBookWeb.Areas.Admin.Controllers
     {
         private readonly IUnitOfWork _unitOfWork;
 
-        public ProductController(IUnitOfWork unitOfWork)
+        private readonly IWebHostEnvironment _webHostEnvironment;
+
+        public ProductController(IUnitOfWork unitOfWork, IWebHostEnvironment webHostEnvironment)
         {
             _unitOfWork = unitOfWork;
+            _webHostEnvironment = webHostEnvironment;
         }
 
         public IActionResult Index()
@@ -47,12 +50,46 @@ namespace BulkyBookWeb.Areas.Admin.Controllers
             
         }
 
+        private const string ProductImagePath = @"images\product";
+
+        void SaveProductImage(ref ProductViewModel productViewModel, IFormFile? file)
+        {
+            string wwwRootPath = _webHostEnvironment.WebRootPath;
+            if (file != null)
+            {
+                string fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
+                string productPath = Path.Combine(wwwRootPath, ProductImagePath);
+                string fullFilePath = Path.Combine(productPath, fileName);
+                using (var fileStream = new FileStream(fullFilePath, FileMode.Create))
+                {
+                    file.CopyTo(fileStream);
+                }
+
+                productViewModel.Product.ImageUrl = ProductImagePath + fileName;
+            }
+        }
+
         [HttpPost]
         public IActionResult Upsert(ProductViewModel productViewModel, IFormFile? file) // remember enctype="multipart/form-data" ?
         {
             if (ModelState.IsValid)
             {
-                if(productViewModel.Product.Id == 0)
+                SaveProductImage(ref productViewModel, file);
+
+                //string wwwRootPath = _webHostEnvironment.WebRootPath; // wwwroot
+                //if(file != null)
+                //{
+                //    string fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
+                //    string productPath = Path.Combine(wwwRootPath, @"images\product");
+                //    string fullFilePath = Path.Combine(productPath, fileName);
+                //    using (var fileStream = new FileStream(fullFilePath, FileMode.Create))
+                //    {
+                //        file.CopyTo(fileStream);
+                //    }
+                //    productViewModel.Product.ImageUrl = @"images\product" + fileName;
+                //}
+
+                if (productViewModel.Product.Id == 0)
                 {
                     _unitOfWork.Product.Add(productViewModel.Product);
                 }
