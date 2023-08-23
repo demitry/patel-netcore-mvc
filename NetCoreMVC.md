@@ -2571,6 +2571,22 @@ public IActionResult Upsert(ProductViewModel productViewModel, IFormFile? file) 
 ```
 
 ### Handle Image on Update [96]
+
+```cs
+...
+                if(!string.IsNullOrEmpty(productViewModel.Product.ImageUrl))
+                {
+                    // delete the old image
+                    var oldImagePath = Path.Combine(wwwRootPath, productViewModel.Product.ImageUrl.TrimStart('\\'));
+
+                    if (System.IO.File.Exists(oldImagePath))
+                    {
+                        System.IO.File.Delete(oldImagePath);
+                    }
+                }
+...
+```
+
 ### Update Product Custom Code [97]
 ### Loading Navigation Properties [98]
 ### DataTables API [99]

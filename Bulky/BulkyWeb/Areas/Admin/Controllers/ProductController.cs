@@ -52,13 +52,25 @@ namespace BulkyBookWeb.Areas.Admin.Controllers
 
         private const string ProductImagePath = @"images\product";
 
-        void SaveProductImage(ref ProductViewModel productViewModel, IFormFile? file)
+        void SaveOrUpdateProductImage(ref ProductViewModel productViewModel, IFormFile? file)
         {
             string wwwRootPath = _webHostEnvironment.WebRootPath;
             if (file != null)
             {
                 string fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
                 string productPath = Path.Combine(wwwRootPath, ProductImagePath);
+                
+                if(!string.IsNullOrEmpty(productViewModel.Product.ImageUrl))
+                {
+                    // delete the old image
+                    var oldImagePath = Path.Combine(wwwRootPath, productViewModel.Product.ImageUrl.TrimStart('\\'));
+
+                    if (System.IO.File.Exists(oldImagePath))
+                    {
+                        System.IO.File.Delete(oldImagePath);
+                    }
+                }
+
                 string fullFilePath = Path.Combine(productPath, fileName);
                 using (var fileStream = new FileStream(fullFilePath, FileMode.Create))
                 {
@@ -74,7 +86,7 @@ namespace BulkyBookWeb.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
-                SaveProductImage(ref productViewModel, file);
+                SaveOrUpdateProductImage(ref productViewModel, file);
 
                 //string wwwRootPath = _webHostEnvironment.WebRootPath; // wwwroot
                 //if(file != null)
