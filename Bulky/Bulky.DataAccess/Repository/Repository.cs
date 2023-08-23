@@ -15,6 +15,10 @@ namespace BulkyBook.DataAccess.Repository
             this.dbSet = _db.Set<T>();
             //We need DbSet:
             // _db.Categories ==is== dbSet and _db.Categories.Add() becomes=> dbSet.Add()
+
+            // _db.Products.Include(u => u.Category); 
+            // Category will automatically been populated based on foreign key relation
+            // It is included in ProductController by passing include property to the GetAll()
         }
 
         public void Add(T entity)
@@ -22,16 +26,35 @@ namespace BulkyBook.DataAccess.Repository
             dbSet.Add(entity);
         }
 
-        public T Get(Expression<Func<T, bool>> filter)
+        void IncludePropertiesForDbSet(ref IQueryable<T> query, string? includeProperties = null)
+        {
+            if (!string.IsNullOrEmpty(includeProperties))
+            {
+                var properties = includeProperties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+                foreach (var includeProperty in properties)
+                {
+                    query = query.Include(includeProperty); // The property will automatically been populated based on foreign key relation
+                }
+            }
+        }
+
+        public T Get(Expression<Func<T, bool>> filter, string? includeProperties = null)
         {
             IQueryable<T> query = dbSet;
             query = query.Where(filter);
+
+            IncludePropertiesForDbSet (ref query, includeProperties);
+
             return query.FirstOrDefault();
         }
 
-        public IEnumerable<T> GetAll()
+        // Category, or Cover 
+        public IEnumerable<T> GetAll(string? includeProperties = null) // Case sensitive!
         {
             IQueryable<T> query = dbSet;
+
+            IncludePropertiesForDbSet(ref query, includeProperties);
+
             return query.ToList();
         }
 

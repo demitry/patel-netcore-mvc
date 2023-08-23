@@ -21,7 +21,7 @@ namespace BulkyBookWeb.Areas.Admin.Controllers
 
         public IActionResult Index()
         {
-            var productList = _unitOfWork.Product.GetAll().ToList();
+            var productList = _unitOfWork.Product.GetAll(includeProperties: "Category").ToList();
             return View(productList);
         }
 
@@ -87,19 +87,6 @@ namespace BulkyBookWeb.Areas.Admin.Controllers
             if (ModelState.IsValid)
             {
                 SaveOrUpdateProductImage(ref productViewModel, file);
-
-                //string wwwRootPath = _webHostEnvironment.WebRootPath; // wwwroot
-                //if(file != null)
-                //{
-                //    string fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
-                //    string productPath = Path.Combine(wwwRootPath, @"images\product");
-                //    string fullFilePath = Path.Combine(productPath, fileName);
-                //    using (var fileStream = new FileStream(fullFilePath, FileMode.Create))
-                //    {
-                //        file.CopyTo(fileStream);
-                //    }
-                //    productViewModel.Product.ImageUrl = @"images\product" + fileName;
-                //}
 
                 if (productViewModel.Product.Id == 0)
                 {

@@ -2630,6 +2630,44 @@ update [Bulky].[dbo].[Products] set ImageUrl = '' where ImageUrl != ''
 ```
 
 ### Loading Navigation Properties [98]
+
+The included property will automatically been populated based on foreign key relation
+
+```cs
+        void IncludePropertiesForDbSet(ref IQueryable<T> query, string? includeProperties = null)
+        {
+            if (!string.IsNullOrEmpty(includeProperties))
+            {
+                var properties = includeProperties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+                foreach (var includeProperty in properties)
+                {
+                    query = query.Include(includeProperty); 
+                    // The property will automatically been populated based on foreign key relation
+                }
+            }
+        }
+
+        public T Get(Expression<Func<T, bool>> filter, string? includeProperties = null)
+        {
+            IQueryable<T> query = dbSet;
+            query = query.Where(filter);
+
+            IncludePropertiesForDbSet (ref query, includeProperties);
+
+            return query.FirstOrDefault();
+        }
+
+        // Category, Cover, etc.
+        public IEnumerable<T> GetAll(string? includeProperties = null) // Case sensitive!
+        {
+            IQueryable<T> query = dbSet;
+
+            IncludePropertiesForDbSet(ref query, includeProperties);
+
+            return query.ToList();
+        }
+```
+
 ### DataTables API [99]
 ### Load DataTables [100]
 ### Datatable column count [101]
