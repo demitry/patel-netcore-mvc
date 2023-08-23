@@ -127,7 +127,7 @@ GitHub Code: https://github.com/bhrugen/Bulky_MVC
         - [Handle Image on Update [96]](#handle-image-on-update-96)
         - [Custom Product Update [97]](#custom-product-update-97)
         - [Loading Navigation Properties [98]](#loading-navigation-properties-98)
-        - [DataTables API [99]](#datatables-api-99)
+        - [Use of DataTables API [99]](#use-of-datatables-api-99)
         - [Load DataTables [100]](#load-datatables-100)
         - [Datatable column count [101]](#datatable-column-count-101)
         - [Edit Product Link in DataTable [102]](#edit-product-link-in-datatable-102)
@@ -2668,7 +2668,24 @@ The included property will automatically been populated based on foreign key rel
         }
 ```
 
-### DataTables API [99]
+### Use of DataTables API [99]
+
+Search? Pagination? Sorting? ... etc
+
+https://datatables.net/
+
+.NET Core: API support is added to the controller already
+
+```cs
+//https://localhost:7209/Admin/Product/getall
+[HttpGet]
+public IActionResult GetAll()
+{
+    var productList = _unitOfWork.Product.GetAll(includeProperties: "Category").ToList();
+    return Json(new { data = productList });
+}
+```
+
 ### Load DataTables [100]
 ### Datatable column count [101]
 ### Edit Product Link in DataTable [102]
