@@ -2952,15 +2952,28 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
         }
 ```
 
-
 ### Scaffold Identity [108]
 
+__MY_MANUAL_SCAFFOLDING__
+
+Conflicts:
 Microsoft.CodeAnalysis.CSharp.Workspaces
 Microsoft.VisualStudio.Web.CodeGeneration.Design
+Microsoft.AspNetCore.Identity.EntityFrameworkCore
 
 ### Scaffold Identity Issue (NET8) [109]
 ### Understand what Got Added [110]
 ### Add Identity Tables [111]
+
+
+
+```
+builder.Services.AddRazorPages();
+...
+app.MapRazorPages();
+```
+__MY_MANUAL_SCAFFOLDING__
+
 ### Extend Identity User [112]
 ### Register a User [113]
 ### Register an Application User [114]
