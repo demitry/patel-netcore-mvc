@@ -2743,7 +2743,37 @@ Format the json from https://localhost:7209/Admin/Product/GetAll
 ```
 
 ### Datatable column count [101]
+
+- Columns must match
+- the Number of columns in js cannot exceed the number of columns in cshtml!
+
 ### Edit Product Link in DataTable [102]
+
+```js
+function loadDataTable() {
+    dataTable = $('#tblData').DataTable({
+        "ajax": { url: '/admin/product/getall' },
+        "columns": [
+            { data: 'title', "width": "10%" },
+            { data: 'author', "width": "10%" },
+            { data: 'isbn', "width": "10%" },
+            { data: 'price', "width": "10%" },
+            { data: 'category.name', "width": "10%" },
+            {
+                data: 'id',
+                "render": function (data) {
+                    return `<div class="w-75 btn-group" role="group">
+                     <a href="/admin/product/upsert?id=${data}" class="btn btn-primary mx-2"> <i class="bi bi-pencil-square"></i> Edit</a>               
+                     <a class="btn btn-danger mx-2"> <i class="bi bi-trash-fill"></i> Delete</a>
+                    </div>`
+                },
+                "width": "15%"
+            }
+        ]
+    });
+}
+```
+
 ### Delete Product [103]
 ### SweetAlerts [104]
 ## Section 7: Home and Details Page
