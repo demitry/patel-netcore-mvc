@@ -149,6 +149,7 @@ namespace BulkyBookWeb.Areas.Admin.Controllers
 
         #region Api Calls
 
+        //https://localhost:7209/Admin/Product/getall
         [HttpGet]
         public IActionResult GetAll()
         {

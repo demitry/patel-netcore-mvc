@@ -2687,6 +2687,61 @@ public IActionResult GetAll()
 ```
 
 ### Load DataTables [100]
+
+https://datatables.net/manual/ajax
+
+Loading data
+
+Ajax data is loaded by DataTables simply by using the ajax option to set the URL for where the Ajax request should be made. For example, the following shows a minimal configuration with Ajax sourced data:
+
+```js
+$(document).ready(function () {
+    loadDataTable();
+});
+
+function loadDataTable() {
+    dataTable = $('#tblData').DataTable({
+        "ajax": { url: '/admin/product/getall' },
+        "columns": [
+            { data: 'title', "width": "20%" },
+            { data: 'author', "width": "20%" },
+            { data: 'isbn', "width": "10%" },
+            { data: 'price', "width": "10%" },
+            { data: 'category.name', "width": "15%" }
+        ]
+    });
+}
+```
+
+Very common error messages with data tables:
+
+We need to have an exact column names, as in the JSON file
+
+Format the json from https://localhost:7209/Admin/Product/GetAll 
+
+```json
+{
+  "data": [
+    {
+      "id": 1,
+      "title": "Fortune of Time",
+      "description": "Praesent vitae sodales libero. ... tincidunt. ",
+      "isbn": "SWD9999001",
+      "author": "Billy Spark",
+      "listPrice": 99,
+      "price": 90,
+      "price50": 85,
+      "price100": 80,
+      "categoryId": 1,
+      "category": {
+        "id": 1,
+        "name": "Action",
+        "displayOrder": 3
+      },
+      "imageUrl": ""
+    },
+```
+
 ### Datatable column count [101]
 ### Edit Product Link in DataTable [102]
 ### Delete Product [103]
