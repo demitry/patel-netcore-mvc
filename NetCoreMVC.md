@@ -2928,6 +2928,9 @@ public IActionResult Details(int productId)
 ```
 
 ### Details UI [107]
+
+CourseContent\1 Details UI.txt
+
 ## Section 8: Identity in .NET Core
 ### Scaffold Identity [108]
 ### Scaffold Identity Issue (NET8) [109]
