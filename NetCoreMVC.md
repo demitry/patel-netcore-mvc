@@ -2906,6 +2906,27 @@ function Delete(url) {
 ```
 
 ### Details Action Method [106]
+
+```cs
+<div>
+    <a  asp-action="Details"
+        asp-route-productId="@product.Id"
+        class="btn btn-primary bg-gradient border-0 form-control">
+        Details
+    </a>
+</div>
+```
+
+```cs
+public IActionResult Details(int productId)
+{
+    Product product = _unitOfWork.Product
+        .Get(p => p.Id == productId, includeProperties: "Category");
+    
+    return View(product);
+}
+```
+
 ### Details UI [107]
 ## Section 8: Identity in .NET Core
 ### Scaffold Identity [108]
