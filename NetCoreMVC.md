@@ -2952,9 +2952,11 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
         }
 ```
 
+
 ### Scaffold Identity [108]
 
-
+Microsoft.CodeAnalysis.CSharp.Workspaces
+Microsoft.VisualStudio.Web.CodeGeneration.Design
 
 ### Scaffold Identity Issue (NET8) [109]
 ### Understand what Got Added [110]
