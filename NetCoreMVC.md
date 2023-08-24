@@ -2932,7 +2932,30 @@ public IActionResult Details(int productId)
 CourseContent\1 Details UI.txt
 
 ## Section 8: Identity in .NET Core
+
+- Identity - Registration, Login, Passwords, Tables in  the Db, Security
+- .NET team provided default identity implementation
+- Web project -> Add -> New Scaffolded Item -> Identity
+- Requires DB Context class, ours DbContext is in the separate project, so lets tune:
+
+```cs
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+...
+// Change DbContext to IdentityDbContext
+    public class AppDbContext : IdentityDbContext
+...
+// and NB!
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+            ...
+        }
+```
+
 ### Scaffold Identity [108]
+
+
+
 ### Scaffold Identity Issue (NET8) [109]
 ### Understand what Got Added [110]
 ### Add Identity Tables [111]
