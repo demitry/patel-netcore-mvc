@@ -2775,6 +2775,35 @@ function loadDataTable() {
 ```
 
 ### Delete Product [103]
+
+```cs
+        public IActionResult Delete(int? id)
+        {
+            var productToBeDeleted = _unitOfWork.Product.Get(u => u.Id == id);
+            
+            if (productToBeDeleted == null)
+            {
+                return Json(new { success = false, message = "Error while deleting" });
+            }
+
+            var oldImagePath = Path.Combine(_webHostEnvironment.WebRootPath, productToBeDeleted.ImageUrl.TrimStart('\\'));
+
+            if (System.IO.File.Exists(oldImagePath))
+            {
+                System.IO.File.Delete(oldImagePath);
+            }
+
+            _unitOfWork.Product.Remove(productToBeDeleted);
+            _unitOfWork.Save();
+
+            return Json(new { success = true, message = "Delete Successful" });
+        }
+```
+
+```html
+<a href="/admin/product/delete?id=${data}" class="btn btn-danger mx-2"> <i class="bi bi-pencil-square"></i>Delete</a>   
+```
+
 ### SweetAlerts [104]
 ## Section 7: Home and Details Page
 ### Home Page [105]
