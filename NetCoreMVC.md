@@ -3159,6 +3159,42 @@ Discriminator = ApplicationUser
 AspNetRoles is empty (we haven't any role)
 
 ### Create Roles in Database [115]
+
+Change
+
+```cs
+//builder.Services.AddDefaultIdentity<IdentityUser>().AddEntityFrameworkStores<AppDbContext>();
+builder.Services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<AppDbContext>();
+```
+
+```cs
+        public async Task OnGetAsync(string returnUrl = null)
+        {
+            // Hacky way
+            if(!_roleManager.RoleExistsAsync(AppRole.Admin).GetAwaiter().GetResult())
+            {
+                _roleManager.CreateAsync(new IdentityRole(AppRole.Admin)).GetAwaiter().GetResult();
+                _roleManager.CreateAsync(new IdentityRole(AppRole.Company)).GetAwaiter().GetResult();
+                _roleManager.CreateAsync(new IdentityRole(AppRole.Customer)).GetAwaiter().GetResult();
+                _roleManager.CreateAsync(new IdentityRole(AppRole.Employee)).GetAwaiter().GetResult();
+            }
+
+            ReturnUrl = returnUrl;
+            ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+        }
+```
+
+```sql
+SELECT [Name],[NormalizedName],[ConcurrencyStamp] FROM [Bulky].[dbo].[AspNetRoles]
+-- Name	NormalizedName	ConcurrencyStamp
+-- Admin	ADMIN	NULL
+-- Company	COMPANY	NULL
+-- Customer	CUSTOMER	NULL
+-- Employee	EMPLOYEE	NULL
+```
+
+Note, Fake EmailSender was created to inject it and omit injection errors
+
 ### Assign Roles on Registration [116]
 ### Authorization in Project [117]
 ### Update Login and Register UI [118]
