@@ -3074,7 +3074,7 @@ SELECT [Id]
       ,[LockoutEnabled]
       ,[AccessFailedCount]
       ,[City]
-      ,[Discriminator]   -- <------- "ApplicationRole" / ...
+      ,[Discriminator]   -- <------- "IdentityUser" / "ApplicationRole"
       ,[Name]
       ,[PostalCode]
       ,[State]
@@ -3090,6 +3090,21 @@ SELECT [Id]
 <https://stackoverflow.com/questions/28054254/what-is-a-discriminator-column-in-asp-net-migrations>
 
 ### Register a User [113]
+
+```cs
+builder.Services.AddDefaultIdentity<IdentityUser>().AddEntityFrameworkStores<AppDbContext>();
+```
+test@gmail.com
+Test123!
+
+```sql
+SELECT [Id], [UserName], [NormalizedUserName], [Email], [City], [Discriminator], [Name], [PostalCode], [State], [StreetAddress] FROM [Bulky].[dbo].[AspNetUsers]
+-- Id	UserName	NormalizedUserName	Email	City	Discriminator	Name	PostalCode	State	StreetAddress
+-- 22a26e4c-4301-4a15-aa17-4ce001cf04cd	test@gmail.com	TEST@GMAIL.COM	test@gmail.com	NULL	IdentityUser	NULL	NULL	NULL	NULL
+```
+- Discriminator column = **IdentityUser**
+- No City, Name, PostalCode, State and StreetAddress
+
 ### Register an Application User [114]
 ### Create Roles in Database [115]
 ### Assign Roles on Registration [116]
