@@ -145,6 +145,7 @@ GitHub Code: https://github.com/bhrugen/Bulky_MVC
             - [What is missing?](#what-is-missing)
             - [Add-Migration addIdentityTables](#add-migration-addidentitytables)
         - [Extend Identity User [112]](#extend-identity-user-112)
+            - [What is Discriminator field?](#what-is-discriminator-field)
         - [Register a User [113]](#register-a-user-113)
         - [Register an Application User [114]](#register-an-application-user-114)
         - [Create Roles in Database [115]](#create-roles-in-database-115)
@@ -3029,6 +3030,65 @@ Add-Migration addIdentityTables
 - AspNetUserTokens
 
 ### Extend Identity User [112]
+
+Models:
+
+```cs
+using Microsoft.AspNetCore.Identity;
+using System.ComponentModel.DataAnnotations;
+
+namespace BulkyBook.Models
+{
+    public class ApplicationUser : IdentityUser
+    {
+        [Required]
+        public string Name { get; set; }
+
+        public string? StreetAddress { get; set; }
+        public string? City { get; set; }
+        public string? State { get; set; }
+        public string? PostalCode { get; set; }
+    }
+}
+```
+
+- Add ApplicationUser to the DBContext DbSets
+- Add-Migration ExtendIdentityUser
+- Update-Database
+
+
+```sql
+SELECT [Id]
+      ,[UserName]
+      ,[NormalizedUserName]
+      ,[Email]
+      ,[NormalizedEmail]
+      ,[EmailConfirmed]
+      ,[PasswordHash]
+      ,[SecurityStamp]
+      ,[ConcurrencyStamp]
+      ,[PhoneNumber]
+      ,[PhoneNumberConfirmed]
+      ,[TwoFactorEnabled]
+      ,[LockoutEnd]
+      ,[LockoutEnabled]
+      ,[AccessFailedCount]
+      ,[City]
+      ,[Discriminator]   -- <------- "ApplicationRole" / ...
+      ,[Name]
+      ,[PostalCode]
+      ,[State]
+      ,[StreetAddress]
+
+  FROM [Bulky].[dbo].[AspNetUsers]
+```
+
+#### What is Discriminator field?
+
+- Is it an Application User ("ApplicationRole") or Identity User
+
+<https://stackoverflow.com/questions/28054254/what-is-a-discriminator-column-in-asp-net-migrations>
+
 ### Register a User [113]
 ### Register an Application User [114]
 ### Create Roles in Database [115]

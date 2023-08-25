@@ -1,4 +1,5 @@
-﻿using BulkyBook.Models.Models;
+﻿using BulkyBook.Models;
+using BulkyBook.Models.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -14,6 +15,7 @@ namespace BulkyBook.DataAccess.Data
 
         public DbSet<Category> Categories { get; set; }
         public DbSet<Product> Products { get; set; }
+        public DbSet<ApplicationUser> ApplicationUsers { get; set;}
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
