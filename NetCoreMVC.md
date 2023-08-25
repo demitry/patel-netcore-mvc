@@ -142,6 +142,8 @@ GitHub Code: https://github.com/bhrugen/Bulky_MVC
         - [Scaffold Identity Issue NET8 [109]](#scaffold-identity-issue-net8-109)
         - [Understand what Got Added [110]](#understand-what-got-added-110)
         - [Add Identity Tables [111]](#add-identity-tables-111)
+            - [What is missing?](#what-is-missing)
+            - [Add-Migration addIdentityTables](#add-migration-addidentitytables)
         - [Extend Identity User [112]](#extend-identity-user-112)
         - [Register a User [113]](#register-a-user-113)
         - [Register an Application User [114]](#register-an-application-user-114)
@@ -3002,7 +3004,7 @@ In C# 2.0 - both MVC and Razor pages, but now there is only Razor pages under ma
 
 ### Add Identity Tables [111]
 
-What is missing?
+#### What is missing?
 
 ```cs
 builder.Services.AddRazorPages();
@@ -3011,6 +3013,20 @@ builder.Services.AddRazorPages();
 
 app.MapRazorPages();
 ```
+
+#### Add-Migration addIdentityTables
+
+AddEntityFrameworkStores() - we also added tables needed for identity, so
+
+Add-Migration addIdentityTables
+
+- AspNetRoles
+- AspNetUsers
+- AspNetRoleClaims
+- AspNetUserClaims
+- AspNetUserLogins
+- AspNetUserRoles
+- AspNetUserTokens
 
 ### Extend Identity User [112]
 ### Register a User [113]
