@@ -2954,25 +2954,63 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 ### Scaffold Identity [108]
 
-__MY_MANUAL_SCAFFOLDING__
-
-Conflicts:
-Microsoft.CodeAnalysis.CSharp.Workspaces
-Microsoft.VisualStudio.Web.CodeGeneration.Design
-Microsoft.AspNetCore.Identity.EntityFrameworkCore
-
 ### Scaffold Identity Issue (NET8) [109]
-### Understand what Got Added [110]
-### Add Identity Tables [111]
 
-
+There were issues and nuget conflicts
 
 ```
-builder.Services.AddRazorPages();
+Error
+There was an error running the selected code generator: 
+'Package restore failed. Rolling back package changes for 'BulkyBookWeb'.'
+```
+
+So I merged scaffolded code manually
+
+### Understand what Got Added [110]
+
+On the AppDbContext we added
+```cs
+base.OnModelCreating(modelBuilder);
+```
+Class was changed to **IdentityDbContext**
+
+Program.cs:
+
+```cs
+builder.Services.AddDefaultIdentity<IdentityUser>().AddEntityFrameworkStores<AppDbContext>();
+// Add service which adds a default identity
+// AddEntityFrameworkStores() - we also added tables needed for identity
+// Users table, Claims... etc.
+// Here we binding EF with Identity tables 
+
+builder.Services.AddRazorPages(); // Our scaffolded Razor views should work 
+
+app.UseAuthentication(); // Authentication Before the Authorization. Check if the username and password are valid 
+
+app.UseAuthorization(); // Based on your role you have access to some pages
 ...
 app.MapRazorPages();
 ```
-__MY_MANUAL_SCAFFOLDING__
+
+appsettings.json - it tries to add a new connection (we already have it)
+
+_LoginPartial - register and login buttons
+
+Areas\Identity - a lot of Razor Pages (we selected while scaffolding)
+
+In C# 2.0 - both MVC and Razor pages, but now there is only Razor pages under maintenance
+
+### Add Identity Tables [111]
+
+What is missing?
+
+```cs
+builder.Services.AddRazorPages();
+
+...
+
+app.MapRazorPages();
+```
 
 ### Extend Identity User [112]
 ### Register a User [113]
