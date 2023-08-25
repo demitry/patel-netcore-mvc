@@ -3095,6 +3095,7 @@ SELECT [Id]
 builder.Services.AddDefaultIdentity<IdentityUser>().AddEntityFrameworkStores<AppDbContext>();
 ```
 test@gmail.com
+
 Test123!
 
 ```sql
@@ -3106,6 +3107,57 @@ SELECT [Id], [UserName], [NormalizedUserName], [Email], [City], [Discriminator],
 - No City, Name, PostalCode, State and StreetAddress
 
 ### Register an Application User [114]
+
+Register.cshtml.cs:
+- Injected Managers:
+  - SignInManager
+  - UserManager
+  - ... RoleManager
+- Handlers (Get and Post Handlers):
+  - Create User On Post:
+
+```cs
+        public async Task OnGetAsync(string returnUrl = null)
+        {
+            ReturnUrl = returnUrl;
+            ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+        }
+
+        public async Task<IActionResult> OnPostAsync(string returnUrl = null)
+        {
+            returnUrl ??= Url.Content("~/");
+            ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+            if (ModelState.IsValid)
+            {
+                var user = CreateUser();
+
+...
+
+        private IdentityUser CreateUser()
+        {
+            try
+            {
+                return Activator.CreateInstance<IdentityUser>();
+            }
+            catch
+            {
+                throw new InvalidOperationException($"Can't create an instance of '{nameof(IdentityUser)}'. " +
+                    $"Ensure that '{nameof(IdentityUser)}' is not an abstract class and has a parameterless constructor, or alternatively " +
+                    $"override the register page in /Areas/Identity/Pages/Account/Register.cshtml");
+            }
+        }
+```
+
+Change IdentityUser -> ApplicationUser
+
+testAppUser@gmail.com
+
+Test123!
+
+Discriminator = ApplicationUser
+
+AspNetRoles is empty (we haven't any role)
+
 ### Create Roles in Database [115]
 ### Assign Roles on Registration [116]
 ### Authorization in Project [117]
