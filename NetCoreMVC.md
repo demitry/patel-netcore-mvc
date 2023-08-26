@@ -3296,6 +3296,10 @@ and the Access Denied is shown for another roles
 ```
 
 ### Register Other Fields [119]
+
+testDetails@gmail.com
+Test123!
+
 ### UI Bug [120]
 ## Section 9: Company CRUD
 ### Why do we have a Company Role? [121]
