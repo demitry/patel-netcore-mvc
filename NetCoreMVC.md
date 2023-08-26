@@ -3196,6 +3196,52 @@ SELECT [Name],[NormalizedName],[ConcurrencyStamp] FROM [Bulky].[dbo].[AspNetRole
 Note, Fake EmailSender was created to inject it and omit injection errors
 
 ### Assign Roles on Registration [116]
+
+testAdm1@gmail.com
+Test123!
+
+Issue
+
+```
+An unhandled exception occurred while processing the request.
+NotSupportedException: No IUserTwoFactorTokenProvider<TUser> named 'Default' is registered.
+Microsoft.AspNetCore.Identity.UserManager<TUser>.GenerateUserTokenAsync(TUser user, string tokenProvider, string purpose
+
+NotSupportedException: No IUserTwoFactorTokenProvider<TUser> named 'Default' is registered.
+Microsoft.AspNetCore.Identity.UserManager<TUser>.GenerateUserTokenAsync(TUser user, string tokenProvider, string purpose)
+BulkyBookWeb.Areas.Identity.Pages.Account.RegisterModel.OnPostAsync(string returnUrl) in Register.cshtml.cs
++
+                    var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+
+```
+
+Solution
+
+```cs
+builder.Services
+    .AddIdentity<IdentityUser, IdentityRole>()
+    .AddEntityFrameworkStores<AppDbContext>()
+    .AddDefaultTokenProviders(); // Solution, because var code = await _userManager.GenerateEmailConfirmationTokenAsync(user); requires default token providers
+```
+
+testAdm2@gmail.com
+Test123!
+
+cust01@gmail.com
+Test123!
+
+```sql
+select UserName, roles.Name as AppRole from [dbo].[AspNetUsers] u
+left join [dbo].[AspNetUserRoles] userRoles on userRoles.UserId = u.Id
+left join [dbo].[AspNetRoles] roles on roles.Id = userRoles.RoleId
+
+-- UserName	AppRole
+-- testAdm1@gmail.com	Admin
+-- test@gmail.com	NULL
+-- cust01@gmail.com	Customer
+-- testAppUser@gmail.com	NULL
+-- testAdm2@gmail.com	Admin
+```
 ### Authorization in Project [117]
 ### Update Login and Register UI [118]
 ### Register Other Fields [119]
