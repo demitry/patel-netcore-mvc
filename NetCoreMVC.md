@@ -3301,6 +3301,11 @@ testDetails@gmail.com
 Test123!
 
 ### UI Bug [120]
+
+_ViewStart.cshtml = to know which _Layout to use
+
+[] TODO: I do not understand it fully yet
+
 ## Section 9: Company CRUD
 ### Why do we have a Company Role? [121]
 ### Assignment 3 [122]
