@@ -3243,6 +3243,42 @@ left join [dbo].[AspNetRoles] roles on roles.Id = userRoles.RoleId
 -- testAdm2@gmail.com	Admin
 ```
 ### Authorization in Project [117]
+
+```cs
+    @if (User.IsInRole(AppRole.Admin))
+    {
+        <li class="nav-item dropdown">
+        ...
+    }
+```
+
+But Customer can go to the url, so
+
+```cs
+    [Area("Admin")]
+    [Authorize(Roles = AppRole.Admin)] // <----
+    public class CategoryController : Controller
+```
+
+Now, Default route for access denied, so
+
+```cs
+builder.Services.ConfigureApplicationCookie(options => {
+    options.LoginPath = $"/Identity/Account/Login";
+    options.LogoutPath = $"/Identity/Account/Logout";
+    options.AccessDeniedPath = $"/Identity/Account/AccessDenied";
+});
+```
+Note, **ConfigureApplicationCookie MUST be after the AddIdentity**!
+
+Now only admin able to see pages
+
+https://localhost:7209/Admin/Product
+
+https://localhost:7209/Admin/Category  
+
+and the Access Denied is shown for another roles
+
 ### Update Login and Register UI [118]
 ### Register Other Fields [119]
 ### UI Bug [120]
