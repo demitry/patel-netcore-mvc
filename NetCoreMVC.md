@@ -3308,6 +3308,16 @@ _ViewStart.cshtml = to know which _Layout to use
 
 ## Section 9: Company CRUD
 ### Why do we have a Company Role? [121]
+
+Advantage of Company Users - they don not have to pay right away,
+They will have 30 days (we call it NET 30) to make payment after the product have been placed.
+
+Admin = All ops, Content Management
+
+Employee = Ship products
+
+User can belongs to a company
+
 ### Assignment 3 [122]
 ### Assignment 3 Solution - Company CRUD Operations [123]
 ### Dis Company Dropdown [124]
