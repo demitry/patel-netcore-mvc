@@ -3280,6 +3280,21 @@ https://localhost:7209/Admin/Category
 and the Access Denied is shown for another roles
 
 ### Update Login and Register UI [118]
+
+[] TODO: CSS and Bootstrap
+
+```css
+.divider-text:before,
+.divider-text:after {
+    color: white;
+    content: "";
+    flex: 1;
+    border-bottom: 1px solid #555;
+    margin: auto 0.25rem;
+    box-shadow: 0 -2px;
+}
+```
+
 ### Register Other Fields [119]
 ### UI Bug [120]
 ## Section 9: Company CRUD
