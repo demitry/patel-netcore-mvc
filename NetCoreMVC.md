@@ -3631,10 +3631,10 @@ namespace BulkyBookWeb.Areas.Customer.Controllers
 }
 ```
 
-
 ### Get Order Total in Shopping Cart [136]
 ### Dynamic Shopping Cart [137]
 ### Update Quantity in Shopping Cart [138]
+
 ### Order Summary UI [139]
 ## Section 11: Order Confrimation
 ### Create Order Header and Details Model [140]

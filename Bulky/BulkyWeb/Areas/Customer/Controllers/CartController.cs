@@ -18,38 +18,74 @@ namespace BulkyBookWeb.Areas.Customer.Controllers
             _unitOfWork = unitOfWork;
         }
 
-        public ShoppingCartViewModel ShoppingCartViewModel { get; set; }
+        public ShoppingCartViewModel CartViewModel { get; set; }
+
+        public IActionResult Plus(int cartId)
+        {
+            var cartFromDb = _unitOfWork.ShoppingCart.Get(c => c.Id == cartId);
+            cartFromDb.Count++;
+            _unitOfWork.ShoppingCart.Update(cartFromDb);
+            _unitOfWork.Save();
+            return RedirectToAction(nameof(Index));
+        }
+
+        public IActionResult Minus(int cartId)
+        {
+            var cartFromDb = _unitOfWork.ShoppingCart.Get(c => c.Id == cartId);
+
+            if (cartFromDb.Count <= 1)
+            {
+                //remove from cart
+                _unitOfWork.ShoppingCart.Remove(cartFromDb);
+            }
+            else
+            {
+                cartFromDb.Count--;
+                _unitOfWork.ShoppingCart.Update(cartFromDb);
+            }
+
+            _unitOfWork.Save();
+            return RedirectToAction(nameof(Index));
+        }
+
+        public IActionResult Remove(int cartId)
+        {
+            var cartFromDb = _unitOfWork.ShoppingCart.Get(c => c.Id == cartId);
+            _unitOfWork.ShoppingCart.Remove(cartFromDb);
+            _unitOfWork.Save();
+            return RedirectToAction(nameof(Index));
+        }
 
         public IActionResult Index()
         {
             var claimsIdentity = (ClaimsIdentity)User.Identity;
             var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
 
-            ShoppingCartViewModel shoppingCartViewModel = new()
+            CartViewModel = new()
             {
                 ShoppingCartList = _unitOfWork.ShoppingCart
                     .GetAll(u => u.ApplicationUserId == userId,
                     includeProperties: "Product") // We also need Product
             };
 
-            foreach (var cart in ShoppingCartViewModel.ShoppingCartList)
+            foreach (var cart in CartViewModel.ShoppingCartList)
             {
                 cart.Price = GetPriceBasedOnQuantity(cart);
-                shoppingCartViewModel.OrderTotal += cart.Price;
+                CartViewModel.OrderTotal += cart.Price * cart.Count;
             }
 
-            return View(shoppingCartViewModel);
+            return View(CartViewModel);
         }
 
         private double GetPriceBasedOnQuantity(ShoppingCart shoppingCart)
         {
-            if(shoppingCart.Count <= 50)
+            if (shoppingCart.Count <= 50)
             {
                 return shoppingCart.Product.Price;
             }
             else
             {
-                if(shoppingCart.Count <= 100)
+                if (shoppingCart.Count <= 100)
                 {
                     return shoppingCart.Product.Price50;
                 }
