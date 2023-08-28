@@ -176,7 +176,7 @@ GitHub Code: https://github.com/bhrugen/Bulky_MVC
         - [Dynamic Shopping Cart [137]](#dynamic-shopping-cart-137)
         - [Update Quantity in Shopping Cart [138]](#update-quantity-in-shopping-cart-138)
         - [Order Summary UI [139]](#order-summary-ui-139)
-    - [Section 11: Order Confrimation](#section-11-order-confrimation)
+    - [Section 11: Order Confirmation](#section-11-order-confirmation)
         - [Create Order Header and Details Model [140]](#create-order-header-and-details-model-140)
         - [Add Order Header and Detail Repository [141]](#add-order-header-and-detail-repository-141)
         - [Make ShoppingCartVM more Dynamic [142]](#make-shoppingcartvm-more-dynamic-142)
@@ -3632,11 +3632,63 @@ namespace BulkyBookWeb.Areas.Customer.Controllers
 ```
 
 ### Get Order Total in Shopping Cart [136]
+Check commit
+
 ### Dynamic Shopping Cart [137]
+Check commit
+
 ### Update Quantity in Shopping Cart [138]
 
+Note, Param asp-route-cartId="@item.Id"
+
+```cs
+<a asp-action="plus" asp-route-cartId="@item.Id" class="btn btn-outline-primary bg-gradient py-2">
+    <i class="bi bi-plus-square"></i>
+</a>
+```
+```cs
+        public IActionResult Plus(int cartId)
+        {
+            var cartFromDb = _unitOfWork.ShoppingCart.Get(c => c.Id == cartId);
+            cartFromDb.Count++;
+            _unitOfWork.ShoppingCart.Update(cartFromDb);
+            _unitOfWork.Save();
+            return RedirectToAction(nameof(Index));
+        }
+
+        public IActionResult Minus(int cartId)
+        {
+            var cartFromDb = _unitOfWork.ShoppingCart.Get(c => c.Id == cartId);
+
+            if (cartFromDb.Count <= 1)
+            {
+                //remove from cart
+                _unitOfWork.ShoppingCart.Remove(cartFromDb);
+            }
+            else
+            {
+                cartFromDb.Count--;
+                _unitOfWork.ShoppingCart.Update(cartFromDb);
+            }
+
+            _unitOfWork.Save();
+            return RedirectToAction(nameof(Index));
+        }
+
+        public IActionResult Remove(int cartId)
+        {
+            var cartFromDb = _unitOfWork.ShoppingCart.Get(c => c.Id == cartId);
+            _unitOfWork.ShoppingCart.Remove(cartFromDb);
+            _unitOfWork.Save();
+            return RedirectToAction(nameof(Index));
+        }
+```
+
 ### Order Summary UI [139]
-## Section 11: Order Confrimation
+Check commit
+
+## Section 11: Order Confirmation
+
 ### Create Order Header and Details Model [140]
 ### Add Order Header and Detail Repository [141]
 ### Make ShoppingCartVM more Dynamic [142]
