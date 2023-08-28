@@ -3476,6 +3476,39 @@ SELECT TOP (100) [Id]
 ```
 
 ### Fix Issue with Add to Cart [132]
+
+```cs
+        [HttpPost]
+        [Authorize]
+        public IActionResult Details(ShoppingCart cart)
+        {
+            var claimsIdentity = (ClaimsIdentity)User.Identity;
+            var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
+
+            cart.ApplicationUserId = userId;
+
+            ShoppingCart cartFromDb = _unitOfWork.ShoppingCart
+                .Get(u => u.ApplicationUserId == userId && u.ProductId == cart.ProductId);
+
+            if(cartFromDb != null)
+            {
+                // shopping cart exists
+                cartFromDb.Count += cart.Count;
+                _unitOfWork.ShoppingCart.Update(cartFromDb);
+            }
+            else
+            {
+                // add a cart
+                _unitOfWork.ShoppingCart.Add(cart);
+            }
+           
+            _unitOfWork.Save();
+
+            return RedirectToAction(nameof(Index));
+        }
+```
+
+
 ### A Weird Bug [133]
 ### Shopping Cart UI [134]
 ### Get Shopping Cart [135]
