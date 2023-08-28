@@ -10,11 +10,13 @@ namespace BulkyBook.DataAccess.Repository
         public ICategoryRepository Category { get; private set; }
         public IProductRepository Product { get; private set; }
         public ICompanyRepository Company { get; private set; }
+        public IShoppingCartRepository ShoppingCart { get; private set; }
 
         public UnitOfWork(AppDbContext db)
         {
             _db = db;
 
+            ShoppingCart = new ShoppingCartRepository(_db);
             Category = new CategoryRepository(_db);
             Product = new ProductRepository(_db);
             Company = new CompanyRepository(_db);

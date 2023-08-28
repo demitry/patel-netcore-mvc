@@ -163,7 +163,7 @@ GitHub Code: https://github.com/bhrugen/Bulky_MVC
         - [Register Company User [126]](#register-company-user-126)
     - [Section 10: Shopping Cart](#section-10-shopping-cart)
         - [Add Shopping Cart Model [127]](#add-shopping-cart-model-127)
-        - [Add Shopping Cart to Repository [128]](#add-shopping-cart-to-repository-128)
+        - [Add Shopping Cart to Repository and UoW [128]](#add-shopping-cart-to-repository-and-uow-128)
         - [Add ApplicationUser Repository [129]](#add-applicationuser-repository-129)
         - [What will be Model for Details Page? [130]](#what-will-be-model-for-details-page-130)
         - [Add to Cart [131]](#add-to-cart-131)
@@ -3412,7 +3412,10 @@ namespace BulkyBook.Models {
 }
 ```
 
-### Add Shopping Cart to Repository [128]
+### Add Shopping Cart to Repository and UoW [128]
+
+As usual
+
 ### Add ApplicationUser Repository [129]
 ### What will be Model for Details Page? [130]
 ### Add to Cart [131]
