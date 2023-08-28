@@ -3374,6 +3374,18 @@ So add style="display:none" to the Company dropdown and add the script:
 ```
 
 ### Register Company User [126]
+```
+companyUser@gmail.com
+Test123!
+
+SqlException: Invalid column name 'CompanyId'. 
+// I forgot:
+//1. in the Post method: user.CompanyId = Input.CompanyId;
+//2. Update-Database
+```
+
+In the DB: User within the CompanyId was created
+
 ## Section 10: Shopping Cart
 ### Add Shopping Cart Model [127]
 ### Add Shopping Cart to Repository [128]
