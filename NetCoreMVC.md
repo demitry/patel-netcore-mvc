@@ -3347,6 +3347,32 @@ namespace BulkyBook.Models
 ```
 
 ### Toggle Company Dropdown [125]
+
+But Company Dropdown should be used/visible only for Company Users!
+
+So add style="display:none" to the Company dropdown and add the script:
+
+```cs
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+
+    <script>
+        $(document).ready(function () {
+            $('#Input_Role').change(function(){
+                var selection = $('#Input_Role Option:Selected').text();
+                if (selection == 'Company') {
+                    $('#Input_CompanyId').show();
+                }
+                else {
+                    $('#Input_CompanyId').hide();
+                }
+            })
+        })
+    </script>
+}
+
+```
+
 ### Register Company User [126]
 ## Section 10: Shopping Cart
 ### Add Shopping Cart Model [127]
