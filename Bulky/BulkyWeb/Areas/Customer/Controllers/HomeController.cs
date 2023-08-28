@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using System.Security.Claims;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace BulkyBookWeb.Areas.Customer.Controllers
 {
@@ -63,8 +64,11 @@ namespace BulkyBookWeb.Areas.Customer.Controllers
                 // add a cart
                 _unitOfWork.ShoppingCart.Add(cart);
             }
-           
+
             _unitOfWork.Save();
+
+            var cartUpdate = (cartFromDb != null) ? "updated" : "added";
+            TempData["success"] = $"Cart {cartUpdate} successfully";
 
             return RedirectToAction(nameof(Index));
         }

@@ -169,6 +169,7 @@ GitHub Code: https://github.com/bhrugen/Bulky_MVC
         - [Add to Cart [131]](#add-to-cart-131)
         - [Fix Issue with Add to Cart [132]](#fix-issue-with-add-to-cart-132)
         - [A Weird Bug [133]](#a-weird-bug-133)
+            - [dbSet.AsNoTracking](#dbsetasnotracking)
         - [Shopping Cart UI [134]](#shopping-cart-ui-134)
         - [Get Shopping Cart [135]](#get-shopping-cart-135)
         - [Get Order Total in Shopping Cart [136]](#get-order-total-in-shopping-cart-136)
@@ -3510,6 +3511,55 @@ SELECT TOP (100) [Id]
 
 
 ### A Weird Bug [133]
+
+And now interesting thing:
+
+_unitOfWork.ShoppingCart.Update(cartFromDb); // EVEN  if I comment it, EF will update it in the database
+
+Why?
+
+- We are retrieving the shopping cart
+- When you are retrieving something with EF Core, it constantly **tracking** that.
+- We updated the Count: cartFromDb.Count += cart.Count;, and that was **tracked by EF Core**
+- _unitOfWork.Save(); Will update our change even without the Update()
+- But sometimes it could be harmful for the Application
+- What if we should not track this entity?
+- We can change this default behavior in the repository. dbSet.AsNoTracking();
+
+```cs
+            ShoppingCart cartFromDb = _unitOfWork.ShoppingCart
+                .Get(u => u.ApplicationUserId == userId && u.ProductId == cart.ProductId);
+
+            if(cartFromDb != null)
+            {
+                // shopping cart exists
+                cartFromDb.Count += cart.Count;
+                //_unitOfWork.ShoppingCart.Update(cartFromDb); // EVEN  if I comment it, EF will update it in the database
+            }
+            else
+            {
+...
+            }
+           
+            _unitOfWork.Save(); // Will update our change even without the Update
+...
+```
+
+#### dbSet.AsNoTracking()
+
+```cs
+        public T Get(Expression<Func<T, bool>> filter, string? includeProperties = null, bool tracked = false)
+        {
+            IQueryable<T> query = tracked ? dbSet : dbSet.AsNoTracking();
+
+            query = query.Where(filter);
+
+            IncludePropertiesForDbSet (ref query, includeProperties);
+
+            return query.FirstOrDefault();
+        }
+```
+
 ### Shopping Cart UI [134]
 ### Get Shopping Cart [135]
 ### Get Order Total in Shopping Cart [136]
