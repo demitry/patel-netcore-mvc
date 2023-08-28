@@ -158,7 +158,7 @@ GitHub Code: https://github.com/bhrugen/Bulky_MVC
         - [Why do we have a Company Role? [121]](#why-do-we-have-a-company-role-121)
         - [Assignment 3 [122]](#assignment-3-122)
         - [Assignment 3 Solution - Company CRUD Operations [123]](#assignment-3-solution---company-crud-operations-123)
-        - [Dis Company Dropdown [124]](#dis-company-dropdown-124)
+        - [Display Company Dropdown [124]](#display-company-dropdown-124)
         - [Toggle Company Dropdown [125]](#toggle-company-dropdown-125)
         - [Register Company User [126]](#register-company-user-126)
     - [Section 10: Shopping Cart](#section-10-shopping-cart)
@@ -3320,7 +3320,32 @@ User can belongs to a company
 
 ### Assignment 3 [122]
 ### Assignment 3 Solution - Company CRUD Operations [123]
-### Dis Company Dropdown [124]
+
+### Display Company Dropdown [124]
+
+User can belongs to a company
+
+```cs
+using BulkyBook.Models.Models;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace BulkyBook.Models
+{
+    public class ApplicationUser : IdentityUser
+    {
+...
+        public int? CompanyId { get; set; }
+        [ForeignKey("CompanyId")] 
+        [ValidateNever]
+        public Company Company { get; set; } // Navigation property
+    }
+}
+
+```
+
 ### Toggle Company Dropdown [125]
 ### Register Company User [126]
 ## Section 10: Shopping Cart
