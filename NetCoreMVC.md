@@ -3417,6 +3417,9 @@ namespace BulkyBook.Models {
 As usual
 
 ### Add ApplicationUser Repository [129]
+
+As usual but without the Update functionality for the App User
+
 ### What will be Model for Details Page? [130]
 ### Add to Cart [131]
 ### Fix Issue with Add to Cart [132]
