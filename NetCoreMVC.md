@@ -3421,7 +3421,60 @@ As usual
 As usual but without the Update functionality for the App User
 
 ### What will be Model for Details Page? [130]
+
+Details.cshtml - form will post product and count
+
 ### Add to Cart [131]
+
+If form post we need Count and ProductId, so add hidden field
+
+```cs
+<form method="post">
+    <input hidden asp-for="ProductId" />
+```
+
+- We need logged User Id, so Authorize attribute on this post
+- Get the user id from Claims Identity
+- Set shopping cart user Id 
+
+```cs
+        [HttpPost]
+        [Authorize]
+        public IActionResult Details(ShoppingCart cart)
+        {
+            var claimsIdentity = (ClaimsIdentity)User.Identity;
+            var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
+
+            cart.ApplicationUserId = userId;
+            
+            _unitOfWork.ShoppingCart.Add(cart);
+            _unitOfWork.Save();
+
+            return RedirectToAction(nameof(Index));
+        }
+```
+
+Claim (contains user Id 4bd29062-da6b-4ed7-8cad-18db72907eec):
+
+```
++		new System.Collections.Generic.ICollectionDebugView<System.Security.Claims.Claim>(new System.Security.Claims.ClaimsIdentity.ClaimsIdentityDebugProxy(claimsIdentity).Claims).Items[0]	{http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 4bd29062-da6b-4ed7-8cad-18db72907eec}	System.Security.Claims.Claim
+```
+
+But! We add everything to the cart, we do not update the product with the same Id.
+
+```sql
+SELECT TOP (100) [Id]
+      ,[ProductId]
+      ,[Count]
+      ,[ApplicationUserId]
+  FROM [Bulky].[dbo].[ShoppingCarts]
+
+-- Id	ProductId	Count	ApplicationUserId
+-- 1	5	        1       4bd29062-da6b-4ed7-8cad-18db72907eec
+-- 2	2 (same!)   2       4bd29062-da6b-4ed7-8cad-18db72907eec
+-- 3	2 (same!)   3       4bd29062-da6b-4ed7-8cad-18db72907eec
+```
+
 ### Fix Issue with Add to Cart [132]
 ### A Weird Bug [133]
 ### Shopping Cart UI [134]

@@ -102,7 +102,7 @@ namespace BulkyBookWeb.Areas.Admin.Controllers
                 
                 _unitOfWork.Save();
                 TempData["success"] = "Product created successfully";
-                return RedirectToAction("Index");
+                return RedirectToAction(nameof(Index));
             }
             else
             {
