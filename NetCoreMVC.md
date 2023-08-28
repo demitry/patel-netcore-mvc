@@ -3561,7 +3561,77 @@ Why?
 ```
 
 ### Shopping Cart UI [134]
+
 ### Get Shopping Cart [135]
+
+```cs
+namespace BulkyBookWeb.Areas.Customer.Controllers
+{
+    [Area("Customer")]
+    [Authorize]
+    public class CartController : Controller
+    {
+        private readonly IUnitOfWork _unitOfWork;
+
+        public CartController(IUnitOfWork unitOfWork)
+        {
+            _unitOfWork = unitOfWork;
+        }
+
+        public ShoppingCartViewModel ShoppingCartViewModel { get; set; }
+
+        public IActionResult Index()
+        {
+            var claimsIdentity = (ClaimsIdentity)User.Identity;
+            var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
+
+            ShoppingCartViewModel shoppingCartViewModel = new()
+            {
+                ShoppingCartList = _unitOfWork.ShoppingCart
+                    .GetAll(u => u.ApplicationUserId == userId,
+                    includeProperties: "Product") // We also need Product
+            };
+
+            foreach (var cart in ShoppingCartViewModel.ShoppingCartList)
+            {
+                cart.Price = GetPriceBasedOnQuantity(cart);
+                shoppingCartViewModel.OrderTotal += cart.Price;
+            }
+
+            return View(shoppingCartViewModel);
+        }
+
+        private double GetPriceBasedOnQuantity(ShoppingCart shoppingCart)
+        {
+            if(shoppingCart.Count <= 50)
+            {
+                return shoppingCart.Product.Price;
+            }
+            else
+            {
+                if(shoppingCart.Count <= 100)
+                {
+                    return shoppingCart.Product.Price50;
+                }
+                else
+                {
+                    return shoppingCart.Product.Price100;
+                }
+            }
+        }
+    }
+}
+
+// Shopping Cart:
+```cs
+{
+...   
+    [NotMapped]
+    public double Price { get; set; } // not mapped to the DB, for display purpose ony
+}
+```
+
+
 ### Get Order Total in Shopping Cart [136]
 ### Dynamic Shopping Cart [137]
 ### Update Quantity in Shopping Cart [138]

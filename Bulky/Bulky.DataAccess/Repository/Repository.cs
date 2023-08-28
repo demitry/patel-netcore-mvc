@@ -44,15 +44,19 @@ namespace BulkyBook.DataAccess.Repository
 
             query = query.Where(filter);
 
-            IncludePropertiesForDbSet (ref query, includeProperties);
+            IncludePropertiesForDbSet(ref query, includeProperties);
 
             return query.FirstOrDefault();
         }
 
-        // Category, or Cover 
-        public IEnumerable<T> GetAll(string? includeProperties = null) // Case sensitive!
+        public IEnumerable<T> GetAll(Expression<Func<T, bool>>? filter = null, string? includeProperties = null)
         {
             IQueryable<T> query = dbSet;
+            
+            if(filter != null)
+            {
+                query = query.Where(filter);
+            }
 
             IncludePropertiesForDbSet(ref query, includeProperties);
 
