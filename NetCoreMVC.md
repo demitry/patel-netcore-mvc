@@ -178,6 +178,7 @@ GitHub Code: https://github.com/bhrugen/Bulky_MVC
         - [Order Summary UI [139]](#order-summary-ui-139)
     - [Section 11: Order Confirmation](#section-11-order-confirmation)
         - [Create Order Header and Details Model [140]](#create-order-header-and-details-model-140)
+        - [Fix DateOnly EFCore7 Issue](#fix-dateonly-efcore7-issue)
         - [Add Order Header and Detail Repository [141]](#add-order-header-and-detail-repository-141)
         - [Make ShoppingCartVM more Dynamic [142]](#make-shoppingcartvm-more-dynamic-142)
         - [Summary GET Action Method [143]](#summary-get-action-method-143)
@@ -3690,6 +3691,66 @@ Check commit
 ## Section 11: Order Confirmation
 
 ### Create Order Header and Details Model [140]
+
+ValidateNever - do not validate during the update
+
+OrderDetails class contains Prise
+- Product Price could be updated
+- The Price in Order Details will remain, should never change  
+
+### Fix DateOnly EFCore7 Issue
+```
+The property 'OrderHeader.PaymentDueDate' could not be mapped because it is of type 'DateOnly', which is not a supported primitive type or a valid entity type. Either explicitly map this property, or ignore it using the '[NotMapped]' attribute or by using 'EntityTypeBuilder.Ignore' in 'OnModelCreating'.
+```
+
+https://code-maze.com/csharp-map-dateonly-timeonly-types-to-sql/
+
+The OrderHeader contains DateOnly PaymentDueDate
+
+Seems, EFCore7 cannot map DateOnly automatically as EFCore8-preview does.
+
+```cs
+    public class DateOnlyConverter : ValueConverter<DateOnly, DateTime>
+    {
+        public DateOnlyConverter() : base(
+            dateOnly => dateOnly.ToDateTime(TimeOnly.MinValue),
+            dateTime => DateOnly.FromDateTime(dateTime))
+        { }
+    }
+
+    public class TimeOnlyConverter : ValueConverter<TimeOnly, TimeSpan>
+    {
+        public TimeOnlyConverter() : base(
+            timeOnly => timeOnly.ToTimeSpan(),
+            timeSpan => TimeOnly.FromTimeSpan(timeSpan))
+        { }
+    }
+    
+    public class DateOnlyComparer : ValueComparer<DateOnly>
+    {
+        public DateOnlyComparer() : base(
+            (x, y) => x.DayNumber == y.DayNumber,
+            dateOnly => dateOnly.GetHashCode())
+        { }
+    }
+
+    public class TimeOnlyComparer : ValueComparer<TimeOnly>
+    {
+        public TimeOnlyComparer() : base(
+            (x, y) => x.Ticks == y.Ticks,
+            timeOnly => timeOnly.GetHashCode())
+        { }
+    }
+
+    //In AppDbContext:
+    protected override void ConfigureConventions(ModelConfigurationBuilder builder)
+    {
+        base.ConfigureConventions(builder);
+        builder.Properties<DateOnly>().HaveConversion<DateOnlyConverter, DateOnlyComparer>().HaveColumnType("date");
+        builder.Properties<TimeOnly>().HaveConversion<TimeOnlyConverter, TimeOnlyComparer>();
+    }
+```
+
 ### Add Order Header and Detail Repository [141]
 ### Make ShoppingCartVM more Dynamic [142]
 ### Summary GET Action Method [143]
