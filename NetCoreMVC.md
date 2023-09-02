@@ -3791,6 +3791,21 @@ Seems, EFCore7 cannot map DateOnly automatically as EFCore8-preview does.
 ### Load Summary UI with Data [144]
 
 ### Order Status [145]
+
+Order Status Management:
+```
+Customer				
+Stage	        Makes Payment	    Order Confirmation	Processing	Shipped
+Order Status:	Pending	Approved	Processing	        Shipped
+Payment Status:	Pending	Approved	Approved	        Approved
+				
+Company				
+Stage	        Order Confirmation	        Processing	                Shipped	Makes Payment
+Order Status:	Approved	                Processing	                Shipped	Shipped
+Payment Status:	ApprovedForDelayedPayment	ApprovedForDelayedPayment	ApprovedForDelayedPayment	Approved
+```
+
+
 ### Summary POST Action [146]
 ### Place Order for Company Accounts [147]
 ### Register for Stripe Account [148]
