@@ -3752,7 +3752,9 @@ Seems, EFCore7 cannot map DateOnly automatically as EFCore8-preview does.
 ```
 
 ### Add Order Header and Detail Repository [141]
+
 ### Make ShoppingCartVM more Dynamic [142]
+
 ### Summary GET Action Method [143]
 ### Load Summary UI with Data [144]
 ### Order Status [145]
