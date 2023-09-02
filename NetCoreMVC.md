@@ -3807,6 +3807,65 @@ Payment Status:	ApprovedForDelayedPayment	ApprovedForDelayedPayment	ApprovedForD
 
 
 ### Summary POST Action [146]
+
+```cs
+        [HttpPost]
+        [ActionName("Summary")]
+        public IActionResult SummaryPOST()// Don't pass the ShoppingCartViewModel cartViewModel because we have Binding property
+        {
+            var claimsIdentity = (ClaimsIdentity)User.Identity;
+            var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
+
+            CartViewModel.ShoppingCartList = _unitOfWork.ShoppingCart.GetAll(u => u.ApplicationUserId == userId, includeProperties: "Product");
+
+            CartViewModel.OrderHeader.OrderDate = DateTime.UtcNow;
+            CartViewModel.OrderHeader.ApplicationUserId = userId;
+
+            CartViewModel.OrderHeader.ApplicationUser = _unitOfWork.ApplicationUser.Get(u => u.Id == userId);
+
+            foreach (var cartItem in CartViewModel.ShoppingCartList)
+            {
+                cartItem.Price = GetPriceBasedOnQuantity(cartItem);
+                CartViewModel.OrderHeader.OrderTotal += cartItem.Price * cartItem.Count;
+            }
+
+            bool isRegularCustomerAccount = CartViewModel.OrderHeader.ApplicationUser.CompanyId.GetValueOrDefault() == 0;
+
+            if(isRegularCustomerAccount)
+            {
+                // Capture payment
+                CartViewModel.OrderHeader.PaymentStatus = PaymentStatus.Pending;
+                CartViewModel.OrderHeader.OrderStatus = OrderStatus.Pending;
+            }
+            else
+            {
+                // It is Company User
+                CartViewModel.OrderHeader.PaymentStatus = PaymentStatus.DelayedPayment;
+                CartViewModel.OrderHeader.OrderStatus = OrderStatus.Approved;
+            }
+
+            _unitOfWork.OrderHeader.Add(CartViewModel.OrderHeader);
+            _unitOfWork.Save();
+
+            foreach(var cart in CartViewModel.ShoppingCartList)
+            {
+                OrderDetail orderDetail = new()
+                {
+                    ProductId = cart.ProductId,
+                    OrderHeaderId = CartViewModel.OrderHeader.Id, // Id was populated after the _unitOfWork.Save();
+                    Price = cart.Price,
+                    Count = cart.Count
+                };
+
+                _unitOfWork.OrderDetail.Add(orderDetail);
+                _unitOfWork.Save();
+            }
+
+            return View(CartViewModel); // need redirect to the confirmation page
+        }
+
+```
+
 ### Place Order for Company Accounts [147]
 ### Register for Stripe Account [148]
 ### Configure Stripe in Project [149]
