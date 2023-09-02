@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace BulkyBook.DataAccess.Migrations
 {
     /// <inheritdoc />
-    public partial class addOrderHeadersAndOrderDetailsToDb : Migration
+    public partial class addHDTryFix1 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

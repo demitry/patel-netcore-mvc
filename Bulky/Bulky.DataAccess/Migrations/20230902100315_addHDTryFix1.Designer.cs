@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BulkyBook.DataAccess.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20230901072441_addOrderHeadersAndOrderDetailsToDb")]
-    partial class addOrderHeadersAndOrderDetailsToDb
+    [Migration("20230902100315_addHDTryFix1")]
+    partial class addHDTryFix1
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
