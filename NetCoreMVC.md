@@ -3867,6 +3867,26 @@ Payment Status:	ApprovedForDelayedPayment	ApprovedForDelayedPayment	ApprovedForD
 ```
 
 ### Place Order for Company Accounts [147]
+
+NB!
+```cs
+ShoppingCartVM.OrderHeader.ApplicationUser = _unitOfWork.ApplicationUser.Get(u => u.Id == userId);
+```
+Sql Exception Violation of Primary Key
+
+CHANGED TO 
+
+```cs
+ApplicationUser applicationUser = _unitOfWork.ApplicationUser.Get(u => u.Id == userId);
+```
+BECAUSE
+
+when you set the ShoppingCartVM.OrderHeader.ApplicationUser,
+
+EF tries to create the new user with the same Id. 
+
+When EF Core ties to add a navigation property - it will create new object in the database.
+
 ### Register for Stripe Account [148]
 ### Configure Stripe in Project [149]
 ### Add Helper Methods in Order Header Repository [150]

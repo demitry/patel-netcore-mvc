@@ -119,7 +119,7 @@ namespace BulkyBookWeb.Areas.Customer.Controllers
             CartViewModel.OrderHeader.OrderDate = DateTime.UtcNow;
             CartViewModel.OrderHeader.ApplicationUserId = userId;
 
-            CartViewModel.OrderHeader.ApplicationUser = _unitOfWork.ApplicationUser.Get(u => u.Id == userId);
+            ApplicationUser applicationUser = _unitOfWork.ApplicationUser.Get(u => u.Id == userId);
 
             foreach (var cartItem in CartViewModel.ShoppingCartList)
             {
@@ -127,9 +127,9 @@ namespace BulkyBookWeb.Areas.Customer.Controllers
                 CartViewModel.OrderHeader.OrderTotal += cartItem.Price * cartItem.Count;
             }
 
-            bool isRegularCustomerAccount = CartViewModel.OrderHeader.ApplicationUser.CompanyId.GetValueOrDefault() == 0;
+            bool isRegularCustomerAccount = applicationUser.CompanyId.GetValueOrDefault() == 0;
 
-            if(isRegularCustomerAccount)
+            if (isRegularCustomerAccount)
             {
                 // Capture payment
                 CartViewModel.OrderHeader.PaymentStatus = PaymentStatus.Pending;
@@ -145,7 +145,7 @@ namespace BulkyBookWeb.Areas.Customer.Controllers
             _unitOfWork.OrderHeader.Add(CartViewModel.OrderHeader);
             _unitOfWork.Save();
 
-            foreach(var cart in CartViewModel.ShoppingCartList)
+            foreach (var cart in CartViewModel.ShoppingCartList)
             {
                 OrderDetail orderDetail = new()
                 {
@@ -159,8 +159,19 @@ namespace BulkyBookWeb.Areas.Customer.Controllers
                 _unitOfWork.Save();
             }
 
-            return View(CartViewModel); // need redirect to the confirmation page
+            if (isRegularCustomerAccount)
+            {
+                // It is regular customer account and we need to capture payment
+            }
+
+            return RedirectToAction(nameof(OrderConfirmation), new { orderId = CartViewModel.OrderHeader.Id });
         }
+
+        public IActionResult OrderConfirmation(int orderId)
+        {
+            return View(orderId);
+        }
+
 
         private double GetPriceBasedOnQuantity(ShoppingCart shoppingCart)
         {
