@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using BulkyBook.Utility;
+using BulkyBook.Utility.Constants;
 
 var builder = WebApplication.CreateBuilder(args);
 

@@ -7,7 +7,7 @@ using System.Text;
 using System.Text.Encodings.Web;
 using BulkyBook.DataAccess.Repository.IRepository;
 using BulkyBook.Models.Models;
-using BulkyBook.Utility;
+using BulkyBook.Utility.Constants;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
