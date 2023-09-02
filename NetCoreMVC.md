@@ -3789,6 +3789,7 @@ Seems, EFCore7 cannot map DateOnly automatically as EFCore8-preview does.
 ```
 
 ### Load Summary UI with Data [144]
+
 ### Order Status [145]
 ### Summary POST Action [146]
 ### Place Order for Company Accounts [147]
