@@ -68,17 +68,16 @@ namespace BulkyBookWeb.Areas.Customer.Controllers
 
             CartViewModel = new()
             {
-                ShoppingCartList = _unitOfWork.ShoppingCart
-                    .GetAll(u => u.ApplicationUserId == userId,
-                    includeProperties: "Product") // We also need Product
+                ShoppingCartList = _unitOfWork.ShoppingCart.GetAll(u => u.ApplicationUserId == userId, includeProperties: "Product"),
+                OrderHeader = new()
             };
 
             foreach (var cart in CartViewModel.ShoppingCartList)
             {
                 cart.Price = GetPriceBasedOnQuantity(cart);
-                CartViewModel.OrderTotal += cart.Price * cart.Count;
+                CartViewModel.OrderHeader.OrderTotal += cart.Price * cart.Count;
             }
-
+            
             return View(CartViewModel);
         }
 
