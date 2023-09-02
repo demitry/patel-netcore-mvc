@@ -3756,6 +3756,38 @@ Seems, EFCore7 cannot map DateOnly automatically as EFCore8-preview does.
 ### Make ShoppingCartVM more Dynamic [142]
 
 ### Summary GET Action Method [143]
+
+```cs
+        public IActionResult Summary()
+        {
+            var claimsIdentity = (ClaimsIdentity)User.Identity;
+            var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
+
+            var cart = CartViewModel = new()
+            {
+                ShoppingCartList = _unitOfWork.ShoppingCart.GetAll(u => u.ApplicationUserId == userId, includeProperties: "Product"),
+                OrderHeader = new()
+            };
+
+            var user = CartViewModel.OrderHeader.ApplicationUser = _unitOfWork.ApplicationUser.Get(u => u.Id == userId);
+
+            cart.OrderHeader.Name = user.Name;
+            cart.OrderHeader.PhoneNumber = user.PhoneNumber;
+            cart.OrderHeader.StreetAddress = user.StreetAddress;
+            cart.OrderHeader.City = user.City;
+            cart.OrderHeader.State = user.State;
+            cart.OrderHeader.PostalCode = user.PostalCode;
+
+            foreach (var cartItem in CartViewModel.ShoppingCartList)
+            {
+                cartItem.Price = GetPriceBasedOnQuantity(cartItem);
+                CartViewModel.OrderHeader.OrderTotal += cartItem.Price * cartItem.Count;
+            }
+
+            return View(CartViewModel);
+        }
+```
+
 ### Load Summary UI with Data [144]
 ### Order Status [145]
 ### Summary POST Action [146]
