@@ -3943,6 +3943,59 @@ StripeConfiguration.ApiKey = builder.Configuration.GetSection("Stripe:SecretKey"
 ```
 
 ### Add Helper Methods in Order Header Repository [150]
+
+Stripe Payment -> Session -> PaymentIntentId (if session was successful)
+
+```cs
+namespace BulkyBook.DataAccess.Repository
+{
+    public class OrderHeaderRepository : Repository<OrderHeader>, IOrderHeaderRepository
+    {
+        private AppDbContext _db;
+
+        public OrderHeaderRepository(AppDbContext db) : base(db)
+        {
+            _db = db;
+        }
+
+        public void Update(OrderHeader obj)
+        {
+            _db.OrderHeaders.Update(obj);
+        }
+
+        public void UpdateStatus(int id, string orderStatus, string? paymentStatus = null)
+        {
+            var orderFromDb = _db.OrderHeaders.FirstOrDefault(x => x.Id == id);
+            if(orderFromDb != null)
+            {
+                orderFromDb.OrderStatus = orderStatus;
+
+                if (!string.IsNullOrEmpty(paymentStatus))
+                {
+                    orderFromDb.PaymentStatus = paymentStatus;
+                }
+            }
+        }
+
+        public void UpdateStripePaymentID(int id, string sessionId, string paymentIntentId)
+        {
+            var orderFromDb = _db.OrderHeaders.FirstOrDefault(x => x.Id == id);
+            if (!string.IsNullOrEmpty(sessionId))
+            {
+                orderFromDb.SessionId = sessionId;
+            }
+
+            if (!string.IsNullOrEmpty(paymentIntentId))
+            {
+                orderFromDb.PaymentIntentId = paymentIntentId;
+                orderFromDb.PaymentDate = DateTime.Now;
+            }
+        }
+    }
+}
+
+```
+
 ### Stripe in Action [151]
 ### Confirm Stripe Payment [152]
 ### Order Placed Successfully with Stripe [153]
