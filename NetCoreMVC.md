@@ -3888,7 +3888,60 @@ EF tries to create the new user with the same Id.
 When EF Core ties to add a navigation property - it will create new object in the database.
 
 ### Register for Stripe Account [148]
+
+If the user in not a company, and it is a customer - we need to process payment.
+
+<https://stripe.com/en-nl>
+
 ### Configure Stripe in Project [149]
+
+```
+Publishable key
+pk_test_51...
+Secret key
+sk_test_51...
+```
+
+For the dev - appsettings.json
+
+for the prod - save secrets in a secret place
+
+appsettings.json:
+
+```json
+  "Stripe": {
+    "PublishableKey": "pk_test_51...",
+    "SecretKey": "sk_test_51..."
+  }
+}
+```
+
+```cs
+namespace BulkyBook.Utility
+{
+    public class StripeSettings
+    {
+        public string PublishableKey { get; set; }
+
+        public string SecretKey { get; set;}
+    }
+}
+```
+
+
+```cs
+using Stripe;
+
+...
+
+builder.Services.Configure<StripeSettings>(builder.Configuration.GetSection("Stripe"));
+
+...
+
+StripeConfiguration.ApiKey = builder.Configuration.GetSection("Stripe:SecretKey").Get<string>();
+
+```
+
 ### Add Helper Methods in Order Header Repository [150]
 ### Stripe in Action [151]
 ### Confirm Stripe Payment [152]
