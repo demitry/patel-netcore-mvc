@@ -202,7 +202,7 @@ GitHub Code: https://github.com/bhrugen/Bulky_MVC
         - [Demo - Filters in Order List [158]](#demo---filters-in-order-list-158)
         - [Order Details Get Action [159]](#order-details-get-action-159)
         - [Loading Order Details Header [160]](#loading-order-details-header-160)
-        - [Dis Order Details [161]](#dis-order-details-161)
+        - [Display Order Details [161]](#display-order-details-161)
         - [Update Order Details [162]](#update-order-details-162)
         - [Only Admin and Employee Can See all Orders [163]](#only-admin-and-employee-can-see-all-orders-163)
         - [Order Processing Buttons Logic [164]](#order-processing-buttons-logic-164)
@@ -4169,12 +4169,15 @@ Need an Order Management
 2) Order View Model
 
 ### Order List UI [155]
+
+Similar to Product List
+
 ### Add Status Filter [156]
 ### Make Status Selected Active [157]
 ### Demo - Filters in Order List [158]
 ### Order Details Get Action [159]
 ### Loading Order Details Header [160]
-### Dis Order Details [161]
+### Display Order Details [161]
 ### Update Order Details [162]
 ### Only Admin and Employee Can See all Orders [163]
 ### Order Processing Buttons Logic [164]
