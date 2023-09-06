@@ -191,6 +191,8 @@ GitHub Code: https://github.com/bhrugen/Bulky_MVC
         - [Add Helper Methods in Order Header Repository [150]](#add-helper-methods-in-order-header-repository-150)
         - [Stripe in Action [151]](#stripe-in-action-151)
         - [Confirm Stripe Payment [152]](#confirm-stripe-payment-152)
+            - [Stripe Payment Status](#stripe-payment-status)
+            - [Order Confirmation](#order-confirmation)
         - [Order Placed Successfully with Stripe [153]](#order-placed-successfully-with-stripe-153)
     - [Section 12: Order Management](#section-12-order-management)
         - [OrderVM and Order Controller [154]](#ordervm-and-order-controller-154)
@@ -4073,8 +4075,77 @@ Why are they empty?
 Why it is possible to proceed?
 ```
 
+
+Note, 
+
+Browser "back" => Order Summary
+
+Stripes "Back" => Carts Index page 
+
 ### Confirm Stripe Payment [152]
 
+ok, we go to the OrderConfirmation
+
+```cs
+SuccessUrl = $"{testDomain}customer/cart/OrderConfirmation?id={CartViewModel.OrderHeader.Id}",
+```
+
+- How do we know that payment was successful?
+
+- Get the session from Stripe and check the status.
+
+#### Stripe Payment Status
+
+https://stripe.com/docs/api/checkout/sessions/object#checkout_session_object-payment_status
+
+```
+payment_status
+enum
+The payment status of the Checkout Session, one of paid, unpaid, or no_payment_required. You can use this value to decide when to fulfill your customer’s order.
+
+Possible enum values
+paid - The payment funds are available in your account.
+unpaid - The payment funds are not yet available in your account.
+no_payment_required - The payment is delayed to a future date, or the Checkout Session is in setup mode and doesn’t require a payment at this time.
+```
+
+#### Order Confirmation
+
+```cs
+        public IActionResult OrderConfirmation(int orderId)
+        {
+            OrderHeader orderHeader = _unitOfWork.OrderHeader.Get(o => o.Id == orderId, includeProperties: "ApplicationUser");
+            
+            // do not care about delayed status
+
+            if(orderHeader.PaymentStatus != PaymentStatus.DelayedPayment)
+            {
+                // this is order by customer
+
+                SessionService sessionService = new();
+                Session session = sessionService.Get(orderHeader.SessionId);
+
+                if(session.PaymentStatus.ToLower() == StripePaymentStatus.Paid)
+                {
+                    // If payment was successful - update our statuses in the DB
+                    _unitOfWork.OrderHeader.UpdateStripePaymentID(orderId, session.Id, session.PaymentIntentId);
+                    _unitOfWork.OrderHeader.UpdateStatus(orderId, OrderStatus.Approved, PaymentStatus.Approved);
+                    _unitOfWork.Save();
+                }
+            }
+
+            // Clean the Shopping cart
+            List<ShoppingCart> shoppingCarts = 
+                _unitOfWork.ShoppingCart
+                .GetAll(u => u.ApplicationUserId == orderHeader.ApplicationUserId)
+                .ToList();
+
+            _unitOfWork.ShoppingCart.RemoveRange(shoppingCarts);
+            _unitOfWork.Save();
+
+            return View(orderId);
+        }
+```
 
 ### Order Placed Successfully with Stripe [153]
 ## Section 12: Order Management

@@ -211,6 +211,35 @@ namespace BulkyBookWeb.Areas.Customer.Controllers
 
         public IActionResult OrderConfirmation(int orderId)
         {
+            OrderHeader orderHeader = _unitOfWork.OrderHeader.Get(o => o.Id == orderId, includeProperties: "ApplicationUser");
+            
+            // do not care about delayed status
+
+            if(orderHeader.PaymentStatus != PaymentStatus.DelayedPayment)
+            {
+                // this is order by customer
+
+                SessionService sessionService = new();
+                Session session = sessionService.Get(orderHeader.SessionId);
+
+                if(session.PaymentStatus.ToLower() == StripePaymentStatus.Paid)
+                {
+                    // If payment was successful - update our statuses in the DB
+                    _unitOfWork.OrderHeader.UpdateStripePaymentID(orderId, session.Id, session.PaymentIntentId);
+                    _unitOfWork.OrderHeader.UpdateStatus(orderId, OrderStatus.Approved, PaymentStatus.Approved);
+                    _unitOfWork.Save();
+                }
+            }
+
+            // Clean the Shopping cart
+            List<ShoppingCart> shoppingCarts = 
+                _unitOfWork.ShoppingCart
+                .GetAll(u => u.ApplicationUserId == orderHeader.ApplicationUserId)
+                .ToList();
+
+            _unitOfWork.ShoppingCart.RemoveRange(shoppingCarts);
+            _unitOfWork.Save();
+
             return View(orderId);
         }
 
