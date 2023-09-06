@@ -4156,7 +4156,18 @@ So we have the order header with PaymentIntentId = pi_3Nn...
 and OrderStatus, PaymentStatus = Approved, Approved
 
 ## Section 12: Order Management
+
 ### OrderVM and Order Controller [154]
+
+Order Processing, Shipped
+
+Company users - Make a payment later on 
+
+Need an Order Management
+
+1) Order Controller
+2) Order View Model
+
 ### Order List UI [155]
 ### Add Status Filter [156]
 ### Make Status Selected Active [157]
