@@ -3997,7 +3997,85 @@ namespace BulkyBook.DataAccess.Repository
 ```
 
 ### Stripe in Action [151]
+
+https://stripe.com/docs/api
+
+https://stripe.com/docs/api/checkout/sessions
+
+https://stripe.com/docs/api/checkout/sessions/create?lang=dotnet
+
+```cs
+        [HttpPost]
+        [ActionName("Summary")]
+        public IActionResult SummaryPOST()
+        {
+            ...
+
+            if (isRegularCustomerAccount)
+            {
+                // It is regular customer account and we need to capture payment
+
+                //https://stripe.com/docs/api/checkout/sessions/create?lang=dotnet
+                //StripeConfiguration.ApiKey = already set
+
+                var testDomain = "https://localhost:7209/";
+
+                var options = new SessionCreateOptions
+                {
+                    SuccessUrl = $"{testDomain}customer/cart/OrderConfirmation?id={CartViewModel.OrderHeader.Id}",
+                    CancelUrl = $"{testDomain}customer/cart/index",
+                    LineItems = new List<SessionLineItemOptions>(),
+                    Mode = "payment",
+                };
+
+                //LineItems = product details
+                foreach (var item in CartViewModel.ShoppingCartList)
+                {
+                    var sessionLineItem = new SessionLineItemOptions
+                    {
+                        PriceData = new SessionLineItemPriceDataOptions
+                        {
+                            UnitAmount = (long)item.Price * 100, // $20.50 => 2050
+                            Currency = "usd",
+                            ProductData = new SessionLineItemPriceDataProductDataOptions
+                            {
+                                Name = item.Product.Title
+                            }
+                        },
+                        Quantity = item.Count
+                    };
+                    options.LineItems.Add(sessionLineItem);
+                }
+
+                var service = new SessionService();
+                Session session = service.Create(options);
+
+                _unitOfWork.OrderHeader.UpdateStripePaymentID(CartViewModel.OrderHeader.Id, session.Id, session.PaymentIntentId);
+                _unitOfWork.Save();
+                Response.Headers.Add("Location", session.Url);
+
+                return new StatusCodeResult(303);
+            }
+```
+
+
+When you go to checkout, the session id is present in the OrderHeader table
+
+cs_test_b1...
+
+[] TODO
+```
+Microsoft.EntityFrameworkCore.DbUpdateException: 'An error occurred while saving the entity changes. See the inner exception for details.'
+Microsoft.EntityFrameworkCore.DbUpdateException: 'An error occurred while saving the entity changes. See the inner exception for details.'
+
+On the summary page I can place order with the empty orders details fields
+Why are they empty?
+Why it is possible to proceed?
+```
+
 ### Confirm Stripe Payment [152]
+
+
 ### Order Placed Successfully with Stripe [153]
 ## Section 12: Order Management
 ### OrderVM and Order Controller [154]
