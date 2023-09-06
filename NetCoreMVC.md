@@ -4148,6 +4148,13 @@ no_payment_required - The payment is delayed to a future date, or the Checkout S
 ```
 
 ### Order Placed Successfully with Stripe [153]
+
+Fixed orderId, 
+
+So we have the order header with PaymentIntentId = pi_3Nn...
+
+and OrderStatus, PaymentStatus = Approved, Approved
+
 ## Section 12: Order Management
 ### OrderVM and Order Controller [154]
 ### Order List UI [155]

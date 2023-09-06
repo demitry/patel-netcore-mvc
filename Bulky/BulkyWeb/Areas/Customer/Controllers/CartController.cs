@@ -171,7 +171,7 @@ namespace BulkyBookWeb.Areas.Customer.Controllers
 
                 var options = new SessionCreateOptions
                 {
-                    SuccessUrl = $"{testDomain}customer/cart/OrderConfirmation?id={CartViewModel.OrderHeader.Id}",
+                    SuccessUrl = $"{testDomain}customer/cart/OrderConfirmation?orderId={CartViewModel.OrderHeader.Id}",
                     CancelUrl = $"{testDomain}customer/cart/index",
                     LineItems = new List<SessionLineItemOptions>(),
                     Mode = "payment",
