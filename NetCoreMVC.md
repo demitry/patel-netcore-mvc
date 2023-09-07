@@ -4177,7 +4177,21 @@ Similar to Product List
 ### Demo - Filters in Order List [158]
 
 ### Order Details Get Action [159]
+```cs
+        public IActionResult Details(int orderId)
+        {
+            OrderViewModel orderViewModel = new()
+            {
+                OrderHeader = _unitOfWork.OrderHeader.Get(o => o.Id == orderId, includeProperties: "ApplicationUser"),
+
+                OrderDetail = _unitOfWork.OrderDetail.GetAll(o => o.OrderHeaderId == orderId, includeProperties: "Product")
+            };
+
+            return View(orderViewModel);
+        }
+```
 ### Loading Order Details Header [160]
+
 ### Display Order Details [161]
 ### Update Order Details [162]
 ### Only Admin and Employee Can See all Orders [163]
