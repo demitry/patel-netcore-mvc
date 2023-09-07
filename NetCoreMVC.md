@@ -4177,6 +4177,7 @@ Similar to Product List
 ### Demo - Filters in Order List [158]
 
 ### Order Details Get Action [159]
+
 ```cs
         public IActionResult Details(int orderId)
         {
@@ -4190,7 +4191,25 @@ Similar to Product List
             return View(orderViewModel);
         }
 ```
+
 ### Loading Order Details Header [160]
+
+```cs
+<div class="row my-1">
+    <div class="col-3">Zip Code</div>
+    <div class="col-9">
+        @if (User.IsInRole(AppRole.Admin) || User.IsInRole(AppRole.Employee))
+        {
+            <input asp-for="OrderHeader.PostalCode" type="text" class="form-control" />
+            <span asp-validation-for="OrderHeader.PostalCode" class="text-danger"></span>
+        }
+        else
+        {
+            <input asp-for="OrderHeader.PostalCode" readonly type="text" class="form-control" />
+        }
+    </div>
+</div>
+```
 
 ### Display Order Details [161]
 ### Update Order Details [162]
