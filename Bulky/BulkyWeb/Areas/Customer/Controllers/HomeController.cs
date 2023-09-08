@@ -1,10 +1,10 @@
 ﻿using BulkyBook.DataAccess.Repository.IRepository;
 using BulkyBook.Models.Models;
+using BulkyBook.Utility.Constants;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using System.Security.Claims;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace BulkyBookWeb.Areas.Customer.Controllers
 {
@@ -66,6 +66,8 @@ namespace BulkyBookWeb.Areas.Customer.Controllers
             }
 
             _unitOfWork.Save();
+            int cartItemsCount = _unitOfWork.ShoppingCart.GetAll(u => u.ApplicationUserId == userId).Count();
+            HttpContext.Session.SetInt32(AppSession.ShoppingCart, cartItemsCount);
 
             var cartUpdate = (cartFromDb != null) ? "updated" : "added";
             TempData["success"] = $"Cart {cartUpdate} successfully";

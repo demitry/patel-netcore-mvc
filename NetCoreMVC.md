@@ -4528,7 +4528,54 @@ Pay Now for company users: the product should be shipped
 
 ## Section 13: Advance Concepts
 ### Authorization [168]
+
 ### Session in .NET Core [169]
+
+Sessions are not configured by default
+
+```cs
+// Add sessions to the services
+builder.Services.AddDistributedMemoryCache();
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromMinutes(100);
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
+});
+
+...
+
+app.UseSession();// Add sessions in our request pipeline
+```
+
+While Adding to the cart:
+
+```cs
+{
+    ...
+    _unitOfWork.ShoppingCart.Add(cart);
+    _unitOfWork.Save();
+
+    int cartItemsCount = _unitOfWork.ShoppingCart.GetAll(u => u.ApplicationUserId == userId).Count();
+    HttpContext.Session.SetInt32(AppSession.ShoppingCart, cartItemsCount);
+}
+```
+
+Cannot access HttpContext in _Layout
+
+In a View you have to explicitly inject that
+
+In _Layout:
+
+```cs
+@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
+...
+
+```
+
+
+
 ### Remove from Session and Bug [170]
 ### Bug Solution and Logout [171]
 ### Create View Component [172]
