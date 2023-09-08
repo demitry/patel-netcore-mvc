@@ -210,8 +210,10 @@ GitHub Code: https://github.com/bhrugen/Bulky_MVC
             - [Fields Validation](#fields-validation)
             - [StartProcessing and ShipOrder](#startprocessing-and-shiporder)
         - [Cancel Order [166]](#cancel-order-166)
+            - [Cancel Order](#cancel-order)
             - [Stripe Refund Event](#stripe-refund-event)
             - [Double Refund StripeException](#double-refund-stripeexception)
+        - [There is some mess with Order and Payment Statuses](#there-is-some-mess-with-order-and-payment-statuses)
         - [Process Delayed Payment [167]](#process-delayed-payment-167)
     - [Section 13: Advance Concepts](#section-13-advance-concepts)
         - [Authorization [168]](#authorization-168)
@@ -4449,6 +4451,10 @@ The refund for $170.00 USD has been completed
 #### Double Refund StripeException
 
 Also got a double click refund with the Stripe.StripeException: 'Charge ch_3NnOKiAlqQU8uFZK1Z7FVg6i has already been refunded.'
+
+### There is some mess with Order and Payment Statuses
+
+Author of the course mixed these statuses.
 
 ### Process Delayed Payment [167]
 ## Section 13: Advance Concepts
