@@ -4212,7 +4212,51 @@ Similar to Product List
 ```
 
 ### Display Order Details [161]
+
 ### Update Order Details [162]
+
+We have different buttons, how to POST different action methods?
+
+NB!
+
+```cs
+<form method="post">
+    <input asp-for="OrderHeader.Id" hidden />
+```
+
+```cs
+        [HttpPost]
+        [Authorize(Roles = $"{AppRole.Admin},{AppRole.Employee}")]
+        public IActionResult UpdateOrderDetail()
+        {
+            var orderHeaderFromDb = _unitOfWork.OrderHeader.Get(o => o.Id == OrderViewModel.OrderHeader.Id);
+            
+            orderHeaderFromDb.Name = OrderViewModel.OrderHeader.Name;
+            orderHeaderFromDb.PhoneNumber = OrderViewModel.OrderHeader.PhoneNumber;
+            orderHeaderFromDb.StreetAddress = OrderViewModel.OrderHeader.StreetAddress;
+            orderHeaderFromDb.City = OrderViewModel.OrderHeader.City;
+            orderHeaderFromDb.State = OrderViewModel.OrderHeader.State;
+            orderHeaderFromDb.PostalCode = OrderViewModel.OrderHeader.PostalCode;
+            
+            if (!string.IsNullOrEmpty(OrderViewModel.OrderHeader.Carrier))
+            {
+                orderHeaderFromDb.Carrier = OrderViewModel.OrderHeader.Carrier;
+            }
+            
+            if (!string.IsNullOrEmpty(OrderViewModel.OrderHeader.TrackingNumber))
+            {
+                orderHeaderFromDb.Carrier = OrderViewModel.OrderHeader.TrackingNumber;
+            }
+            
+            _unitOfWork.OrderHeader.Update(orderHeaderFromDb);
+            _unitOfWork.Save();
+
+            TempData["Success"] = "Order Details Updated Successfully.";
+
+            return RedirectToAction(nameof(Details), new { orderId = orderHeaderFromDb.Id });
+        }
+```
+
 ### Only Admin and Employee Can See all Orders [163]
 ### Order Processing Buttons Logic [164]
 ### Ship Order [165]
