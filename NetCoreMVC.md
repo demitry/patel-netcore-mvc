@@ -4258,6 +4258,34 @@ NB!
 ```
 
 ### Only Admin and Employee Can See all Orders [163]
+
+```cs
+        //https://localhost:7209/Admin/Product/getall
+        [HttpGet]
+        public IActionResult GetAll(string status)
+        {
+            IEnumerable<OrderHeader> objOrderHeaders;
+
+            if(User.IsInRole(AppRole.Admin) || User.IsInRole(AppRole.Employee))
+            {
+                // Admins sees orders from everyone
+                objOrderHeaders = _unitOfWork.OrderHeader.GetAll(includeProperties: "ApplicationUser");
+            }
+            else
+            {
+                // User see his orders
+                var claimsIdentity = (ClaimsIdentity)User.Identity;
+                var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
+
+                objOrderHeaders = _unitOfWork.OrderHeader.GetAll(u => u.ApplicationUserId == userId, 
+                    includeProperties: "ApplicationUser");
+            }
+
+            switch (status)
+            {
+                ...
+```
+
 ### Order Processing Buttons Logic [164]
 ### Ship Order [165]
 ### Cancel Order [166]
