@@ -4317,6 +4317,77 @@ NB!
 ```
 
 ### Ship Order [165]
+
+#### Fields Validation
+
+```cs
+...
+@section Scripts
+    {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        function validateInput() {
+            if (document.getElementById("trackingNumber").value == "") {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Please enter tracking number!',
+                });
+                return false;
+            }
+            if (document.getElementById("carrier").value == "") {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Please enter carrier!',
+                });
+                return false;
+            }
+            return true;
+        }
+    </script>
+}
+```
+
+#### StartProcessing and ShipOrder
+
+```cs
+        [HttpPost]
+        [Authorize(Roles = $"{AppRole.Admin},{AppRole.Employee}")]
+        public IActionResult StartProcessing()
+        {
+            _unitOfWork.OrderHeader.UpdateStatus(OrderViewModel.OrderHeader.Id, OrderStatus.InProcess);
+            _unitOfWork.Save();
+            TempData["success"] = "Order Details Updated Successfully.";
+            return RedirectToAction(nameof(Details), new { orderId = OrderViewModel.OrderHeader.Id });
+        }
+
+        [HttpPost]
+        [Authorize(Roles = $"{AppRole.Admin},{AppRole.Employee}")]
+        public IActionResult ShipOrder()
+        {
+            // Update Tracking and Carrier information
+            var orderHeader = _unitOfWork.OrderHeader.Get(o => o.Id == OrderViewModel.OrderHeader.Id);
+            orderHeader.TrackingNumber = OrderViewModel.OrderHeader.TrackingNumber;
+            orderHeader.Carrier = OrderViewModel.OrderHeader.Carrier;
+            orderHeader.OrderStatus = OrderStatus.Shipped;
+            orderHeader.ShippingDate = DateTime.Now;
+
+            // Update Payment info:
+            if (orderHeader.PaymentStatus == PaymentStatus.DelayedPayment)
+            {
+                orderHeader.PaymentDueDate = DateOnly.FromDateTime(DateTime.Now.AddDays(30));
+            }
+
+            _unitOfWork.OrderHeader.Update(orderHeader);
+            _unitOfWork.Save();
+
+            TempData["success"] = "Order Shipped Successfully";
+            return RedirectToAction(nameof(Details), new { orderId = OrderViewModel.OrderHeader.Id });
+        }
+
+```
+
 ### Cancel Order [166]
 ### Process Delayed Payment [167]
 ## Section 13: Advance Concepts
