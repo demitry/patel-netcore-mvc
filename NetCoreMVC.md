@@ -207,7 +207,11 @@ GitHub Code: https://github.com/bhrugen/Bulky_MVC
         - [Only Admin and Employee Can See all Orders [163]](#only-admin-and-employee-can-see-all-orders-163)
         - [Order Processing Buttons Logic [164]](#order-processing-buttons-logic-164)
         - [Ship Order [165]](#ship-order-165)
+            - [Fields Validation](#fields-validation)
+            - [StartProcessing and ShipOrder](#startprocessing-and-shiporder)
         - [Cancel Order [166]](#cancel-order-166)
+            - [Stripe Refund Event](#stripe-refund-event)
+            - [Double Refund StripeException](#double-refund-stripeexception)
         - [Process Delayed Payment [167]](#process-delayed-payment-167)
     - [Section 13: Advance Concepts](#section-13-advance-concepts)
         - [Authorization [168]](#authorization-168)
@@ -4389,6 +4393,63 @@ NB!
 ```
 
 ### Cancel Order [166]
+
+#### Cancel Order
+
+```cs
+        [HttpPost]
+        [Authorize(Roles = $"{AppRole.Admin},{AppRole.Employee}")]
+        public IActionResult CancelOrder()
+        {
+            var orderHeader = _unitOfWork.OrderHeader.Get(o => o.Id == OrderViewModel.OrderHeader.Id);
+
+            if(orderHeader.PaymentStatus == PaymentStatus.Approved)
+            {
+                // Refund
+                var options = new RefundCreateOptions
+                {
+                    Reason = RefundReasons.RequestedByCustomer,
+                    PaymentIntent = orderHeader.PaymentIntentId
+                };
+                try
+                {
+                    var refundService = new RefundService();
+                    Refund refund = refundService.Create(options);
+                }
+                catch (StripeException ex)
+                {
+                    TempData["error"] = ex.Message;
+                    throw;
+                }
+
+                _unitOfWork.OrderHeader.UpdateStatus(orderHeader.Id, OrderStatus.Cancelled, PaymentStatus.Refunded);
+            }
+            else
+            {
+                _unitOfWork.OrderHeader.UpdateStatus(orderHeader.Id, OrderStatus.Cancelled, PaymentStatus.Cancelled);
+            }
+            _unitOfWork.Save();
+            TempData["Success"] = "Order Cancelled Successfully.";
+            return RedirectToAction(nameof(Details), new { orderId = OrderViewModel.OrderHeader.Id });
+        }
+```
+
+#### Stripe Refund Event
+
+The refund for $170.00 USD has been completed
+
+```json
+{
+  "object": {
+    "id": "ch_3NnOKiAlqQU8uFZK1Z7FVg6i",
+    "object": "charge",
+    "amount": 17000,
+```
+
+#### Double Refund StripeException
+
+Also got a double click refund with the Stripe.StripeException: 'Charge ch_3NnOKiAlqQU8uFZK1Z7FVg6i has already been refunded.'
+
 ### Process Delayed Payment [167]
 ## Section 13: Advance Concepts
 ### Authorization [168]
