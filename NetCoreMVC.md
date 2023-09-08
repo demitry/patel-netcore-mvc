@@ -4287,6 +4287,35 @@ NB!
 ```
 
 ### Order Processing Buttons Logic [164]
+
+```cs
+@if (Model.OrderHeader.PaymentStatus == PaymentStatus.DelayedPayment &&
+     Model.OrderHeader.OrderStatus == OrderStatus.Shipped)
+{
+    <button type="submit" class="btn btn-success form-control my-1">Pay Now</button>
+}
+
+@if (User.IsInRole(AppRole.Admin) || User.IsInRole(AppRole.Employee))
+{
+    if (Model.OrderHeader.OrderStatus == OrderStatus.Approved)
+    {
+        <button type="submit" class="btn btn-primary form-control my-1">Start Processing</button>
+    }
+
+    if (Model.OrderHeader.OrderStatus == OrderStatus.InProcess)
+    {
+        <button type="submit" class="btn btn-primary form-control my-1">Ship Order</button>
+    }
+    
+    if (Model.OrderHeader.OrderStatus != OrderStatus.Refunded &&
+        Model.OrderHeader.OrderStatus != OrderStatus.Cancelled &&
+        Model.OrderHeader.OrderStatus != OrderStatus.Shipped)
+    {
+        <button type="submit" class="btn btn-danger form-control my-1">Cancel Order</button>
+    }
+}
+```
+
 ### Ship Order [165]
 ### Cancel Order [166]
 ### Process Delayed Payment [167]
