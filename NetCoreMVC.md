@@ -254,10 +254,10 @@ GitHub Code: https://github.com/bhrugen/Bulky_MVC
         - [Add Product Image Repository [200]](#add-product-image-repository-200)
         - [Upload Images on Product Upsert [201]](#upload-images-on-product-upsert-201)
         - [Demo - Upload Images [202]](#demo---upload-images-202)
-        - [Dis Image on Update Product Page [203]](#dis-image-on-update-product-page-203)
+        - [Display Image on Update Product Page [203]](#display-image-on-update-product-page-203)
         - [Delete Image [204]](#delete-image-204)
         - [Delete Product [205]](#delete-product-205)
-        - [Dis Image in Shopping Cart [206]](#dis-image-in-shopping-cart-206)
+        - [Display Image in Shopping Cart [206]](#display-image-in-shopping-cart-206)
         - [Bootstrap Carousel [207]](#bootstrap-carousel-207)
         - [Assignment 5 - User Controller [208]](#assignment-5---user-controller-208)
         - [Assignment 5 Solution - User Controller [209]](#assignment-5-solution---user-controller-209)
@@ -4537,6 +4537,7 @@ Pay Now for company users: the product should be shipped
 ### Facebook Login in Action [175]
 ### Creating Admin and Employee Accounts [176]
 ### Session Bug [177]
+
 ## Section 14: Deployment & Email
 ### DBInitializer [178]
 ### DBInitializer Implementation [179]
@@ -4549,6 +4550,7 @@ Pay Now for company users: the product should be shipped
 ### Azure Deployment in Action [186]
 ### Facebook Url [187]
 ### Facebook Url Error [188]
+
 ## Section 15: User Management
 ### Display User List [189]
 ### Display Company Name [190]
@@ -4558,6 +4560,7 @@ Pay Now for company users: the product should be shipped
 ### Assignment 4 - User Role [194]
 ### Assignment 4 Solution Part 1 - View Code [195]
 ### Assignment 4 Solution Part 2 - Role Logic [196]
+
 ## Section 16: Multiple Product Image
 ### Next Task [197]
 ### Remove ImageUrl from Product [198]
@@ -4565,10 +4568,10 @@ Pay Now for company users: the product should be shipped
 ### Add Product Image Repository [200]
 ### Upload Images on Product Upsert [201]
 ### Demo - Upload Images [202]
-### Dis Image on Update Product Page [203]
+### Display Image on Update Product Page [203]
 ### Delete Image [204]
 ### Delete Product [205]
-### Dis Image in Shopping Cart [206]
+### Display Image in Shopping Cart [206]
 ### Bootstrap Carousel [207]
 ### Assignment 5 - User Controller [208]
 ### Assignment 5 Solution - User Controller [209]
