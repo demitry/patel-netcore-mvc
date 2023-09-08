@@ -4574,7 +4574,26 @@ In _Layout:
 
 ```
 
-
+```cs
+@if (@HttpContextAccessor.HttpContext.Session.GetInt32(AppSession.ShoppingCart) != null)
+{
+    <li class="nav-item">
+        <a class="nav-link" asp-area="Customer" asp-controller="Cart" asp-action="Index">
+            <i class="bi bi-cart"></i> &nbsp;
+            (@HttpContextAccessor.HttpContext.Session.GetInt32(AppSession.ShoppingCart))
+        </a>
+    </li>
+}
+else
+{
+    <li class="nav-item">
+        <a class="nav-link" asp-area="Customer" asp-controller="Cart" asp-action="Index">
+            <i class="bi bi-cart"></i> &nbsp;
+            (0)
+        </a>
+    </li>
+}
+```
 
 ### Remove from Session and Bug [170]
 ### Bug Solution and Logout [171]
