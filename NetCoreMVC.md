@@ -4765,20 +4765,40 @@ https://developers.facebook.com/docs/facebook-login/web
 
 https://developers.facebook.com/apps/1525082148229934/settings/advanced/
 
+```
+
 Действительные URI перенаправления для OAuth
 Указанный вручную redirect_uri, который используется для входа на сайте, должен полностью совпадать с одним из URI из этого списка. Этот список также используется SDK JavaScript для браузеров в приложении, блокирующих всплывающие окна.
+```
 https://localhost:7209/sign-facebook
-
 
 https://developers.facebook.com/apps/1525082148229934/fb-login/settings/
 
-
+```
 Register
 https://www.facebook.com/v14.0/dialog/oauth?client_id=1525082148229934&scope=email&response_type=code&redirect_uri=https%3A%2F%2Flocalhost%3A7209%2Fsignin-facebook&code_challenge=6_zXkjWTSlqbhx01NUSuEvvH0Sy_fqf9OHIu75eSizQ&code_challenge_method=S256&state=CfDJ8B0ZwGv6A5tKpyoiQ1t3CFj2og06ZZXGs5QMBA54rQrklqNQuuve6mYpwhgamnXMQGCUTsDgkb3B5nWh1SM3ys9ZTdBYxfT0YZ4hD71SiNsmP_57yY3cSA_XZSudz587DFWAkYBH5IEUcDKbM6ZqYFAXntP-e4x3cjkkcSZc0FP9Zq5fRV7fubCUQD59MqS-gyynCszg64eJYxEWBwQLSDcQMp5wg1GWQpcYPPvMZmKduJL5cyrlerGymjGHL6t1NxFCi7ZMZ9sB1TqgngDNDzaSYJC7H6wLco-Vd-8jqgWl5oe9lA7LaHlyfPTkaFjiYdV2RocqLmYTWmWIA32m1nXKACxDP7FZjJEN-fU-QbVdhNUqIkr3QJCYvi5m3CSkMA
 Sorry, something went wrong.
 We're working on getting this fixed as soon as we can.
+```
+
+```
+Разрешенные домены для SDK JavaScript
+Функции входа SDK JavaScript будут доступны только в этих доменах.
+```
+https://localhost:7209/
+
+nuget: Microsoft.AspNetCore.Authentication.Facebook nuget
+
+```cs
+builder.Services.AddAuthentication().AddFacebook(options =>
+{
+    options.AppId = "1525082148229934";
+    options.AppSecret = "123123... 12";
+});
+```
 
 ### Facebook Login in Action [175]
+
 ### Creating Admin and Employee Accounts [176]
 ### Session Bug [177]
 

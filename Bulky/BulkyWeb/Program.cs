@@ -17,6 +17,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.Configure<StripeSettings>(builder.Configuration.GetSection("Stripe"));
+builder.Services.Configure<FaceBookSettings>(builder.Configuration.GetSection("FaceBook"));
 
 builder.Services
     .AddIdentity<IdentityUser, IdentityRole>()
@@ -42,6 +43,11 @@ builder.Services.AddSession(options =>
 builder.Services.AddRazorPages();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IEmailSender, EmailSender>();
+builder.Services.AddAuthentication().AddFacebook(options =>
+{
+    options.AppId = builder.Configuration.GetSection("FaceBook:AppId").Get<string>();
+    options.AppSecret = builder.Configuration.GetSection("FaceBook:AppSecret").Get<string>();
+});
 
 var app = builder.Build();
 
