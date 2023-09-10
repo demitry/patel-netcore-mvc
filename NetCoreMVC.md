@@ -222,6 +222,7 @@ GitHub Code: https://github.com/bhrugen/Bulky_MVC
             - [Login](#login)
             - [Remove and Minus Action Methods](#remove-and-minus-action-methods)
         - [Bug Solution and Logout [171]](#bug-solution-and-logout-171)
+            - [Bug AsNoTracking so pass tracked true](#bug-asnotracking-so-pass-tracked-true)
             - [Logout: Clear Session](#logout-clear-session)
         - [Create View Component [172]](#create-view-component-172)
         - [View Component in Action [173]](#view-component-in-action-173)
@@ -4687,7 +4688,96 @@ Bulky\BulkyWeb\Areas\Identity\Pages\Account\Logout.cshtml.cs
 
 ### Create View Component [172]
 ### View Component in Action [173]
+
+```cs
+using BulkyBook.DataAccess.Repository.IRepository;
+using BulkyBook.Utility.Constants;
+using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
+
+namespace BulkyBookWeb.ViewComponents
+{
+    public class ShoppingCartViewComponent : ViewComponent
+    {
+        private readonly IUnitOfWork _unitOfWork;
+
+        public ShoppingCartViewComponent(IUnitOfWork unitOfWork)
+        {
+            _unitOfWork = unitOfWork;
+        }
+
+        public async Task<IViewComponentResult> InvokeAsync()
+        {
+            var claimsIdentity = (ClaimsIdentity)User.Identity;
+            var claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
+
+            if (claim != null) // null if user is not logged in
+            {
+                if (HttpContext.Session.GetInt32(AppSession.ShoppingCart) == null)
+                {
+                    string userId = claim.Value;
+                    int cartItemsCount = _unitOfWork.ShoppingCart.GetAll(c => c.ApplicationUserId == userId).Count();
+                    HttpContext.Session.SetInt32(AppSession.ShoppingCart, cartItemsCount);
+                }
+                return View(HttpContext.Session.GetInt32(AppSession.ShoppingCart));
+            }
+            else
+            {
+                HttpContext.Session.Clear();
+                return View(0);
+            }
+        }
+    }
+}
+```
+
+```cs
+@model int
+
+<i class="bi bi-cart"></i> &nbsp (@Model)
+```
+
+```cs
+<li class="nav-item">
+    <a class="nav-link" asp-area="Customer" asp-controller="Cart" asp-action="Index">
+        @await Component.InvokeAsync("ShoppingCart")
+    </a>
+</li
+```
+
 ### Facebook Social Login [174]
+
+https://developers.facebook.com/
+
+https://developers.facebook.com/apps/
+
+Create App -> Consumer
+
+Name: Bulky
+
+Searchable selector for all apps
+​
+Bulky
+​
+ID приложения: 1525082148229934
+
+https://developers.facebook.com/docs/facebook-login/web
+
+https://developers.facebook.com/apps/1525082148229934/settings/advanced/
+
+Действительные URI перенаправления для OAuth
+Указанный вручную redirect_uri, который используется для входа на сайте, должен полностью совпадать с одним из URI из этого списка. Этот список также используется SDK JavaScript для браузеров в приложении, блокирующих всплывающие окна.
+https://localhost:7209/sign-facebook
+
+
+https://developers.facebook.com/apps/1525082148229934/fb-login/settings/
+
+
+Register
+https://www.facebook.com/v14.0/dialog/oauth?client_id=1525082148229934&scope=email&response_type=code&redirect_uri=https%3A%2F%2Flocalhost%3A7209%2Fsignin-facebook&code_challenge=6_zXkjWTSlqbhx01NUSuEvvH0Sy_fqf9OHIu75eSizQ&code_challenge_method=S256&state=CfDJ8B0ZwGv6A5tKpyoiQ1t3CFj2og06ZZXGs5QMBA54rQrklqNQuuve6mYpwhgamnXMQGCUTsDgkb3B5nWh1SM3ys9ZTdBYxfT0YZ4hD71SiNsmP_57yY3cSA_XZSudz587DFWAkYBH5IEUcDKbM6ZqYFAXntP-e4x3cjkkcSZc0FP9Zq5fRV7fubCUQD59MqS-gyynCszg64eJYxEWBwQLSDcQMp5wg1GWQpcYPPvMZmKduJL5cyrlerGymjGHL6t1NxFCi7ZMZ9sB1TqgngDNDzaSYJC7H6wLco-Vd-8jqgWl5oe9lA7LaHlyfPTkaFjiYdV2RocqLmYTWmWIA32m1nXKACxDP7FZjJEN-fU-QbVdhNUqIkr3QJCYvi5m3CSkMA
+Sorry, something went wrong.
+We're working on getting this fixed as soon as we can.
+
 ### Facebook Login in Action [175]
 ### Creating Admin and Employee Accounts [176]
 ### Session Bug [177]
