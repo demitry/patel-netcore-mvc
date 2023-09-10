@@ -34,10 +34,15 @@ namespace BulkyBookWeb.Areas.Customer.Controllers
 
         public IActionResult Minus(int cartId)
         {
-            var cartFromDb = _unitOfWork.ShoppingCart.Get(c => c.Id == cartId);
+            var cartFromDb = _unitOfWork.ShoppingCart.Get(c => c.Id == cartId, tracked: true);
 
             if (cartFromDb.Count <= 1)
             {
+                int cartItemsCount = _unitOfWork.ShoppingCart
+                    .GetAll(u => u.ApplicationUserId == cartFromDb.ApplicationUserId).Count() - 1;
+                HttpContext.Session.SetInt32(AppSession.ShoppingCart, cartItemsCount); // Count() - 1 because on the next line we will remove this record
+
+
                 //remove from cart
                 _unitOfWork.ShoppingCart.Remove(cartFromDb);
             }
@@ -53,7 +58,12 @@ namespace BulkyBookWeb.Areas.Customer.Controllers
 
         public IActionResult Remove(int cartId)
         {
-            var cartFromDb = _unitOfWork.ShoppingCart.Get(c => c.Id == cartId);
+            var cartFromDb = _unitOfWork.ShoppingCart.Get(c => c.Id == cartId, tracked: true);
+            
+            int cartItemsCount = _unitOfWork.ShoppingCart
+                .GetAll(u => u.ApplicationUserId == cartFromDb.ApplicationUserId).Count() - 1;
+            HttpContext.Session.SetInt32(AppSession.ShoppingCart, cartItemsCount); // Count() - 1 because on the next line we will remove this record
+
             _unitOfWork.ShoppingCart.Remove(cartFromDb);
             _unitOfWork.Save();
             return RedirectToAction(nameof(Index));

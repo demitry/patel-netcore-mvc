@@ -219,7 +219,10 @@ GitHub Code: https://github.com/bhrugen/Bulky_MVC
         - [Authorization [168]](#authorization-168)
         - [Session in .NET Core [169]](#session-in-net-core-169)
         - [Remove from Session and Bug [170]](#remove-from-session-and-bug-170)
+            - [Login](#login)
+            - [Remove and Minus Action Methods](#remove-and-minus-action-methods)
         - [Bug Solution and Logout [171]](#bug-solution-and-logout-171)
+            - [Logout: Clear Session](#logout-clear-session)
         - [Create View Component [172]](#create-view-component-172)
         - [View Component in Action [173]](#view-component-in-action-173)
         - [Facebook Social Login [174]](#facebook-social-login-174)
@@ -4596,7 +4599,92 @@ else
 ```
 
 ### Remove from Session and Bug [170]
+
+1) Now cart On UI is 0 while login
+2) + Need clear on logout, 
+3) + decrement on delete from shopping cart
+
+#### Login
+
+```cs
+        public IActionResult Index()
+        {
+            var claimsIdentity = (ClaimsIdentity)User.Identity;
+            var claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
+
+            if(claim != null) // null if user is not logged in
+            {
+                var userId = claim.Value;
+                int cartItemsCount = _unitOfWork.ShoppingCart.GetAll(c => c.ApplicationUserId == userId).Count();
+                HttpContext.Session.SetInt32(AppSession.ShoppingCart, cartItemsCount);
+            }
+
+            IEnumerable<Product> productList = _unitOfWork.Product
+                .GetAll(includeProperties: "Category");
+            
+            return View(productList);
+        }
+```
+
+#### Remove() and Minus() Action Methods
+
+```cs
+        public IActionResult Remove(int cartId)
+        {
+            var cartFromDb = _unitOfWork.ShoppingCart.Get(c => c.Id == cartId);
+            
+            int cartItemsCount = _unitOfWork.ShoppingCart
+                .GetAll(u => u.ApplicationUserId == cartFromDb.ApplicationUserId).Count() - 1;
+            HttpContext.Session.SetInt32(AppSession.ShoppingCart, cartItemsCount); // Count() - 1 because on the next line we will remove this record
+
+            _unitOfWork.ShoppingCart.Remove(cartFromDb);
+            _unitOfWork.Save();
+            return RedirectToAction(nameof(Index));
+        }
+```
+
 ### Bug Solution and Logout [171]
+
+#### Bug AsNoTracking() so pass tracked true
+```
+System.InvalidOperationException: 'The instance of entity type 'ShoppingCart' cannot be tracked because another instance with the same key value for {'Id'} is already being tracked. When attaching existing entities, ensure that only one entity instance with a given key value is attached. Consider using 'DbContextOptionsBuilder.EnableSensitiveDataLogging' to see the conflicting key values.'
+```
+
+Remember?
+```cs
+        public T Get(Expression<Func<T, bool>> filter, string? includeProperties = null, bool tracked = false)
+        {
+            IQueryable<T> query = tracked ? dbSet : dbSet.AsNoTracking();
+
+            query = query.Where(filter);
+
+            IncludePropertiesForDbSet(ref query, includeProperties);
+
+            return query.FirstOrDefault();
+        }
+```
+
+so use
+
+```cs
+var cartFromDb = _unitOfWork.ShoppingCart.Get(c => c.Id == cartId, tracked: true);
+```
+
+#### Logout: Clear Session
+
+For Logout in OnPost() Logout.cshtml.cs add HttpContext.Session.Clear():
+
+Bulky\BulkyWeb\Areas\Identity\Pages\Account\Logout.cshtml.cs
+
+```cs
+        public async Task<IActionResult> OnPost(string returnUrl = null)
+        {
+            await _signInManager.SignOutAsync();
+
+            HttpContext.Session.Clear();
+...
+```
+
 ### Create View Component [172]
 ### View Component in Action [173]
 ### Facebook Social Login [174]
