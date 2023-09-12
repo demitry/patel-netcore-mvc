@@ -239,6 +239,8 @@ namespace BulkyBookWeb.Areas.Customer.Controllers
                     _unitOfWork.OrderHeader.UpdateStatus(orderId, OrderStatus.Approved, PaymentStatus.Approved);
                     _unitOfWork.Save();
                 }
+
+                HttpContext.Session.Clear();
             }
 
             // Clean the Shopping cart

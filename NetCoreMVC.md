@@ -4823,6 +4823,14 @@ If Admin creates the account, do not sign in
 
 ### Session Bug [177]
 
+When order is placed - the card sahould be clean 
+
+And also the session should be cleared
+
+```cs
+HttpContext.Session.Clear();
+```
+
 ## Section 14: Deployment & Email
 ### DBInitializer [178]
 ### DBInitializer Implementation [179]
