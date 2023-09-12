@@ -6,8 +6,10 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BulkyBook.DataAccess.DbInitializer
 {
-    internal class DbInitializer : IDbInitializer
+    public class DbInitializer : IDbInitializer
     {
+        private const string AdminLogin = "dpoluektov@tutanota.com";
+
         private readonly UserManager<IdentityUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly AppDbContext _db;
@@ -44,10 +46,13 @@ namespace BulkyBook.DataAccess.DbInitializer
 
 
                 // If roles are not created, then we will create admin user as well
+
+                
+
                 _userManager.CreateAsync(new ApplicationUser
                 {
-                    UserName = "dpoluektov@tutanota.com",
-                    Email = "dpoluektov@tutanota.com",
+                    UserName = AdminLogin,
+                    Email = AdminLogin,
                     Name = "Admin Admin",
                     PhoneNumber = "0679307850",
                     StreetAddress = "Main 123 Ave",
@@ -57,7 +62,7 @@ namespace BulkyBook.DataAccess.DbInitializer
                 }, "Admin123*").GetAwaiter().GetResult(); // I know, I know, OK, it is OK for the test App
 
 
-                ApplicationUser user = _db.ApplicationUsers.FirstOrDefault(u => u.Email == "admin@dotnetmastery.com");
+                ApplicationUser user = _db.ApplicationUsers.FirstOrDefault(u => u.Email == AdminLogin);
                 _userManager.AddToRoleAsync(user, AppRole.Admin).GetAwaiter().GetResult();
 
             }

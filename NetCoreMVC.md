@@ -4932,6 +4932,13 @@ void SeedDatabase()
 ```
 
 ### DBInitializer in Action [180]
+
+Test DbInitializer by renaming the Db in the CN string to "Bulky1"
+
+```
+"DefaultConnection": "Server=.;Database=Bulky1;Trusted_Connection=True;TrustServerCertificate=True"
+```
+
 ### SendGrid Email Setup [181]
 ### SendGrid in Action [182]
 ### Create Azure SQL Server and Database [183]
