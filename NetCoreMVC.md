@@ -4800,6 +4800,27 @@ builder.Services.AddAuthentication().AddFacebook(options =>
 ### Facebook Login in Action [175]
 
 ### Creating Admin and Employee Accounts [176]
+
+Admin and Employee should not be created from the site.
+
+=> Add them to the content management whukle Admin logs in.
+
+Don't want FB register while logged in as admin
+
+If Admin creates the account, do not sign in
+
+```cs
+    // If Admin creates the account, do not sign in
+    if(User.IsInRole(AppRole.Admin) || User.IsInRole(AppRole.Employee))
+    {
+        TempData["success"] = "New User created Successfully";
+    }
+    else
+    {
+        await _signInManager.SignInAsync(user, isPersistent: false);
+    }
+```
+
 ### Session Bug [177]
 
 ## Section 14: Deployment & Email

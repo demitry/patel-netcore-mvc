@@ -201,7 +201,16 @@ namespace BulkyBookWeb.Areas.Identity.Pages.Account
                     }
                     else
                     {
-                        await _signInManager.SignInAsync(user, isPersistent: false);
+                        // If Admin creates the account, do not sign in
+                        if(User.IsInRole(AppRole.Admin) || User.IsInRole(AppRole.Employee))
+                        {
+                            TempData["success"] = "New User created Successfully";
+                        }
+                        else
+                        {
+                            await _signInManager.SignInAsync(user, isPersistent: false);
+                        }
+
                         return LocalRedirect(returnUrl);
                     }
                 }
