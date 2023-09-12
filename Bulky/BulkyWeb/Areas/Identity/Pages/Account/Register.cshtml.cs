@@ -122,15 +122,6 @@ namespace BulkyBookWeb.Areas.Identity.Pages.Account
 
         public async Task OnGetAsync(string returnUrl = null)
         {
-            // Hacky way
-            if (!_roleManager.RoleExistsAsync(AppRole.Admin).GetAwaiter().GetResult())
-            {
-                _roleManager.CreateAsync(new IdentityRole(AppRole.Admin)).GetAwaiter().GetResult();
-                _roleManager.CreateAsync(new IdentityRole(AppRole.Company)).GetAwaiter().GetResult();
-                _roleManager.CreateAsync(new IdentityRole(AppRole.Customer)).GetAwaiter().GetResult();
-                _roleManager.CreateAsync(new IdentityRole(AppRole.Employee)).GetAwaiter().GetResult();
-            }
-
             Input = new()
             {
                 RoleList = _roleManager.Roles
