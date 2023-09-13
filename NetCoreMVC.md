@@ -235,6 +235,9 @@ GitHub Code: https://github.com/bhrugen/Bulky_MVC
         - [DBInitializer Implementation [179]](#dbinitializer-implementation-179)
         - [DBInitializer in Action [180]](#dbinitializer-in-action-180)
         - [SendGrid Email Setup [181]](#sendgrid-email-setup-181)
+            - [SendGrid](#sendgrid)
+            - [Why sould I use domain email?](#why-sould-i-use-domain-email)
+            - [Bulky Code](#bulky-code)
         - [SendGrid in Action [182]](#sendgrid-in-action-182)
         - [Create Azure SQL Server and Database [183]](#create-azure-sql-server-and-database-183)
         - [Downgrade to Net 7 [184]](#downgrade-to-net-7-184)
@@ -4940,7 +4943,92 @@ Test DbInitializer by renaming the Db in the CN string to "Bulky1"
 ```
 
 ### SendGrid Email Setup [181]
+
+#### SendGrid
+
+Need Domain e-mail for Prod
+
+SendGrid will not work with gmail ang yahoo
+
+https://sendgrid.com/
+
+https://sendgrid.com/pricing/
+
+SendGrid
+
+Create Api Key, Secret, and add few strings of code.
+
+After the registration confirmation .NET Identity, table AspNetUsers EmailConfirmed = true
+
++ Add After place and pay order email
+
+#### Why sould I use domain email?
+
+https://docs.sendgrid.com/ui/sending-email/dmarc
+
+How DMARC Applies to a Sender Identity
+When sending email via a service provider such as SendGrid, you will be asked to authenticate a domain or verify a Single Sender. However, what happens if you verify a Sender Identity using a gmail.com, yahoo.com, aol.com, or a similar address? In other words, what happens if your Envelope From address is sender@gmail.com?
+
+As you can guess, major mail providers such as Google, Microsoft, and others implement DMARC to protect their customers and prevent abuse. Let's use Yahoo and the email address sender@yahoo.com, as an example.
+
+Yahoo has SPF, DKIM, and DMARC policies. Yahoo’s DNS records will approve domains such as yahoo.com and the IP addresses Yahoo controls. SendGrid domains and IP addresses will not be included in Yahoo's approved domains and IP addresses.
+
+When you send a message from sender@yahoo.com to customer@gmail.com using SendGrid, a Gmail server will receive the message. Gmail will then look up Yahoo’s SPF and DKIM records because yahoo.com is the domain in the return-path message header.
+
+The Gmail receiving server will determine that the message was sent using a SendGrid IP address and was not signed by a Yahoo private key. Both SPF and DKIM will fail, causing Gmail to employ the DMARC failure policy specified by Yahoo.
+
+Essentially, Gmail, or any other receiving email server, has no way of knowing whether you are using SendGrid to send email for legitimate purposes or spoofing Yahoo's domain.
+
+This is why SendGrid recommends authenticating a domain that **you do control**. The SendGrid domain authentication process provides CNAME records that you place on your own domain to approve SendGrid's IP addresses. SendGrid will automatically manage your SPF and DKIM records, protecting your domain’s reputation.
+
 ### SendGrid in Action [182]
+
+#### Bulky Code
+
+```
+  "SendGrid": {
+    "SecretKey": ...
+```
+
+```cs
+using Microsoft.AspNetCore.Identity.UI.Services;
+using Microsoft.Extensions.Configuration;
+using SendGrid.Helpers.Mail;
+using SendGrid;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace BulkyBook.Utility {
+    public class EmailSender : IEmailSender {
+        public string SendGridSecret { get; set; }
+
+        public EmailSender(IConfiguration _config) {
+            SendGridSecret = _config.GetValue<string>("SendGrid:SecretKey");
+        }
+
+        public Task SendEmailAsync(string email, string subject, string htmlMessage) 
+        {
+            var client = new SendGridClient(SendGridSecret);
+
+            var from = new EmailAddress("hello@dotnetmastery.com", "Bulk Book");
+            var to = new EmailAddress(email);
+            var message = MailHelper.CreateSingleEmail(from, to, subject, "", htmlMessage);
+
+            return client.SendEmailAsync(message);
+        }
+    }
+}
+
+```
+Cart Controller - New Order
+```cs
+            _emailSender.SendEmailAsync(orderHeader.ApplicationUser.Email, "New Order - Bulky Book",
+                $"<p>New Order Created - {orderHeader.Id}</p>");
+```
+
 ### Create Azure SQL Server and Database [183]
 ### Downgrade to Net 7 [184]
 ### Azure Production Deployment [185]
