@@ -265,6 +265,9 @@
         - [Microsoft Social Login [210]](#microsoft-social-login-210)
         - [Upgrade .NET Version [211]](#upgrade-net-version-211)
         - [Deploy Application to Azure using Visual Studio [212]](#deploy-application-to-azure-using-visual-studio-212)
+    - [Fix TypeError: $....DataTable is not a function](#fix-typeerror-datatable-is-not-a-function)
+        - [CAUSE](#cause)
+        - [SOLUTION](#solution)
 
 <!-- /TOC -->
 
@@ -5203,6 +5206,79 @@ if LockoutEnd == future date => user is locked till that date
 ```
 
 ### Lock Unlock in Action [193]
+
+```js
+var dataTable;
+
+$(document).ready(function () {
+    loadDataTable();
+});
+
+function loadDataTable() {
+    dataTable = $('#tblData').DataTable({
+        "ajax": { url: '/admin/user/getall' },
+        "columns": [
+            { "data": "name", "width": "15%" },
+            { "data": "email", "width": "15%" },
+            { "data": "phoneNumber", "width": "15%" },
+            { "data": "company.name", "width": "15%" },
+            { "data": "role", "width": "15%" },
+            {
+                data: { id: "id", lockoutEnd: "lockoutEnd" },
+                "render": function (data) {
+                    var today = new Date().getTime();
+                    var lockout = new Date(data.lockoutEnd).getTime();
+
+                    if (lockout > today) {
+                        return `
+                        <div class="text-center">
+                             <a onclick=LockUnlock('${data.id}') class="btn btn-danger text-white" style="cursor:pointer; width:100px;">
+                                    <i class="bi bi-lock-fill"></i>  Lock
+                                </a> 
+                                <a class="btn btn-danger text-white" style="cursor:pointer; width:150px;">
+                                     <i class="bi bi-pencil-square"></i> Permission
+                                </a>
+                        </div>
+                    `
+                    }
+                    else {
+                        return `
+                        <div class="text-center">
+                              <a onclick=LockUnlock('${data.id}') class="btn btn-success text-white" style="cursor:pointer; width:100px;">
+                                    <i class="bi bi-unlock-fill"></i>  UnLock
+                                </a>
+                                <a class="btn btn-danger text-white" style="cursor:pointer; width:150px;">
+                                     <i class="bi bi-pencil-square"></i> Permission
+                                </a>
+                        </div>
+                    `
+                    }
+
+
+                },
+                "width": "25%"
+            }
+        ]
+    });
+}
+
+
+function LockUnlock(id) {
+    $.ajax({
+        type: "POST",
+        url: '/Admin/User/LockUnlock',
+        data: JSON.stringify(id),
+        contentType: "application/json",
+        success: function (data) {
+            if (data.success) {
+                toastr.success(data.message);
+                dataTable.ajax.reload();
+            }
+        }
+    });
+}
+```
+
 ### Assignment 4 - User Role [194]
 ### Assignment 4 Solution Part 1 - View Code [195]
 ### Assignment 4 Solution Part 2 - Role Logic [196]
@@ -5224,3 +5300,25 @@ if LockoutEnd == future date => user is locked till that date
 ### Microsoft Social Login [210]
 ### Upgrade .NET Version [211]
 ### Deploy Application to Azure using Visual Studio [212]
+
+
+## Fix TypeError: $(...).DataTable is not a function
+
+### CAUSE
+There could be multiple reasons for this error.
+- jQuery DataTables library is missing.
+- jQuery library is loaded after jQuery DataTables.
+- Multiple versions of jQuery library is loaded.
+
+### SOLUTION
+- Include only one version of jQuery library version 1.7 or newer before jQuery DataTables.
+
+For example:
+```html
+<script src="js/jquery.min.js" type="text/javascript"></script>
+<script src="js/jquery.dataTables.min.js" type="text/javascript"></script>
+```
+
+See jQuery DataTables: Common JavaScript console errors for more information on this and other common console errors.
+
+https://www.gyrocode.com/articles/jquery-datatables-common-javascript-console-errors/#typeerror-datatable-is-not-a-function
