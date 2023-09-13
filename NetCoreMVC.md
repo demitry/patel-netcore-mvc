@@ -1,11 +1,5 @@
 # Complete guide to ASP.NET Core MVC (.NET 8) [E-Commerce App]
 
-- ... - 52 - MVC project
-- 53 - ... - Razor Pages
-
-GitHub Code: https://github.com/bhrugen/Bulky_MVC
-
-
 <!-- TOC -->
 
 - [Complete guide to ASP.NET Core MVC .NET 8 [E-Commerce App]](#complete-guide-to-aspnet-core-mvc-net-8-e-commerce-app)
@@ -237,8 +231,8 @@ GitHub Code: https://github.com/bhrugen/Bulky_MVC
         - [SendGrid Email Setup [181]](#sendgrid-email-setup-181)
             - [SendGrid](#sendgrid)
             - [Why sould I use domain email?](#why-sould-i-use-domain-email)
-            - [Bulky Code](#bulky-code)
         - [SendGrid in Action [182]](#sendgrid-in-action-182)
+            - [Bulky Code](#bulky-code)
         - [Create Azure SQL Server and Database [183]](#create-azure-sql-server-and-database-183)
         - [Downgrade to Net 7 [184]](#downgrade-to-net-7-184)
         - [Azure Production Deployment [185]](#azure-production-deployment-185)
@@ -275,6 +269,11 @@ GitHub Code: https://github.com/bhrugen/Bulky_MVC
 <!-- /TOC -->
 
 ## Section 1: Welcome & Getting Started
+
+- ... - 52 - MVC project
+- 53 - ... - Razor Pages
+
+GitHub Code: https://github.com/bhrugen/Bulky_MVC
 
 ### Course Overview [11]
 
@@ -4914,7 +4913,6 @@ namespace BulkyBook.DataAccess.DbInitializer
 
 ```
 
-
 Program:
 
 ```cs
@@ -5025,7 +5023,7 @@ namespace BulkyBook.Utility {
 ```
 Cart Controller - New Order
 ```cs
-            _emailSender.SendEmailAsync(orderHeader.ApplicationUser.Email, "New Order - Bulky Book",
+    _emailSender.SendEmailAsync(orderHeader.ApplicationUser.Email, "New Order - Bulky Book",
                 $"<p>New Order Created - {orderHeader.Id}</p>");
 ```
 
@@ -5037,8 +5035,82 @@ Cart Controller - New Order
 ### Facebook Url Error [188]
 
 ## Section 15: User Management
+
 ### Display User List [189]
+
+```cs
+using BulkyBook.DataAccess.Data;
+using BulkyBook.Models.Models;
+using BulkyBook.Utility.Constants;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+
+namespace BulkyBookWeb.Areas.Admin.Controllers
+{
+    [Area("Admin")]
+    [Authorize(Roles = AppRole.Admin)]
+    public class UserController : Controller
+    {
+        private readonly AppDbContext _db;
+        public UserController(AppDbContext db)
+        {
+            _db = db;
+        }
+        public IActionResult Index()
+        {
+            return View();
+        }
+
+        #region API CALLS
+
+        [HttpGet]
+        public IActionResult GetAll()
+        {
+            List<ApplicationUser> objUserList = _db.ApplicationUsers.Include(u => u.Company).ToList();
+            foreach (var user in objUserList)
+            {
+                if(user.Company == null)
+                {
+                    user.Company = new Company() { Name = string.Empty };
+                }
+            }
+            return Json(new { data = objUserList });
+        }
+
+        [HttpDelete]
+        public IActionResult Delete(int? id)
+        {
+            return Json(new { success = true, message = "Delete Successful" });
+        }
+
+        #endregion
+    }
+}
+```
+
 ### Display Company Name [190]
+
+Fix:
+
+We include the Company, which could be null, so make the Company nullable, and add the check
+
+```cs
+        [HttpGet]
+        public IActionResult GetAll()
+        {
+            List<ApplicationUser> objUserList = _db.ApplicationUsers.Include(u => u.Company).ToList();
+            foreach (var user in objUserList)
+            {
+                if(user.Company == null)
+                {
+                    user.Company = new Company() { Name = string.Empty };
+                }
+            }
+            return Json(new { data = objUserList });
+        }
+```
+
 ### Display Roles [191]
 ### Lock Unlock Action Method [192]
 ### Lock Unlock in Action [193]
