@@ -5112,6 +5112,58 @@ We include the Company, which could be null, so make the Company nullable, and a
 ```
 
 ### Display Roles [191]
+
+How to Display a role ?
+
+SELECT * FROM [Bulky].[dbo].[AspNetRoles]
+
+```
+Id	    Name	NormalizedName	ConcurrencyStamp
+0693...	Admin	    ADMIN	    NULL
+b453...	Company	    COMPANY	    NULL
+c2e4...	Customer	CUSTOMER	NULL
+c545...	Employee	EMPLOYEE	NULL
+```
+
+SELECT * FROM [Bulky].[dbo].[AspNetUserRoles]
+
+```
+UserId	        RoleId
+1c7f02...20dd8	0693...bd9d2
+4a7dbf...ea3a9	0693...bd9d2
+```
+
+Add not mapped field to not save it to the database
+
+```cs
+        [NotMapped]
+        public string? Role { get; set; }
+```
+
+User Controller - get user roles
+
+```cs
+        [HttpGet]
+        public IActionResult GetAll()
+        {
+            List<ApplicationUser> objUserList = _db.ApplicationUsers.Include(u => u.Company).ToList();
+
+            var userRoles = _db.UserRoles.ToList();
+            var roles = _db.Roles.ToList();
+
+            foreach (var user in objUserList)
+            {
+                var roleId = userRoles.FirstOrDefault(u => u.UserId == user.Id).RoleId;
+                user.Role = roles.FirstOrDefault(u => u.Id == roleId).Name;
+                if (user.Company == null)
+                {
+                    user.Company = new Company() { Name = string.Empty };
+                }
+            }
+            return Json(new { data = objUserList });
+        }
+```
+
 ### Lock Unlock Action Method [192]
 ### Lock Unlock in Action [193]
 ### Assignment 4 - User Role [194]
