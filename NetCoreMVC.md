@@ -243,7 +243,7 @@
         - [Display User List [189]](#display-user-list-189)
         - [Display Company Name [190]](#display-company-name-190)
         - [Display Roles [191]](#display-roles-191)
-        - [Lock Unlock Action Method [192]](#lock-unlock-action-method-192)
+        - [Lock and Unlock User Account - Action Method [192]](#lock-and-unlock-user-account---action-method-192)
         - [Lock Unlock in Action [193]](#lock-unlock-in-action-193)
         - [Assignment 4 - User Role [194]](#assignment-4---user-role-194)
         - [Assignment 4 Solution Part 1 - View Code [195]](#assignment-4-solution-part-1---view-code-195)
@@ -5164,7 +5164,44 @@ User Controller - get user roles
         }
 ```
 
-### Lock Unlock Action Method [192]
+### Lock and Unlock User Account - Action Method [192]
+
+SELECT * FROM [Bulky].[dbo].[AspNetUsers]
+- LockoutEnabled = 1
+- LockoutEnd = NULL
+
+if LockoutEnd == future date => user is locked till that date
+
+```cs
+        [HttpPost]
+        public IActionResult LockUnlock([FromBody] string id)
+        {
+
+            var objFromDb = _db.ApplicationUsers.FirstOrDefault(u => u.Id == id);
+            if (objFromDb == null)
+            {
+                return Json(new { success = false, message = "Error while Locking/Unlocking" });
+            }
+
+            bool userLocked = objFromDb.LockoutEnd != null && objFromDb.LockoutEnd > DateTime.Now;
+            if (userLocked)
+            {
+                //user is currently locked and we need to unlock them
+                objFromDb.LockoutEnd = DateTime.Now;
+            }
+            else
+            {
+                objFromDb.LockoutEnd = DateTime.Now.AddYears(1000);
+            }
+            
+            _db.SaveChanges();
+
+            string retMessage = $"User account was {(userLocked ? "un" : string.Empty)}locked successfully";
+            
+            return Json(new { success = true, message = retMessage });
+        }
+```
+
 ### Lock Unlock in Action [193]
 ### Assignment 4 - User Role [194]
 ### Assignment 4 Solution Part 1 - View Code [195]
