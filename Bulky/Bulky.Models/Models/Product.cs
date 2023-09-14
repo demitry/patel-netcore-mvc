@@ -46,6 +46,7 @@ namespace BulkyBook.Models.Models
         [ValidateNever]
         public Category Category { get; set; } //We need a navigation Property to Category
 
-
+        [ValidateNever]
+        public List<ProductImage> ProductImages { get; set; }
     }
 }
