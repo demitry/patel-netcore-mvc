@@ -5340,7 +5340,11 @@ function LockUnlock(id) {
 ```
 
 ## Section 16: Multiple Product Image
+
 ### Next Task [197]
+
+He recreates all migrationsdue to the MS bug
+
 ### Remove ImageUrl from Product [198]
 ### Product Image Table [199]
 ### Add Product Image Repository [200]
@@ -5354,7 +5358,9 @@ function LockUnlock(id) {
 ### Assignment 5 - User Controller [208]
 ### Assignment 5 Solution - User Controller [209]
 ### Microsoft Social Login [210]
+
 ### Upgrade .NET Version [211]
+
 ### Deploy Application to Azure using Visual Studio [212]
 
 

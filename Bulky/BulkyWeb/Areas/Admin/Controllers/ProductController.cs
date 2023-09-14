@@ -60,6 +60,7 @@ namespace BulkyBookWeb.Areas.Admin.Controllers
             string wwwRootPath = _webHostEnvironment.WebRootPath;
             if (file != null)
             {
+                /*
                 string fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
                 string productPath = Path.Combine(wwwRootPath, ProductImagePath);
                 
@@ -81,6 +82,7 @@ namespace BulkyBookWeb.Areas.Admin.Controllers
                 }
 
                 productViewModel.Product.ImageUrl = "\\" + ProductImagePath + "\\" + fileName;
+                */
             }
         }
 
@@ -138,12 +140,14 @@ namespace BulkyBookWeb.Areas.Admin.Controllers
                 return Json(new { success = false, message = "Error while deleting" });
             }
 
+            /*
             var oldImagePath = Path.Combine(_webHostEnvironment.WebRootPath, productToBeDeleted.ImageUrl.TrimStart('\\'));
 
             if (System.IO.File.Exists(oldImagePath))
             {
                 System.IO.File.Delete(oldImagePath);
             }
+            */
 
             _unitOfWork.Product.Remove(productToBeDeleted);
             _unitOfWork.Save();

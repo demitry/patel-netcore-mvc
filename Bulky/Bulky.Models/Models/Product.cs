@@ -45,8 +45,7 @@ namespace BulkyBook.Models.Models
         [ForeignKey("CategoryId")]
         [ValidateNever]
         public Category Category { get; set; } //We need a navigation Property to Category
-        
-        [ValidateNever]
-        public string ImageUrl { get; set; } = string.Empty;
+
+
     }
 }
