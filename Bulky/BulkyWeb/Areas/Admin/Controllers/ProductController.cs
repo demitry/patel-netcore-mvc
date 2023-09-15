@@ -47,37 +47,34 @@ namespace BulkyBookWeb.Areas.Admin.Controllers
             else
             {
                 //update
-                productViewModel.Product = _unitOfWork.Product.Get(u => u.Id == id);
+                productViewModel.Product = _unitOfWork.Product.Get(u => u.Id == id, includeProperties: "ProductImages");
                 return View(productViewModel);
             }
 
         }
 
-        private const string ProductImagePath = @"images\product\product-";
-
         void SaveOrUpdateProductImages(ref ProductViewModel productViewModel, List<IFormFile?> files)
         {
             string wwwRootPath = _webHostEnvironment.WebRootPath;
+            string productPath = @"images\products\product-" + productViewModel.Product.Id;
+            string finalPath = Path.Combine(wwwRootPath, productPath);
+
+            if (!Directory.Exists(finalPath))
+                Directory.CreateDirectory(finalPath);
+
             if (files != null)
             {
-                string productPath = $"{Path.Combine(wwwRootPath, ProductImagePath)}{productViewModel.Product.Id}";
-                if (!Directory.Exists(productPath))
-                {
-                    Directory.CreateDirectory(productPath);
-                }
-
                 foreach (IFormFile file in files)
                 {
                     string fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
-                    string fullFilePath = Path.Combine(productPath, fileName);
-                    using (var fileStream = new FileStream(fullFilePath, FileMode.Create))
+                    using (var fileStream = new FileStream(Path.Combine(finalPath, fileName), FileMode.Create))
                     {
                         file.CopyTo(fileStream);
                     }
 
-                    ProductImage productImage = new ProductImage
+                    ProductImage productImage = new()
                     {
-                        ImageUrl = $"{productPath}\\{fileName}",
+                        ImageUrl = @"\" + productPath + @"\" + fileName,
                         ProductId = productViewModel.Product.Id,
                     };
 
