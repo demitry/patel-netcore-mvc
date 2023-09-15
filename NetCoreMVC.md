@@ -5356,8 +5356,55 @@ He recreates all migrationsdue to the MS bug
 / images / we will create folder for each product
 
 ### Demo - Upload Images [202]
+
 ### Display Image on Update Product Page [203]
+
 ### Delete Image [204]
+
+```cs
+@if (Model.Product.ProductImages != null)
+{
+    foreach (var image in Model.Product.ProductImages)
+    {
+        <div class="border p-1 m-2 text-center">
+            <img src="@image.ImageUrl" width="100%" style="border-radius:5px; border:1px solid #bbb9b9" />
+            <a asp-action="DeleteImage" class="btn btn-danger" asp-route-imageId="@image.Id">
+                <i class="bi bi-trash-fill"></i> Delete
+            </a>
+        </div>
+    }
+}
+```
+
+```cs
+        public IActionResult DeleteImage(int imageId)
+        {
+            var imageToBeDeleted = _unitOfWork.ProductImage.Get(u => u.Id == imageId);
+            int productId = imageToBeDeleted.ProductId;
+            if (imageToBeDeleted != null)
+            {
+                if (!string.IsNullOrEmpty(imageToBeDeleted.ImageUrl))
+                {
+                    var oldImagePath =
+                                   Path.Combine(_webHostEnvironment.WebRootPath,
+                                   imageToBeDeleted.ImageUrl.TrimStart('\\'));
+
+                    if (System.IO.File.Exists(oldImagePath))
+                    {
+                        System.IO.File.Delete(oldImagePath);
+                    }
+                }
+
+                _unitOfWork.ProductImage.Remove(imageToBeDeleted);
+                _unitOfWork.Save();
+
+                TempData["success"] = "Image Deleted successfully";
+            }
+
+            return RedirectToAction(nameof(Upsert), new { id = productId });
+        }
+```
+
 ### Delete Product [205]
 ### Display Image in Shopping Cart [206]
 ### Bootstrap Carousel [207]
