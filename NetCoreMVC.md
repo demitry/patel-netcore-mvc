@@ -5406,6 +5406,28 @@ He recreates all migrationsdue to the MS bug
 ```
 
 ### Delete Product [205]
+
+```cs
+        private string GetProductPath(int? productId) => @"images\products\product-" + productId;
+        
+        private void DeleteImagesForProduct(int? id)
+        {
+            string productPath = GetProductPath(id);
+            string finalPath = Path.Combine(_webHostEnvironment.WebRootPath, productPath);
+
+            if (Directory.Exists(finalPath))
+            {
+                string[] filePaths = Directory.GetFiles(finalPath);
+                foreach (string filePath in filePaths)
+                {
+                    System.IO.File.Delete(filePath);
+                }
+
+                Directory.Delete(finalPath);
+            }
+        }
+```
+
 ### Display Image in Shopping Cart [206]
 ### Bootstrap Carousel [207]
 ### Assignment 5 - User Controller [208]
