@@ -5352,6 +5352,9 @@ He recreates all migrationsdue to the MS bug
 ### Add Product Image Repository [200]
 
 ### Upload Images on Product Upsert [201]
+
+/ images / we will create folder for each product
+
 ### Demo - Upload Images [202]
 ### Display Image on Update Product Page [203]
 ### Delete Image [204]

@@ -39,7 +39,7 @@ namespace BulkyBookWeb.Areas.Admin.Controllers
                     Value = u.Id.ToString()
                 })
             };
-            if(id == null || id == 0)
+            if (id == null || id == 0)
             {
                 //create
                 return View(productViewModel);
@@ -50,49 +50,54 @@ namespace BulkyBookWeb.Areas.Admin.Controllers
                 productViewModel.Product = _unitOfWork.Product.Get(u => u.Id == id);
                 return View(productViewModel);
             }
-            
+
         }
 
-        private const string ProductImagePath = @"images\product";
+        private const string ProductImagePath = @"images\product\product-";
 
-        void SaveOrUpdateProductImage(ref ProductViewModel productViewModel, IFormFile? file)
+        void SaveOrUpdateProductImages(ref ProductViewModel productViewModel, List<IFormFile?> files)
         {
             string wwwRootPath = _webHostEnvironment.WebRootPath;
-            if (file != null)
+            if (files != null)
             {
-                /*
-                string fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
-                string productPath = Path.Combine(wwwRootPath, ProductImagePath);
-                
-                if(!string.IsNullOrEmpty(productViewModel.Product.ImageUrl))
+                string productPath = $"{Path.Combine(wwwRootPath, ProductImagePath)}{productViewModel.Product.Id}";
+                if (!Directory.Exists(productPath))
                 {
-                    // delete the old image
-                    var oldImagePath = Path.Combine(wwwRootPath, productViewModel.Product.ImageUrl.TrimStart('\\'));
+                    Directory.CreateDirectory(productPath);
+                }
 
-                    if (System.IO.File.Exists(oldImagePath))
+                foreach (IFormFile file in files)
+                {
+                    string fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
+                    string fullFilePath = Path.Combine(productPath, fileName);
+                    using (var fileStream = new FileStream(fullFilePath, FileMode.Create))
                     {
-                        System.IO.File.Delete(oldImagePath);
+                        file.CopyTo(fileStream);
                     }
+
+                    ProductImage productImage = new ProductImage
+                    {
+                        ImageUrl = $"{productPath}\\{fileName}",
+                        ProductId = productViewModel.Product.Id,
+                    };
+
+                    if (productViewModel.Product.ProductImages == null)
+                        productViewModel.Product.ProductImages = new List<ProductImage>();
+
+                    productViewModel.Product.ProductImages.Add(productImage);
                 }
 
-                string fullFilePath = Path.Combine(productPath, fileName);
-                using (var fileStream = new FileStream(fullFilePath, FileMode.Create))
-                {
-                    file.CopyTo(fileStream);
-                }
-
-                productViewModel.Product.ImageUrl = "\\" + ProductImagePath + "\\" + fileName;
-                */
+                _unitOfWork.Product.Update(productViewModel.Product);
+                _unitOfWork.Save();
             }
         }
 
         [HttpPost]
-        public IActionResult Upsert(ProductViewModel productViewModel, IFormFile? file) // remember enctype="multipart/form-data" ?
+        public IActionResult Upsert(ProductViewModel productViewModel, List<IFormFile?> files) // remember enctype="multipart/form-data" ?
         {
             if (ModelState.IsValid)
             {
-                SaveOrUpdateProductImage(ref productViewModel, file);
-
+                // We have to create a new product, so we will have and id, and can create a new folder 
                 if (productViewModel.Product.Id == 0)
                 {
                     _unitOfWork.Product.Add(productViewModel.Product);
@@ -101,14 +106,17 @@ namespace BulkyBookWeb.Areas.Admin.Controllers
                 {
                     _unitOfWork.Product.Update(productViewModel.Product);
                 }
-                
+
                 _unitOfWork.Save();
+
+                SaveOrUpdateProductImages(ref productViewModel, files);
+
                 TempData["success"] = "Product created successfully";
                 return RedirectToAction(nameof(Index));
             }
             else
             {
-                productViewModel.CategoryList = 
+                productViewModel.CategoryList =
                     _unitOfWork.Category.GetAll().Select(u => new SelectListItem()
                     {
                         Text = u.Name,
@@ -134,12 +142,11 @@ namespace BulkyBookWeb.Areas.Admin.Controllers
         public IActionResult Delete(int? id)
         {
             var productToBeDeleted = _unitOfWork.Product.Get(u => u.Id == id);
-            
+
             if (productToBeDeleted == null)
             {
                 return Json(new { success = false, message = "Error while deleting" });
             }
-
             /*
             var oldImagePath = Path.Combine(_webHostEnvironment.WebRootPath, productToBeDeleted.ImageUrl.TrimStart('\\'));
 
