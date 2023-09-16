@@ -192,17 +192,51 @@ So if it does not work in your deployed website do not overstress, since when yo
 
 ### Microsoft Social Login [210]
 
+#### Add Registration
+
 App registrations
 
-New registration
+New registration: Register an application
 
-Register an application
-
-Name: 
+Name: BulkyMicrosoftLogin
 
 [x] Accounts in any organizational directory (Any Microsoft Entra ID tenant - Multitenant) and personal Microsoft accounts (e.g. Skype, Xbox)
 
 Select a platform: Web
+Redirect: https://app-bulky.azurewebsites.net/
+
+Register
+
+Client credentials: Add a certificate or secret -> New client secret
+
+Name: BulkySecret
+
+Expiration: 730 days
+
+Add
+
+Value: 
+Secret Id: 
+
+nuget:
+
+Microsoft.AspNetCore.Authentication.MicrosoftAccount
+
+```cs
+builder.Services.AddAuthentication().AddMicrosoftAccount(options =>
+{
+    options.ClientId = "..."; // BulkyMicrosoftLogin -> Overview -> Application (client) Id
+    options.ClientSecret = "..."; // Value = Client Secret
+});
+```
+
+Value = Client Secret
+BulkyMicrosoftLogin -> Overview -> Application (client) Id
+
+#### Set Redirect Url
+BulkyMicrosoftLogin | Authentication
+- https://app-bulky.azurewebsites.net/signin-microsoft
+- Save
 
 ### Deploy Application to Azure using Visual Studio [212]
 
