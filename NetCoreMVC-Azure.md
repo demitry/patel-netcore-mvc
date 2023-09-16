@@ -186,5 +186,51 @@ https://localhost:7209/sign-facebook/ https://app-bulky.azurewebsites.net/sign-f
 
 4242 4242 4242 4242
 
+Facebook URL might not work in production websites unless you have configured privacy URL (which needs to be configured in url settings). It should be functional on localhost as shown in the course though.
+
+So if it does not work in your deployed website do not overstress, since when you add that to real world applications like your company you have to provide your company's privacy and data usage policies.
+
 ### Microsoft Social Login [210]
+
+App registrations
+
+New registration
+
+Register an application
+
+Name: 
+
+[x] Accounts in any organizational directory (Any Microsoft Entra ID tenant - Multitenant) and personal Microsoft accounts (e.g. Skype, Xbox)
+
+Select a platform: Web
+
 ### Deploy Application to Azure using Visual Studio [212]
+
+- Platform-dependent - have .NET 7 option
+- For the .NET 8 preview version - use Self-Contained
+
+With VS deployment - we have some limitations
+ - Cannot set the type and size of SQL Server and DB
+
+Also - go to Compute+Storage and scale down!
+
+Because from the VS - it is scaled!
+
+And again.
+
+NB! NB! NB!
+
+IP address 
+
+sqlserver-bulky | Networking
+
+[x] Allow Azure services and resources to access this server
+
+### Test Card
+
+4242 4242 4242 4242
+
+For the deployment
+
+
+
