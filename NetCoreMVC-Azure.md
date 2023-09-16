@@ -156,7 +156,35 @@ New application setting: ASPNETCORE_ENVIRONMENT: Production
 Save, Continue
 
 ### Azure Deployment in Action [186]
+
+Update hardcoded domain "https://localhost:7209/"; to 
+
+```cs
+$"{Request.Scheme}://{Request.Host.Value}/";
+```
+
 ### Facebook Url [187]
+
+https://developers.facebook.com/apps/1525082148229934/fb-login/settings/
+
+Add links: 
+- https://localhost:7209/sign-facebook/
+- https://app-bulky.azurewebsites.net/signin-facebook/
+
+https://developers.facebook.com/apps/1525082148229934/activity-log/
+
+Save !, do not forget
+
+```
+URL заблокирован
+Не удалось выполнить перенаправление, поскольку конечный URI не внесен в список разрешенных URI в разделе "Клиентские настройки OAuth" приложения.
+Убедитесь, что вход с помощью OAuth включен для клиента и веб-форм, а также добавьте все домены вашего приложения в качестве действительных URI перенаправления OAuth.
+```
+https://localhost:7209/sign-facebook/ https://app-bulky.azurewebsites.net/sign-facebook/
+
 ### Facebook Url Error [188]
+
+4242 4242 4242 4242
+
 ### Microsoft Social Login [210]
 ### Deploy Application to Azure using Visual Studio [212]
